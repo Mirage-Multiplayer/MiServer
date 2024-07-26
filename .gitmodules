@@ -1,0 +1,3 @@
+[submodule "lib/MiRak"]
+	path = lib/MiRak
+	url = git@github.com:Mirage-Multiplayer/MiRak.git

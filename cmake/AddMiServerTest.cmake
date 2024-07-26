@@ -1,0 +1,5 @@
+function(AddMiServerTest testname)
+	add_executable(${testname} ${ARGN})
+	target_link_libraries(${testname} PRIVATE miserver mirak)
+	target_link_directories(${testname} PRIVATE ${CMAKE_INSTALL_PREFIX})
+endfunction()
