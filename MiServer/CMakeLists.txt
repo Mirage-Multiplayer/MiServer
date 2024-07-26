@@ -1,5 +1,5 @@
-add_executable(miserver 
-	"main.cpp"
+add_library(miserver STATIC
+	"Server.cpp"
 )
 
 target_link_directories(miserver PUBLIC ${CMAKE_INSTALL_PREFIX})
