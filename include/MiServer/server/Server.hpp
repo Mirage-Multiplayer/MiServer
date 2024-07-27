@@ -4,6 +4,7 @@
 #include <MiRak/RakQuery.h>
 #include <string>
 #include "event/EventPool.hpp"
+#include "vehicle/VehiclePool.hpp"
 #include "player/PlayerPool.hpp"
 
 namespace mimp {
@@ -21,14 +22,32 @@ namespace mimp {
 		Server(const ServerInfo& info);
 		int Init(uint16_t port);
 		int ServerTick(void);
-		inline const internal::event::EventPool events() {
+		inline const internal::event::EventPool* events() {
 			return this->m_eventPool;
 		}
+
+		inline const ServerInfo getInfo(void) const {
+			return this->m_info;
+		}
+
+		inline internal::player::PlayerPool* getPlayerPool(void) const {
+			return this->m_playerPool;
+		}
+
+		inline RakServerInterface* getRakServer(void) const {
+			return this->m_RakServer;
+		}
+
+		inline internal::vehicle::VehiclePool* getVehiclePool(void) const {
+			return this->m_vehiclePool;
+		}
+
 	private:
 		ServerInfo m_info;
 
-		internal::event::EventPool m_eventPool;
-		internal::player::PlayerPool m_playerPool;
+		internal::event::EventPool* m_eventPool;
+		internal::player::PlayerPool* m_playerPool;
+		internal::vehicle::VehiclePool* m_vehiclePool;
 
 		RakServerInterface* m_RakServer;
 

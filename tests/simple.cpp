@@ -1,6 +1,6 @@
 #include <iostream>
 #include <thread>
-#include "Server.hpp"
+#include "server/Server.hpp"
 #ifdef _WIN32
 #pragma comment(lib, "ws2_32")
 #endif
