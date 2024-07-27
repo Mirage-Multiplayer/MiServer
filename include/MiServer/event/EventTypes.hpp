@@ -8,7 +8,7 @@ namespace mimp {
 				SERVER_EVENT_SERVERINIT = 0,
 				SERVER_EVENT_SERVEREXIT = 1,
 				SERVER_EVENT_PLAYERCONNECT,
-				SERVER_EVENT_PLAYEREDISCONNECT,
+				SERVER_EVENT_PLAYERDISCONNECT,
 			};
 
 			using OnServerInit_t = std::function<int(void)>;

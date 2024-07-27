@@ -1,0 +1,12 @@
+#ifndef __MISERVER_BULLETSYNC_HPP
+#define __MISERVER_BULLETSYNC_HPP
+#include <MiRak/NetworkTypes.h>
+
+namespace mimp {
+	namespace internal {
+		namespace packet {
+			void BulletSync(Packet* pkt);
+		}
+	}
+}
+#endif
