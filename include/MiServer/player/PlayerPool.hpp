@@ -38,7 +38,7 @@ namespace mimp {
 
 				inline const bool IsPlayerConnected(const PLAYERID id) const {
 					if (id < 0 || id >= this->m_MaxPlayers) {
-						return nullptr;
+						return false;
 					}
 
 					if (this->m_Pool[id] == nullptr) {

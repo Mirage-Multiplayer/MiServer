@@ -1,6 +1,10 @@
 ﻿cmake_minimum_required(VERSION 3.8)
 project(MiServer)
 
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/MiServer/config.h"
+)
 set(MiServer_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include/MiServer)
 set(MiServer_CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 

@@ -3,6 +3,7 @@
 #include "../types.h"
 namespace mimp {
 	struct Vehicle {
+		Vehicle() = default;
 		int m_modelId;
 		float m_health;
 		float m_roll[3];

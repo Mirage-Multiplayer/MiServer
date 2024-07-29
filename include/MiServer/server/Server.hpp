@@ -22,12 +22,13 @@ namespace mimp {
 		Server(const ServerInfo& info);
 		int Init(uint16_t port);
 		int ServerTick(void);
-		inline const internal::event::EventPool* events() {
-			return this->m_eventPool;
-		}
 
 		inline const ServerInfo getInfo(void) const {
 			return this->m_info;
+		}
+
+		inline internal::event::EventPool* getEventPool(void) const {
+			return this->m_eventPool;
 		}
 
 		inline internal::player::PlayerPool* getPlayerPool(void) const {

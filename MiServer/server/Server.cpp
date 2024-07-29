@@ -52,7 +52,12 @@ int mimp::Server::Init(uint16_t port) {
 	internal::server::SetServerInstance(this);
 	internal::RPC::RegisterServerRPCs(this->m_RakServer);
 
-	this->m_eventPool->Emit(internal::event::SERVER_EVENT_SERVERINIT, 0);
+	if (this->m_vehiclePool->IsValidVehicle(100)) {
+		return 0;
+	}
+
+	this->m_eventPool->Emit(internal::event::SERVER_EVENT_SERVERINIT, nullptr);
+
 	return 1;
 }
 
@@ -85,7 +90,6 @@ int mimp::Server::ServerTick(void) {
 			break;
 		}
 		case ID_NEW_INCOMING_CONNECTION: {
-			std::cout << "NEW INCOMMING\n";
 			break;
 		}
 		case ID_CONNECTION_LOST: {
