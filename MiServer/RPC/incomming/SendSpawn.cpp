@@ -26,13 +26,7 @@ namespace mimp {
 						return;
 					}
 
-					// OnPlayerSpawn
-					struct {
-						mimp::Player* p;
-					}ctx;
-
-					ctx.p = pPlayer;
-					internal::server::GetServerInstance()->getEventPool()->Emit(event::SERVER_EVENT_PLAYERSPAWN, (void*)&ctx);
+					internal::server::GetServerInstance()->getEventPool()->Emit(event::SERVER_EVENT_PLAYERSPAWN, pPlayer);
 
 					RakNet::BitStream bsData;
 					bsData.Write(playerId);

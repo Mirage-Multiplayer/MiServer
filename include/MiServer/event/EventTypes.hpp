@@ -3,8 +3,9 @@
 #include <functional>
 #include "../player/Player.hpp"
 
-#define MAX_EVENTS_PER_QUEUE 200
-
+/* EventType
+	Store information about events, their callbacks and their params
+*/
 namespace mimp {
 	namespace internal {
 		namespace event {
@@ -13,11 +14,28 @@ namespace mimp {
 				SERVER_EVENT_SERVEREXIT = 1,
 				SERVER_EVENT_PLAYERCONNECT,
 				SERVER_EVENT_PLAYERDISCONNECT,
-				SERVER_EVENT_PLAYERSPAWN,
-				SERVER_EVENT_PLAYERWEAPONSHOT
+				SERVER_EVENT_PLAYERSPAWN
 			};
 
-			using EventCallback_t = std::function<int(void*)>;
+			// Disclaimer: I wanted to make this as dynamic as possible, and this was the way I found
+			using OnServerInit_t = std::function<int()>;
+
+			using OnServerExit_t = std::function<int()>;
+
+			using OnPlayerConnect_t = std::function<int(Player*)>;
+			using OnPlayerConnect_params = struct {
+				Player* player;
+			};
+
+			using OnPlayerDisconnect_t = std::function<int(Player*)>;
+			using OnPlayerDisconnect_params = struct {
+				Player* player;
+			};
+
+			using OnPlayerSpawn_t = std::function<int(Player*)>;
+			using OnPlayerSpawn_params = struct {
+				Player* player;
+			};
 		}	
 	}
 }

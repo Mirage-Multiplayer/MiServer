@@ -4,32 +4,36 @@
 #include "EventTypes.hpp"
 #include "EventQueue.hpp"
 
+/* Event Pool
+	Class who handle Event Queues and emit'em
+*/
 namespace mimp {
 	namespace internal{
 		namespace event {
 			class EventPool {
 			public:
 				EventPool();
-				void OnServerInit(EventCallback_t cb);
+				void OnServerInit(OnServerInit_t cb);
 
-				void OnServerExit(EventCallback_t cb);
+				void OnServerExit(OnServerExit_t cb);
 
-				void OnPlayerConnect(EventCallback_t cb);
+				void OnPlayerConnect(OnPlayerConnect_t cb);
 
-				void OnPlayerDisconnect(EventCallback_t cb);
+				void OnPlayerDisconnect(OnPlayerDisconnect_t cb);
 
-				void OnPlayerSpawn(EventCallback_t cb);
+				void OnPlayerSpawn(OnPlayerSpawn_t cb);
 
-				void OnPlayerWeaponShot(EventCallback_t cb);
-				
+				/*
+				* Receives a event ID and the context, e.g, a fucking struct with arguments.
+				*/
 				int Emit(uint16_t id, void* ctx);
+
 			private:
-				EventQueue* m_ServerInit;
-				EventQueue* m_ServerExit;
-				EventQueue* m_PlayerConnect;
-				EventQueue* m_PlayerDisconnect;
-				EventQueue* m_PlayerSpawn;
-				EventQueue* m_PlayerWeaponShoot;
+				EventQueue<OnServerInit_t>* m_ServerInit;
+				EventQueue<OnServerExit_t>* m_ServerExit;
+				EventQueue<OnPlayerConnect_t>* m_PlayerConnect;
+				EventQueue<OnPlayerDisconnect_t>* m_PlayerDisconnect;
+				EventQueue<OnPlayerSpawn_t>* m_PlayerSpawn;
 			};
 		}
 		

@@ -23,13 +23,13 @@ int main(void) {
 	// Define callbacks & handlers
 	RakNet::RakQuery::setHandler(hnd);
 
-	server.getEventPool()->OnServerInit([](void* ctx) -> int {
+	server.getEventPool()->OnServerInit([](void) -> int {
 		std::cout << "ServerInit\n";
 		return 1;
 		});
 
-	server.getEventPool()->OnPlayerSpawn([](void* ctx) -> int {
-		std::cout << "PlayerSpawn\n";
+	server.getEventPool()->OnPlayerSpawn([](mimp::Player* p) -> int {
+		std::cout << "Player ID " << p->getPlayerId() << " Spawned\n";
 		return 1;
 		});
 
