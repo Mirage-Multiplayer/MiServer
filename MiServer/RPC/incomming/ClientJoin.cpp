@@ -1,12 +1,15 @@
 #include "RPC/RPC.hpp"
 #include <MiRak/RakServer.h>
 #include <MiRak/BitStream.h>
+#include "server/ServerInstance.hpp"
+#include "MiServer.hpp"
+#include "player/defines.hpp"
 
 namespace mimp {
     namespace internal {
         namespace RPC {
             namespace incomming {
-				void ClientJoin(RPCParameters* rpcParams)
+				void Handler::ClientJoin(RPCParameters* rpcParams)
 				{
 					RakServerInterface* pRakServer = internal::server::GetServerInstance()->getRakServer();
 					internal::player::PlayerPool* pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();
@@ -73,6 +76,9 @@ namespace mimp {
 					SpawnAllVehiclesForPlayer(playerID);
 
 					// OnPlayerConnect
+					internal::event::OnPlayerConnect_params params;
+					params.player = pPlayerPool->Get(playerID);
+					internal::server::GetServerInstance()->getEventPool()->Emit(internal::event::SERVER_EVENT_PLAYERCONNECT, (void*) & params);
 				}
             }
         }

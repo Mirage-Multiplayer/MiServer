@@ -1,11 +1,12 @@
 #include "RPC/RPC.hpp"
 #include "event/EventTypes.hpp"
+#include "server/ServerInstance.hpp"
 
 namespace mimp {
     namespace internal {
         namespace RPC {
             namespace incomming {
-				void SendSpawn(RPCParameters* rpcParams)
+				void Handler::SendSpawn(RPCParameters* rpcParams)
 				{
 					RakServerInterface* pRakServer = internal::server::GetServerInstance()->getRakServer();
 					internal::player::PlayerPool* pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();
@@ -26,7 +27,9 @@ namespace mimp {
 						return;
 					}
 
-					internal::server::GetServerInstance()->getEventPool()->Emit(event::SERVER_EVENT_PLAYERSPAWN, pPlayer);
+					event::OnPlayerSpawn_params params;
+					params.player = pPlayer;
+					internal::server::GetServerInstance()->getEventPool()->Emit(event::SERVER_EVENT_PLAYERSPAWN, (void*)&params);
 
 					RakNet::BitStream bsData;
 					bsData.Write(playerId);

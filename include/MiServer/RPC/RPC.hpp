@@ -2,19 +2,8 @@
 #define __MISERVER_RPC_HPP
 #include <MiRak/BitStream.h>
 #include <MiRak/RakEncr.h>
-#include <string>
-#include "server/Server.hpp"
-#include "server/ServerInstance.hpp"
-#include "MiServer.hpp"
-#include "types.h"
-#include "RPC/RPCList.hpp"
-#include "packet/SyncData.hpp"
-#include "player/defines.hpp"
+#include <MiRak/RakServer.h>
 #include "player/PlayerTypes.hpp"
-#include "vehicle/Vehicle.hpp"
-#include "vehicle/VehiclePool.hpp"
-#include "vehicle/defines.hpp"
-#include "RPCList.hpp"
 
 #define REJECT_REASON_BAD_VERSION	1
 #define REJECT_REASON_BAD_NICKNAME	2
@@ -26,7 +15,7 @@ namespace mimp {
 	namespace internal {
 		namespace RPC {
 			extern float m_fGravity;
-			extern int iLagCompensation; 
+			extern int iLagCompensation;
 			void InitGameForPlayer(PLAYERID playerID);
 			void SendPlayerPoolToPlayer(PLAYERID playerID);
 			void SpawnAllVehiclesForPlayer(PLAYERID playerID);

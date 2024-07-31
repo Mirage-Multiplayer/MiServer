@@ -7,7 +7,7 @@
 namespace mimp {
 	namespace internal {
 		namespace packet {
-#pragma pack(1)
+#pragma pack(push, 1)
 			typedef struct _ONFOOT_SYNC_DATA
 			{
 				WORD lrAnalog;
@@ -24,8 +24,6 @@ namespace mimp {
 				WORD wSurfInfo;
 				int	iCurrentAnimationID;
 			} ONFOOT_SYNC_DATA;
-
-#pragma pack(1)
 			typedef struct _INCAR_SYNC_DATA
 			{
 				VEHICLEID VehicleID;
@@ -44,8 +42,6 @@ namespace mimp {
 				WORD TrailerID_or_ThrustAngle;
 				FLOAT fTrainSpeed;
 			} INCAR_SYNC_DATA;
-
-#pragma pack(1)
 			typedef struct _PASSENGER_SYNC_DATA
 			{
 				VEHICLEID VehicleID;
@@ -67,8 +63,6 @@ namespace mimp {
 				WS_MORE_BULLETS = 2,
 				WS_RELOADING = 3,
 			};
-
-#pragma pack(1)
 			typedef struct _AIM_SYNC_DATA
 			{
 				BYTE byteCamMode;
@@ -79,8 +73,6 @@ namespace mimp {
 				BYTE byteWeaponState : 2;	// see eWeaponState
 				BYTE bUnk;
 			} AIM_SYNC_DATA;
-
-#pragma pack(1)
 			typedef struct _UNOCCUPIED_SYNC_DATA // 67
 			{
 				VEHICLEID VehicleID;
@@ -92,8 +84,6 @@ namespace mimp {
 				float vecTurnSpeed[3];
 				float fHealth;
 			} UNOCCUPIED_SYNC_DATA;
-
-#pragma pack(1)
 			typedef struct _SPECTATOR_SYNC_DATA
 			{
 				WORD lrAnalog;
@@ -101,8 +91,6 @@ namespace mimp {
 				WORD wKeys;
 				float vecPos[3];
 			} SPECTATOR_SYNC_DATA;
-
-#pragma pack(1)
 			typedef struct _BULLET_SYNC_DATA {
 				BYTE bHitType;
 				unsigned short iHitID;
@@ -111,8 +99,6 @@ namespace mimp {
 				float fCenterOfHit[3];
 				BYTE bWeaponID;
 			} BULLET_SYNC_DATA;
-
-#pragma pack(1)
 			typedef struct _PLAYER_SPAWN_INFO
 			{
 				BYTE byteTeam;
@@ -123,8 +109,6 @@ namespace mimp {
 				int iSpawnWeapons[3];
 				int iSpawnWeaponsAmmo[3];
 			} PLAYER_SPAWN_INFO;
-
-#pragma pack(1)
 			typedef struct _PICKUP
 			{
 				int iModel;
@@ -133,8 +117,6 @@ namespace mimp {
 				float fY;
 				float fZ;
 			} PICKUP;
-
-#pragma pack(1)
 			typedef struct _TEXT_DRAW_TRANSMIT
 			{
 				union
@@ -172,7 +154,6 @@ namespace mimp {
 				WORD wColor2;
 			} TEXT_DRAW_TRANSMIT;
 
-#pragma pack(1)
 			typedef struct _NEW_VEHICLE {
 				VEHICLEID VehicleId;
 				int		  iVehicleType;
@@ -214,6 +195,7 @@ namespace mimp {
 				UNOCCUPIED_SYNC_DATA unocData;
 				BULLET_SYNC_DATA bulletData;
 			};
+#pragma pack(pop)
 		}
 	}
 }

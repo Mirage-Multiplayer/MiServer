@@ -1,11 +1,12 @@
 #include "RPC/RPC.hpp"
 #include "event/EventTypes.hpp"
+#include "server/ServerInstance.hpp"
 
 namespace mimp {
     namespace internal {
         namespace RPC {
             namespace incomming {
-				void RequestSpawn(RPCParameters* rpcParams)
+				void Handler::RequestSpawn(RPCParameters* rpcParams)
 				{
 					RakNet::BitStream bsReply;
 

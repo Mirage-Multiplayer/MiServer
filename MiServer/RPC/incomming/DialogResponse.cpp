@@ -1,10 +1,10 @@
 #include "RPC/RPC.hpp"
-
+#include "server/ServerInstance.hpp"
 namespace mimp {
     namespace internal {
         namespace RPC {
             namespace incomming {
-				void DialogResponse(RPCParameters* rpcParams)
+				void Handler::DialogResponse(RPCParameters* rpcParams)
 				{
 					RakServerInterface* pRakServer = internal::server::GetServerInstance()->getRakServer();
 					mimp::internal::player::PlayerPool* pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();

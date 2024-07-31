@@ -1,9 +1,19 @@
 #ifndef __MISERVER_VEHICLE_HPP
 #define __MISERVER_VEHICLE_HPP
+
 #include "../types.h"
+#include "../RPC/RPC.hpp"
+#include "../RPC/RPCList.hpp"
+
 namespace mimp {
-	struct Vehicle {
+
+	class Vehicle {
+	public:
 		Vehicle() = default;
+	private:
+		friend class internal::RPC::incomming::Handler;
+		friend void internal::RPC::SpawnAllVehiclesForPlayer(PLAYERID playerID);
+
 		int m_modelId;
 		float m_health;
 		float m_roll[3];
@@ -16,5 +26,7 @@ namespace mimp {
 		int m_respawn;
 		int m_timeUntilRespawn;
 	};
+
 }
+
 #endif

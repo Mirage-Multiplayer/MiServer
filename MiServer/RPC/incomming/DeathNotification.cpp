@@ -1,10 +1,12 @@
 #include "RPC/RPC.hpp"
+#include "server/ServerInstance.hpp"
+#include "player/defines.hpp"
 
 namespace mimp {
     namespace internal {
         namespace RPC {
             namespace incomming {
-				void DeathNotification(RPCParameters* rpcParams)
+				void Handler::DeathNotification(RPCParameters* rpcParams)
 				{
 					RakServerInterface* pRakServer = internal::server::GetServerInstance()->getRakServer();
 					mimp::internal::player::PlayerPool* pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();

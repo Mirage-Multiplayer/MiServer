@@ -1,10 +1,11 @@
 #include "RPC/RPC.hpp"
+#include "server/ServerInstance.hpp"
 
 namespace mimp {
     namespace internal {
         namespace RPC {
             namespace incomming {
-				void VehicleDamaged(RPCParameters* rpcParams)
+				void Handler::VehicleDamaged(RPCParameters* rpcParams)
 				{
 					RakServerInterface* pRakServer = internal::server::GetServerInstance()->getRakServer();
 					internal::player::PlayerPool* pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();

@@ -34,7 +34,7 @@ void mimp::internal::packet::VehicleSync(Packet* p) {
 	}
 	bsVehicleSync.Read((PCHAR)pPlayer->m_InCarSyncData, sizeof(INCAR_SYNC_DATA));
 
-	pPlayer->setCurrentVehicle(pPlayer->m_InCarSyncData->VehicleID);
+	pPlayer->_setCurrentVehicle(pPlayer->m_InCarSyncData->VehicleID);
 
 	// BROADCAST DATA
 	RakNet::BitStream bsInVehicleBC;

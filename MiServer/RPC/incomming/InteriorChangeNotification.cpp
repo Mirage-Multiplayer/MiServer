@@ -1,10 +1,11 @@
 #include "RPC/RPC.hpp"
+#include "server/ServerInstance.hpp"
 
 namespace mimp {
     namespace internal {
         namespace RPC {
             namespace incomming {
-				void InteriorChangeNotification(RPCParameters* rpcParams)
+				void Handler::InteriorChangeNotification(RPCParameters* rpcParams)
 				{
 					RakServerInterface* pRakServer = internal::server::GetServerInstance()->getRakServer();
 					mimp::internal::player::PlayerPool* pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();
@@ -24,7 +25,7 @@ namespace mimp {
 
 					mimp::Player* pPlayer = pPlayerPool->Get(playerID);
 
-					pPlayer->setInteriorId(byteInteriorId);
+					pPlayer->_setInteriorId(byteInteriorId);
 
 					// OnPlayerInteriorChange
 

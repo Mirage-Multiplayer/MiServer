@@ -17,15 +17,17 @@ namespace mimp {
 					if (this->m_queue.empty()) {
 						return 0;
 					}
+
+					int ret = 0;
 					for (auto& func : this->m_queue)
 					{
-						int ret = std::forward<T>(func)(std::forward<Args>(args)...);
+						ret = std::forward<T>(func)(std::forward<Args>(args)...);
 						if (ret == 0) {
 							break;
 						}
 					}
 						
-					return 1;
+					return ret;
 				}
 
 				void Add(T event) {

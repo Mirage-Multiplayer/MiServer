@@ -11,8 +11,6 @@ namespace mimp {
 			class VehiclePool {
 			public:
 				VehiclePool(unsigned short max_vehicles);
-				int Count() const;
-
 				
 				int Add(Vehicle* p);
 

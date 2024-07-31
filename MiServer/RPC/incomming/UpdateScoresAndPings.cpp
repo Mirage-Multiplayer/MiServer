@@ -1,10 +1,12 @@
 #include "RPC/RPC.hpp"
+#include "server/ServerInstance.hpp"
+#include "player/defines.hpp"
 
 namespace mimp {
     namespace internal {
         namespace RPC {
             namespace incomming {
-				void UpdateScoresAndPings(RPCParameters* rpcParams)
+				void Handler::UpdateScoresAndPings(RPCParameters* rpcParams)
 				{
 					RakNet::BitStream bsUpdate;
 					RakServerInterface* pRakServer = internal::server::GetServerInstance()->getRakServer();
@@ -13,7 +15,7 @@ namespace mimp {
 					{
 						if (pPlayerPool->IsPlayerConnected(i))
 						{
-							pPlayerPool->Get(i)->setPing(pRakServer->GetLastPing(pPlayerPool->Get(i)->getRakPlayerId()));
+							pPlayerPool->Get(i)->_setPing(pRakServer->GetLastPing(pPlayerPool->Get(i)->getRakPlayerId()));
 
 							bsUpdate.Write(i);
 							bsUpdate.Write(pPlayerPool->Get(i)->getScore());

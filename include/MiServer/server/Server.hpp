@@ -3,9 +3,9 @@
 #include <MiRak/RakServer.h>
 #include <MiRak/RakQuery.h>
 #include <string>
-#include "event/EventPool.hpp"
-#include "vehicle/VehiclePool.hpp"
-#include "player/PlayerPool.hpp"
+#include "../event/EventPool.hpp"
+#include "../vehicle/VehiclePool.hpp"
+#include "../player/PlayerPool.hpp"
 
 namespace mimp {
 	struct ServerInfo {

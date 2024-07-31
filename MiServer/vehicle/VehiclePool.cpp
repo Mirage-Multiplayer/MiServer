@@ -1,29 +1,20 @@
 #include "vehicle/VehiclePool.hpp"
 #include "vehicle/Vehicle.hpp"
+#include <memory>
+
 
 mimp::internal::vehicle::VehiclePool::VehiclePool(unsigned short max_vehicles): m_Pool(max_vehicles, nullptr) {
 	this->m_MaxVehicles = max_vehicles;
 }
 
-int mimp::internal::vehicle::VehiclePool::Count() const {
-	int c = 0;
-	for (const Vehicle* elem : this->m_Pool) {
-		if (elem != nullptr) {
-			++c;
-		}
-	}
-	return c;
-}
-
-
 int mimp::internal::vehicle::VehiclePool::Add(Vehicle* p) {
-	int c = this->Count();
-	if (c >= m_MaxVehicles) {
+	auto it = std::find(this->m_Pool.begin(), this->m_Pool.end(), nullptr);
+	if (it == this->m_Pool.end()) {
 		return -1;
 	}
-
-	this->m_Pool[c] = p;
-	return c;
+	size_t idx = std::distance(this->m_Pool.begin(), it);
+	this->m_Pool.insert(it, p);
+	return idx;
 }
 
 
@@ -43,7 +34,7 @@ mimp::Vehicle* mimp::internal::vehicle::VehiclePool::Get(const VEHICLEID id) {
 		return nullptr;
 	}
 
-	return this->m_Pool[id];
+	return this->m_Pool.at(id);
 }
 
 
@@ -52,7 +43,7 @@ const bool mimp::internal::vehicle::VehiclePool::IsValidVehicle(const VEHICLEID 
 		return false;
 	}
 
-	if (this->m_Pool[id] == nullptr) {
+	if (this->m_Pool.at(id) == nullptr) {
 		return false;
 	}
 

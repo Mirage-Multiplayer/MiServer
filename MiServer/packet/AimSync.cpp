@@ -106,7 +106,7 @@ void mimp::internal::packet::AimSync(Packet* p) {
 	else
 		bsOnFootBC.Write(false);
 
-	pPlayer->setCurrentVehicle(0);
+	pPlayer->_setCurrentVehicle(0);
 
 	UpdatePosition(playerId, pPlayer->m_OnFootSyncData->vecPos[0], pPlayer->m_OnFootSyncData->vecPos[1], pPlayer->m_OnFootSyncData->vecPos[2]);
 

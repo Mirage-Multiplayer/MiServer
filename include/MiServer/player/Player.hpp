@@ -3,6 +3,7 @@
 #include <string>
 #include "types.h"
 #include <MiRak/NetworkTypes.h>
+#include "RPC/RPCList.hpp"
 #include "packet/PlayerSync.hpp"
 #include "packet/AimSync.hpp"
 #include "packet/BulletSync.hpp"
@@ -31,58 +32,28 @@ namespace mimp {
 			return this->m_nickName;
 		}
 
-		inline void setIP(const char* ip) {
-			this->m_IP = ip;
-		}
-
 		inline const std::string getIP(void) const {
 			return this->m_IP;
-		}
-
-		inline void setClientPort(const uint16_t port) {
-			this->m_clientPort = port;
 		}
 
 		inline const uint16_t getClientPort(void) const {
 			return this->m_clientPort;
 		}
 
-		inline void setScore(const int score) {
-			this->m_score = score;
-		}
-
 		inline const int getScore(void) const {
 			return this->m_score;
-		}
-
-		inline void setPing(const DWORD ping) {
-			this->m_ping = ping;
 		}
 
 		inline const DWORD getPing(void) const {
 			return this->m_ping;
 		}
 
-		inline void setCurrentVehicle(const WORD cvid) {
-			this->m_currentVehicleId = cvid;
-		}
-
 		inline const WORD getCurrentVehicle(void) const {
 			return this->m_currentVehicleId;
 		}
 
-		inline void setSkin(const int skin) {
-			this->m_skin = skin;
-		}
-
 		inline const int getSkin(void) const {
 			return this->m_skin;
-		}
-
-		inline void setSpawn(float x, float y, float z) {
-			this->m_spawn[0] = x;
-			this->m_spawn[1] = y;
-			this->m_spawn[2] = z;
 		}
 
 		inline void getSpawn(float& x, float& y, float& z) const {
@@ -91,32 +62,16 @@ namespace mimp {
 			z = this->m_spawn[2];
 		}
 
-		inline void setRotation(const float rotation) {
-			this->m_rotation = rotation;
-		}
-
 		inline const float getRotation(void) const {
 			return this->m_rotation;
-		}
-
-		inline void setColor(const DWORD color) {
-			this->m_color = color;
 		}
 
 		inline const DWORD getColor(void) const {
 			return this->m_color;
 		}
 
-		inline void setFightingStyle(const BYTE style) {
-			this->m_fightingStyle = style;
-		}
-
 		inline const BYTE getFightingStyle(void) const {
 			return this->m_fightingStyle;
-		}
-
-		inline void setCheckpointActive(const bool active) {
-			this->m_checkpointActive = active;
 		}
 
 		inline const bool getCheckpointActive(void) const {
@@ -135,27 +90,13 @@ namespace mimp {
 			z = this->m_checkpointPos[2];
 		}
 
-		inline void setCheckpointSize(const float size) {
-			this->m_checkpointSize = size;
-		}
-
 		inline const float getCheckpointSize(void) const {
 			return this->m_checkpointSize;
-		}
-
-		inline void setPlayerInCheckpoint(const bool inCheckpoint) {
-			this->m_playerInCheckpoint = inCheckpoint;
 		}
 
 		inline const bool getPlayerInCheckpoint(void) const {
 			return this->m_playerInCheckpoint;
 		}
-
-		inline void setInteriorId(const int i) {
-			this->m_interiorId = i;
-		}
-
-
 
 		inline internal::packet::ONFOOT_SYNC_DATA* getOnFootSyncData() const {
 			return this->m_OnFootSyncData;
@@ -167,6 +108,65 @@ namespace mimp {
 
 	private:
 
+		inline void _setIP(const char* ip) {
+			this->m_IP = ip;
+		}
+
+		inline void _setClientPort(const uint16_t port) {
+			this->m_clientPort = port;
+		}
+
+		inline void _setScore(const int score) {
+			this->m_score = score;
+		}
+
+		inline void _setPing(const DWORD ping) {
+			this->m_ping = ping;
+		}
+
+		inline void _setCurrentVehicle(const WORD cvid) {
+			this->m_currentVehicleId = cvid;
+		}
+
+		inline void _setSkin(const int skin) {
+			this->m_skin = skin;
+		}
+
+		inline void _setSpawn(float x, float y, float z) {
+			this->m_spawn[0] = x;
+			this->m_spawn[1] = y;
+			this->m_spawn[2] = z;
+		}
+
+		inline void _setColor(const DWORD color) {
+			this->m_color = color;
+		}
+
+		inline void _setRotation(const float rotation) {
+			this->m_rotation = rotation;
+		}
+
+		inline void _setFightingStyle(const BYTE style) {
+			this->m_fightingStyle = style;
+		}
+																																	
+		inline void _setCheckpointActive(const bool active) {
+			this->m_checkpointActive = active;
+		}
+
+		inline void _setCheckpointSize(const float size) {
+			this->m_checkpointSize = size;
+		}
+
+		inline void _setPlayerInCheckpoint(const bool inCheckpoint) {
+			this->m_playerInCheckpoint = inCheckpoint;
+		}
+
+		inline void _setInteriorId(const int i) {
+			this->m_interiorId = i;
+		}
+
+	private:
 		friend void internal::packet::PlayerSync(Packet* pkt);
 		friend void internal::packet::AimSync(Packet* pkt);
 		friend void internal::packet::VehicleSync(Packet* pkt);
@@ -174,6 +174,8 @@ namespace mimp {
 		friend void internal::packet::PassengerSync(Packet* pkt);
 		friend void internal::packet::UnoccupiedSync(Packet* pkt);
 		friend void internal::packet::UpdatePosition(int iPlayerID, float fX, float fY, float fZ);
+
+		friend internal::RPC::incomming::Handler;
 
 		internal::packet::ONFOOT_SYNC_DATA* m_OnFootSyncData;
 		internal::packet::INCAR_SYNC_DATA* m_InCarSyncData;

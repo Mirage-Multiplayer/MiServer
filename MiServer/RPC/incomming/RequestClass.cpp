@@ -1,10 +1,11 @@
 #include "RPC/RPC.hpp"
+#include "server/ServerInstance.hpp"
 
 namespace mimp {
     namespace internal {
         namespace RPC {
             namespace incomming {
-				void RequestClass(RPCParameters* rpcParams)
+				void Handler::RequestClass(RPCParameters* rpcParams)
 				{
 					PCHAR Data = reinterpret_cast<PCHAR>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;

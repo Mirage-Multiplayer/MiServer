@@ -1,10 +1,10 @@
 #include "RPC/RPC.hpp"
-
+#include "server/ServerInstance.hpp"
 namespace mimp {
     namespace internal {
         namespace RPC {
             namespace incomming {
-				void ChatMessage(RPCParameters* rpcParams)
+				void Handler::ChatMessage(RPCParameters* rpcParams)
 				{
 					RakServerInterface* pRakServer = internal::server::GetServerInstance()->getRakServer();
 
