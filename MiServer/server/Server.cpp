@@ -15,29 +15,43 @@
 #include "packet/VehicleSync.hpp"
 #include "vehicle/VehiclePool.hpp"
 #include "RPC/RPC.hpp"
+#include "config.h"
 
 mimp::ServerInfo::ServerInfo(const char* hostname, const char* gamemode, const char* lang, const unsigned int max_players) :
 	hostname(hostname), gamemode(gamemode), lang(lang), max_players(max_players)
 {
 }
 
-mimp::Server::Server(const ServerInfo& info): m_info(info)
+mimp::Server::Server(const ServerInfo& info) :
+	m_info(info),
+	m_port(0),
+	m_RakServer(nullptr),
+	m_initialized(false),
+	m_eventPool(nullptr),
+	m_playerPool(nullptr),
+	m_vehiclePool(nullptr)
 {
-	this->m_RakServer = nullptr;
-	this->m_initialized = false;
-	this->m_port = 0;
+}
 
-	this->m_playerPool = new internal::player::PlayerPool(info.max_players);
-	this->m_vehiclePool = new internal::vehicle::VehiclePool(MAX_VEHICLES);
-	this->m_eventPool = new internal::event::EventPool();
-
+mimp::Server::~Server() {
+	delete this->m_RakServer;
+	delete this->m_playerPool;
+	delete this->m_vehiclePool;
+	delete this->m_eventPool;
 }
 
 int mimp::Server::Init(uint16_t port) {
+
+	std::cout << "[Mi:MP] Initializing Mi:MP Server instance version " << MISERVER_VERSION << "\n";
+
 	if (internal::server::GetServerInstance() != nullptr) {
+		std::cout << "[Mi:MP] Server instance already Loaded!. Aborting...";
 		return -1;
 	}
 
+	this->m_playerPool = new internal::player::PlayerPool(this->m_info.max_players);
+	this->m_vehiclePool = new internal::vehicle::VehiclePool(MAX_VEHICLES);
+	this->m_eventPool = new internal::event::EventPool();
 
 	this->m_RakServer = RakNetworkFactory::GetRakServerInterface();
 	this->m_port = port;
@@ -52,12 +66,32 @@ int mimp::Server::Init(uint16_t port) {
 	internal::server::SetServerInstance(this);
 	internal::RPC::RegisterServerRPCs(this->m_RakServer);
 
-	if (this->m_vehiclePool->IsValidVehicle(100)) {
-		return 0;
-	}
-
+	this->m_initialized = true;
+	std::cout << "[Mi:MP] Successfully initialized Mi:MP ' Mi-Server " << MISERVER_VERSION << " ' \n";
 	this->m_eventPool->Emit(internal::event::SERVER_EVENT_SERVERINIT, nullptr);
+	return 1;
+}
 
+int mimp::Server::Shutdown(void) {
+	this->m_RakServer->Disconnect(300);
+	RakNetworkFactory::DestroyRakServerInterface(this->m_RakServer);
+
+	delete this->m_RakServer;
+	delete this->m_playerPool;
+	delete this->m_vehiclePool;
+	delete this->m_eventPool;
+
+	this->m_RakServer = nullptr;
+	this->m_playerPool = nullptr;
+	this->m_vehiclePool = nullptr;
+	this->m_eventPool = nullptr;
+
+	this->m_port = 0;
+
+	RakNet::RakEncr::m_srvChallenge = 0;
+	RakNet::RakEncr::setPort(0);
+
+	internal::server::SetServerInstance(nullptr);
 	return 1;
 }
 
@@ -72,10 +106,8 @@ int mimp::Server::ServerTick(void) {
 			if (pkt->length > sizeof(unsigned char) + sizeof(unsigned int)) {
 				
 				packetIdentifier = (unsigned char)pkt->data[sizeof(unsigned char) + sizeof(unsigned int)];
-				std::cout << "new Packet ID: " << packetIdentifier << '\n';
 			}
 			else {
-				std::cout << "Discard packet\n";
 				return 1;
 			}
 				

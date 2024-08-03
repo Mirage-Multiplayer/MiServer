@@ -8,37 +8,84 @@
 #include "../player/PlayerPool.hpp"
 
 namespace mimp {
+	/** Struct that holds the server information
+	 * 
+	 */
 	struct ServerInfo {
 	public:
 		ServerInfo(const char* hostname, const char* gamemode, const char* lang, const unsigned int max_players);
+		/**
+		 * hostname
+		 */
 		std::string hostname;
+		/**
+		 * Gamemode
+		 */
 		std::string gamemode;
+		/**
+		 * Language
+		 */
 		std::string lang;
+		/**
+		 * Max Players
+		 */
 		unsigned int max_players;
 	};
 
+	/**
+	 * Server class
+	 */
 	class Server {
 	public:
 		Server(const ServerInfo& info);
+		~Server();
+
+		/**
+		 * Init the server at the specified port.
+		 * @param port
+		 */
 		int Init(uint16_t port);
+		/**
+		 * Shutdown Server and kill's the server instance.
+		 */
+		int Shutdown(void);
+		/**
+		 * Proccess the server Tick "Update"
+		 * Should be called inside an infinite loop
+		 */
 		int ServerTick(void);
 
+		/**
+		 * Get server info.
+		 */
 		inline const ServerInfo getInfo(void) const {
 			return this->m_info;
 		}
 
+		/**
+		 * Get server EventPool instance.
+		 */
 		inline internal::event::EventPool* getEventPool(void) const {
 			return this->m_eventPool;
 		}
 
+		/**
+		 * Get server PlayerPool instance.
+		 */
 		inline internal::player::PlayerPool* getPlayerPool(void) const {
 			return this->m_playerPool;
 		}
 
+		/**
+		 * Get server RakServerInterface instance.
+		 */
 		inline RakServerInterface* getRakServer(void) const {
 			return this->m_RakServer;
 		}
 
+		/**
+		 * Get server VehiclePool instance.
+		 */
 		inline internal::vehicle::VehiclePool* getVehiclePool(void) const {
 			return this->m_vehiclePool;
 		}

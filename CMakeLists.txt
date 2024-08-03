@@ -1,5 +1,5 @@
 ﻿cmake_minimum_required(VERSION 3.8)
-project(MiServer)
+project(MiServer VERSION 0.0.1)
 
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in"

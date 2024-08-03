@@ -6,7 +6,14 @@ namespace mimp {
 	namespace internal {
 		namespace server {
 			extern Server* g_ServerInstance;
+			/**
+			 * Get active server instance.
+			 */
 			Server* GetServerInstance(void);
+			/**
+			 * Set active server instance.
+			 * @param svr - the server instance
+			 */
 			void SetServerInstance(Server* svr);
 		}
 	}

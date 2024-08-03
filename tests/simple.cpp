@@ -38,7 +38,7 @@ int main(void) {
 
 	while (1) {
 		server.ServerTick();
-		std::this_thread::sleep_for(std::chrono::seconds(5));
+		Sleep(5);
 	}
 
 	return 1;

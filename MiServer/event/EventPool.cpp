@@ -51,7 +51,7 @@ int mimp::internal::event::EventPool::Emit(uint16_t id, void* ctx) {
 	}
 	case SERVER_EVENT_PLAYERDISCONNECT: {
 		OnPlayerDisconnect_params* p = static_cast<OnPlayerDisconnect_params*>(ctx);
-		CALL_EVENT(PlayerDisconnect, p->player)
+		CALL_EVENT(PlayerDisconnect, p->player, p->reason)
 	}
 	case SERVER_EVENT_PLAYERSPAWN: {
 		OnPlayerSpawn_params* p = static_cast<OnPlayerSpawn_params*>(ctx);
