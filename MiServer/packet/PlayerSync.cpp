@@ -1,27 +1,32 @@
-#include "packet/PlayerSync.hpp"
-#include "packet/PositionSync.hpp"
-#include "player/PlayerTypes.hpp"
-#include "player/PlayerPool.hpp"
-#include "player/Player.hpp"
-#include "server/ServerInstance.hpp"
+#include <MiServer/packet/PlayerSync.hpp>
+#include <MiServer/packet/PositionSync.hpp>
+#include <MiServer/packet/PassengerSync.hpp>
+#include <MiServer/player/PlayerTypes.hpp>
+#include <MiServer/player/PlayerPool.hpp>
+#include <MiServer/player/Player.hpp>
+#include <MiServer/server/ServerInstance.hpp>
+#include <MiServer/server/Server.hpp>
 #include <MiRak/PacketEnumerations.h>
 #include <MiRak/BitStream.h>
 #include <iostream>
 
-void mimp::internal::packet::PlayerSync(Packet* p) {
-	RakServerInterface* pRakServer = mimp::internal::server::GetServerInstance()->getRakServer();
-	mimp::internal::player::PlayerPool* pPlayerPool = mimp::internal::server::GetServerInstance()->getPlayerPool();
+void mimp::internal::packet::PlayerSync(Packet *p)
+{
+	RakServerInterface *pRakServer = mimp::internal::server::GetServerInstance()->getRakServer();
+	mimp::internal::player::PlayerPool *pPlayerPool = mimp::internal::server::GetServerInstance()->getPlayerPool();
 
-	if (p->length < sizeof(BULLET_SYNC_DATA) + 1) {
+	if (p->length < sizeof(BULLET_SYNC_DATA) + 1)
+	{
 		return;
 	}
 
-	RakNet::BitStream bsPlayerSync((unsigned char*)p->data, p->length, false);
+	RakNet::BitStream bsPlayerSync((unsigned char *)p->data, p->length, false);
 	PLAYERID playerId = pRakServer->GetIndexFromPlayerID(p->playerId);
 
 	// clear last data
-	mimp::Player* pPlayer = pPlayerPool->Get(playerId);
-	if (pPlayer == nullptr) {
+	mimp::Player *pPlayer = pPlayerPool->Get(playerId);
+	if (pPlayer == nullptr)
+	{
 		// Invalid player, usually not connected.
 		return;
 	}
@@ -29,11 +34,12 @@ void mimp::internal::packet::PlayerSync(Packet* p) {
 
 	bsPlayerSync.IgnoreBits(8);
 	// This guy have bits enough?
-	if (bsPlayerSync.GetNumberOfUnreadBits() < sizeof(ONFOOT_SYNC_DATA) * 8) {
+	if (bsPlayerSync.GetNumberOfUnreadBits() < sizeof(ONFOOT_SYNC_DATA) * 8)
+	{
 		return;
 	}
 
-	bsPlayerSync.Read((PCHAR)pPlayer->m_OnFootSyncData, sizeof(ONFOOT_SYNC_DATA));
+	bsPlayerSync.Read((char *)pPlayer->m_OnFootSyncData, sizeof(ONFOOT_SYNC_DATA));
 
 	// BROADCAST DATA
 	RakNet::BitStream bsOnFootBC;
@@ -69,24 +75,28 @@ void mimp::internal::packet::PlayerSync(Packet* p) {
 	BYTE byteSyncHealthArmour = 0;
 	BYTE byteHealth = pPlayer->m_OnFootSyncData->byteHealth;
 	BYTE byteArmour = pPlayer->m_OnFootSyncData->byteArmour;
-	if (byteHealth > 0 && byteHealth < 100) {
+	if (byteHealth > 0 && byteHealth < 100)
+	{
 		byteSyncHealthArmour = ((BYTE)(byteHealth / 7)) << 4;
 	}
-	else if (byteHealth >= 100) {
+	else if (byteHealth >= 100)
+	{
 		byteSyncHealthArmour = 0xF << 4;
 	}
 
-	if (byteArmour > 0 && byteArmour < 100) {
+	if (byteArmour > 0 && byteArmour < 100)
+	{
 		byteSyncHealthArmour |= (BYTE)(byteArmour / 7);
 	}
-	else if (byteArmour >= 100) {
+	else if (byteArmour >= 100)
+	{
 		byteSyncHealthArmour |= 0xF;
 	}
 	bsOnFootBC.Write(byteSyncHealthArmour);
 	bsOnFootBC.Write(pPlayer->m_OnFootSyncData->byteCurrentWeapon);
 	bsOnFootBC.Write(pPlayer->m_OnFootSyncData->byteSpecialAction);
 	bsOnFootBC.WriteVector(pPlayer->m_OnFootSyncData->vecMoveSpeed[0],
-		pPlayer->m_OnFootSyncData->vecMoveSpeed[1], pPlayer->m_OnFootSyncData->vecMoveSpeed[2]);
+						   pPlayer->m_OnFootSyncData->vecMoveSpeed[1], pPlayer->m_OnFootSyncData->vecMoveSpeed[2]);
 
 	if (pPlayer->m_OnFootSyncData->wSurfInfo)
 	{

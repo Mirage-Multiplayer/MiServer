@@ -5,7 +5,7 @@ configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/MiServer/config.h"
 )
-set(MiServer_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include/MiServer)
+set(MiServer_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include/)
 set(MiServer_CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include_directories("${MiServer_INCLUDE_DIRS}" "${CMAKE_CURRENT_SOURCE_DIR}/lib/MiRak/include")

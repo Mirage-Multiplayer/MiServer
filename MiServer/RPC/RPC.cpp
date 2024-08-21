@@ -1,51 +1,57 @@
 #include <MiRak/BitStream.h>
 #include <MiRak/RakEncr.h>
 #include <string>
-#include "server/Server.hpp"
-#include "server/ServerInstance.hpp"
-#include "MiServer.hpp"
-#include "types.h"
-#include "RPC/RPCList.hpp"
-#include "RPC/RPC.hpp"
-#include "packet/SyncData.hpp"
-#include "player/defines.hpp"
-#include "player/PlayerTypes.hpp"
-#include "vehicle/Vehicle.hpp"
-#include "vehicle/VehiclePool.hpp"
-#include "vehicle/defines.hpp"
+#include <thread>
+#include <MiServer/server/Server.hpp>
+#include <MiServer/server/ServerInstance.hpp>
+#include <MiServer/MiServer.hpp>
+#include <MiServer/types.h>
+#include <MiServer/RPC/RPCList.hpp>
+#include <MiServer/RPC/RPC.hpp>
 
-namespace mimp {
-	namespace internal {
-		namespace RPC {
+#include <MiServer/packet/SyncData.hpp>
+#include <MiServer/packet/defines.hpp>
+#include <MiServer/player/PlayerTypes.hpp>
+#include <MiServer/player/defines.hpp>
+#include <MiServer/vehicle/Vehicle.hpp>
+#include <MiServer/vehicle/VehiclePool.hpp>
+#include <MiServer/vehicle/defines.hpp>
+
+namespace mimp
+{
+	namespace internal
+	{
+		namespace RPC
+		{
 			float m_fGravity = 0.008f;
 
 			int iLagCompensation = 1;
 
 			void InitGameForPlayer(PLAYERID playerID)
 			{
-				mimp::Server* svr = mimp::internal::server::GetServerInstance();
-				
+				mimp::Server *svr = mimp::internal::server::GetServerInstance();
+
 				// TODO: Modify server config
 				RakNet::BitStream bsInitGame;
 				bsInitGame.WriteCompressed((bool)1); // m_bZoneNames
 				bsInitGame.WriteCompressed((bool)1); // m_bUseCJWalk
 				bsInitGame.WriteCompressed((bool)1); // m_bAllowWeapons
 				bsInitGame.WriteCompressed((bool)0); // m_bLimitGlobalChatRadius
-				bsInitGame.Write((float)200.00f); // m_fGlobalChatRadius
+				bsInitGame.Write((float)200.00f);	 // m_fGlobalChatRadius
 				bsInitGame.WriteCompressed((bool)0); // bStuntBonus
-				bsInitGame.Write((float)70.0f); // m_fNameTagDrawDistance
+				bsInitGame.Write((float)70.0f);		 // m_fNameTagDrawDistance
 				bsInitGame.WriteCompressed((bool)0); // m_bDisableEnterExits
 				bsInitGame.WriteCompressed((bool)1); // m_bNameTagLOS
 				bsInitGame.WriteCompressed((bool)0); // m_bManualVehicleEngineAndLight
-				bsInitGame.Write((int)1); // m_iSpawnsAvailable
-				bsInitGame.Write(playerID); // MyPlayerID
+				bsInitGame.Write((int)1);			 // m_iSpawnsAvailable
+				bsInitGame.Write(playerID);			 // MyPlayerID
 				bsInitGame.WriteCompressed((bool)1); // m_bShowPlayerTags
-				bsInitGame.Write((int)1); // m_iShowPlayerMarkers
-				bsInitGame.Write((BYTE)12); // m_byteWorldTime
-				bsInitGame.Write((BYTE)10); // m_byteWeather
+				bsInitGame.Write((int)1);			 // m_iShowPlayerMarkers
+				bsInitGame.Write((BYTE)12);			 // m_byteWorldTime
+				bsInitGame.Write((BYTE)10);			 // m_byteWeather
 				bsInitGame.Write((float)m_fGravity); // m_fGravity
 				bsInitGame.WriteCompressed((bool)0); // bLanMode
-				bsInitGame.Write((int)0); // m_iDeathDropMoney
+				bsInitGame.Write((int)0);			 // m_iDeathDropMoney
 				bsInitGame.WriteCompressed((bool)0); // m_bInstagib
 
 				bsInitGame.Write((int)40); // iNetModeNormalOnfootSendRate
@@ -65,17 +71,17 @@ namespace mimp {
 
 				BYTE vehModels[212];
 				memset(vehModels, 1, 212);
-				bsInitGame.Write((char*)&vehModels, 212);
+				bsInitGame.Write((char *)&vehModels, 212);
 
 				svr->getRakServer()->RPC(&outgoing::RPC_InitGame, &bsInitGame, HIGH_PRIORITY, RELIABLE,
-					0, svr->getRakServer()->GetPlayerIDFromIndex(playerID), FALSE, FALSE, UNASSIGNED_NETWORK_ID, NULL);
+										 0, svr->getRakServer()->GetPlayerIDFromIndex(playerID), FALSE, FALSE, UNASSIGNED_NETWORK_ID, NULL);
 			}
 
 			void SendPlayerPoolToPlayer(PLAYERID playerID)
 			{
-				mimp::Server* svr = mimp::internal::server::GetServerInstance();
-				mimp::internal::player::PlayerPool* pPlayerPool = svr->getPlayerPool();
-				RakServerInterface* pRakServer = svr->getRakServer();
+				mimp::Server *svr = mimp::internal::server::GetServerInstance();
+				mimp::internal::player::PlayerPool *pPlayerPool = svr->getPlayerPool();
+				RakServerInterface *pRakServer = svr->getRakServer();
 				// let the player know about all the players in the server
 				for (PLAYERID p = 0; p < MAX_PLAYERS; p++)
 				{
@@ -94,113 +100,100 @@ namespace mimp {
 					bs.Write(byteNameLen);
 					bs.Write(pPlayerPool->Get(p)->getNickName().c_str(), byteNameLen);
 					pRakServer->RPC(&outgoing::RPC_ServerJoin, &bs, HIGH_PRIORITY, RELIABLE,
-						0, pRakServer->GetPlayerIDFromIndex(playerID), FALSE, FALSE, UNASSIGNED_NETWORK_ID, NULL);
+									0, pRakServer->GetPlayerIDFromIndex(playerID), FALSE, FALSE, UNASSIGNED_NETWORK_ID, NULL);
 
-					Sleep(5); // well, shit.
+					std::this_thread::sleep_for(std::chrono::milliseconds(5));
 				}
 			}
 
 			void SpawnAllVehiclesForPlayer(PLAYERID playerID)
 			{
-				RakServerInterface* pRakServer = internal::server::GetServerInstance()->getRakServer();
-				internal::vehicle::VehiclePool* pVehiclePool = internal::server::GetServerInstance()->getVehiclePool();
+				RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
+				internal::vehicle::VehiclePool *pVehiclePool = internal::server::GetServerInstance()->getVehiclePool();
 				// spawn all vehicles for this player
 				for (VEHICLEID v = 0; v < MAX_VEHICLES; v++)
 				{
-					if (!pVehiclePool->IsValidVehicle(v)) {
+					if (!pVehiclePool->IsValidVehicle(v))
+					{
 						continue;
 					}
-					
-					mimp::Vehicle veh = *pVehiclePool->Get(v);
+					std::cout << "Sending vehicle ID: " << v << "\n";
+					mimp::Vehicle *veh = pVehiclePool->Get(v);
+					float x, y, z;
+					veh->getPosition(x, y, z);
+					std::cout << "create Pos SEND: " << x << ", " << y << ", " << z << "\n";
 
-					internal::packet::NEW_VEHICLE newVeh;
-					memset(&newVeh, 0, sizeof(internal::packet::NEW_VEHICLE));
-					newVeh.VehicleId = v;
-					newVeh.iVehicleType = veh.m_modelId;
-					newVeh.vecPos[0] = veh.m_pos[0];
-					newVeh.vecPos[1] = veh.m_pos[1];
-					newVeh.vecPos[2] = veh.m_pos[2];
-					newVeh.fRotation = veh.m_rotation;
-					newVeh.fHealth = 1000.00f;
-					newVeh.byteInterior = 0;
-					newVeh.dwDoorDamageStatus = 0;
-					newVeh.dwPanelDamageStatus = 0;
-					newVeh.byteLightDamageStatus = 0;
+					internal::RPC::outgoing::Handler::WorldVehicleAdd(veh, playerID);
 
-					RakNet::BitStream bs;
-					bs.Write((const char*)&newVeh, sizeof(internal::packet::NEW_VEHICLE));
-					pRakServer->RPC(&outgoing::RPC_WorldVehicleAdd, &bs, HIGH_PRIORITY, RELIABLE,
-						0, pRakServer->GetPlayerIDFromIndex(playerID), FALSE, FALSE, UNASSIGNED_NETWORK_ID, NULL);
-
-					Sleep(5); // well, shit.
+					std::this_thread::sleep_for(std::chrono::milliseconds(5));
 				}
 			}
 
-			void RegisterServerRPCs(RakServerInterface* pRakServer)
+			void RegisterServerRPCs(RakServerInterface *pRakServer)
 			{
 				// Core RPCs
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_ClientJoin, incomming::Handler::ClientJoin);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_RequestClass, incomming::Handler::RequestClass);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_RequestSpawn, incomming::Handler::RequestSpawn);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_SendSpawn, incomming::Handler::SendSpawn);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_ChatMessage, incomming::Handler::ChatMessage);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_UpdateScoresAndPings, incomming::Handler::UpdateScoresAndPings);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_VehicleDamaged, incomming::Handler::VehicleDamaged);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_EnterVehicle, incomming::Handler::EnterVehicle);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_ExitVehicle, incomming::Handler::ExitVehicle);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_SendCommand, incomming::Handler::SendCommand);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_DeathNotification, incomming::Handler::DeathNotification);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_MapMarker, incomming::Handler::MapMarker);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_DialogResponse, incomming::Handler::DialogResponse);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_InteriorChangeNotification, incomming::Handler::InteriorChangeNotification);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_ScmEvent, incomming::Handler::ScmEvent);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_CameraTarget, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_ClickPlayer, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_ClientCheckResponse, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_VehicleDestroyed, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_EditAttachedObject, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_EditObject, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_GiveActorDamage, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_GiveTakeDamage, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_MapMarker, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_MenuQuit, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_NPCJoin, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_PickedUpPickup, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_SelectObject, incomming::Handler::HandleUnsupported);
-				pRakServer->RegisterAsRemoteProcedureCall(&incomming::RPC_SelectTextDraw, incomming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ClientJoin, incoming::Handler::ClientJoin);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_RequestClass, incoming::Handler::RequestClass);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_RequestSpawn, incoming::Handler::RequestSpawn);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_SendSpawn, incoming::Handler::SendSpawn);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ChatMessage, incoming::Handler::ChatMessage);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_UpdateScoresAndPings, incoming::Handler::UpdateScoresAndPings);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_VehicleDamaged, incoming::Handler::VehicleDamaged);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_EnterVehicle, incoming::Handler::EnterVehicle);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ExitVehicle, incoming::Handler::ExitVehicle);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_SendCommand, incoming::Handler::SendCommand);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_DeathNotification, incoming::Handler::DeathNotification);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_MapMarker, incoming::Handler::MapMarker);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_DialogResponse, incoming::Handler::DialogResponse);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_InteriorChangeNotification, incoming::Handler::InteriorChangeNotification);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ScmEvent, incoming::Handler::ScmEvent);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_CameraTarget, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ClickPlayer, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ClientCheckResponse, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_VehicleDestroyed, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_EditAttachedObject, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_EditObject, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_GiveActorDamage, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_GiveTakeDamage, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_MapMarker, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_MenuQuit, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_NPCJoin, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_PickedUpPickup, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_SelectObject, incoming::Handler::HandleUnsupported);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_SelectTextDraw, incoming::Handler::HandleUnsupported);
 			}
-			void UnRegisterServerRPCs(RakServerInterface* pRakServer)
+			void UnRegisterServerRPCs(RakServerInterface *pRakServer)
 			{
 
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_ClientJoin);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_RequestClass);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_RequestSpawn);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_SendSpawn);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_ChatMessage);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_UpdateScoresAndPings);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_VehicleDamaged);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_EnterVehicle);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_ExitVehicle);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_SendCommand);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_DeathNotification);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_MapMarker);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_DialogResponse);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_InteriorChangeNotification);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_ScmEvent);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_CameraTarget);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_ClickPlayer);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_ClientCheckResponse);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_VehicleDestroyed);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_EditAttachedObject);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_EditObject);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_GiveActorDamage);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_GiveTakeDamage);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_MapMarker);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_MenuQuit);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_NPCJoin);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_PickedUpPickup);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_SelectObject);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incomming::RPC_SelectTextDraw);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_ClientJoin);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_RequestClass);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_RequestSpawn);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_SendSpawn);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_ChatMessage);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_UpdateScoresAndPings);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_VehicleDamaged);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_EnterVehicle);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_ExitVehicle);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_SendCommand);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_DeathNotification);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_MapMarker);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_DialogResponse);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_InteriorChangeNotification);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_ScmEvent);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_CameraTarget);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_ClickPlayer);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_ClientCheckResponse);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_VehicleDestroyed);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_EditAttachedObject);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_EditObject);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_GiveActorDamage);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_GiveTakeDamage);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_MapMarker);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_MenuQuit);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_NPCJoin);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_PickedUpPickup);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_SelectObject);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_SelectTextDraw);
 			}
 		}
 	}

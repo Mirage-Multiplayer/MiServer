@@ -1,9 +1,12 @@
-#include "RPC/RPCList.hpp"
-
-namespace mimp {
-	namespace internal {
-		namespace RPC {
-            namespace incomming {
+#include <MiServer/RPC/RPCList.hpp>
+namespace mimp
+{
+    namespace internal
+    {
+        namespace RPC
+        {
+            namespace incoming
+            {
                 int RPC_EnterVehicle = 26;
                 int RPC_ExitVehicle = 154;
                 int RPC_VehicleDamaged = 106;
@@ -35,7 +38,8 @@ namespace mimp {
                 int RPC_CameraTarget = 168;
             }
 
-            namespace outgoing {
+            namespace outgoing
+            {
                 int RPC_ConnectionRejected = 130;
                 int RPC_ShowActor = 171;
                 int RPC_HideActor = 172;
@@ -164,6 +168,6 @@ namespace mimp {
                 int RPC_WorldVehicleAdd = 164;
             }
 
-		}
-	}
+        }
+    }
 }

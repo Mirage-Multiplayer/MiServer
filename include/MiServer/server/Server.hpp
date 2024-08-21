@@ -3,17 +3,19 @@
 #include <MiRak/RakServer.h>
 #include <MiRak/RakQuery.h>
 #include <string>
-#include "../event/EventPool.hpp"
-#include "../vehicle/VehiclePool.hpp"
-#include "../player/PlayerPool.hpp"
+#include <MiServer/event/EventPool.hpp>
+#include <MiServer/vehicle/VehiclePool.hpp>
+#include <MiServer/player/PlayerPool.hpp>
 
-namespace mimp {
+namespace mimp
+{
 	/** Struct that holds the server information
-	 * 
+	 *
 	 */
-	struct ServerInfo {
+	struct ServerInfo
+	{
 	public:
-		ServerInfo(const char* hostname, const char* gamemode, const char* lang, const unsigned int max_players);
+		ServerInfo(const char *hostname, const char *gamemode, const char *lang, const unsigned int max_players);
 		/**
 		 * hostname
 		 */
@@ -35,9 +37,10 @@ namespace mimp {
 	/**
 	 * Server class
 	 */
-	class Server {
+	class Server
+	{
 	public:
-		Server(const ServerInfo& info);
+		Server(const ServerInfo &info);
 		~Server();
 
 		/**
@@ -58,50 +61,54 @@ namespace mimp {
 		/**
 		 * Get server info.
 		 */
-		inline const ServerInfo getInfo(void) const {
+		inline const ServerInfo getInfo(void) const
+		{
 			return this->m_info;
 		}
 
 		/**
 		 * Get server EventPool instance.
 		 */
-		inline internal::event::EventPool* getEventPool(void) const {
+		inline internal::event::EventPool *getEventPool(void) const
+		{
 			return this->m_eventPool;
 		}
 
 		/**
 		 * Get server PlayerPool instance.
 		 */
-		inline internal::player::PlayerPool* getPlayerPool(void) const {
+		inline internal::player::PlayerPool *getPlayerPool(void) const
+		{
 			return this->m_playerPool;
 		}
 
 		/**
 		 * Get server RakServerInterface instance.
 		 */
-		inline RakServerInterface* getRakServer(void) const {
+		inline RakServerInterface *getRakServer(void) const
+		{
 			return this->m_RakServer;
 		}
 
 		/**
 		 * Get server VehiclePool instance.
 		 */
-		inline internal::vehicle::VehiclePool* getVehiclePool(void) const {
+		inline internal::vehicle::VehiclePool *getVehiclePool(void) const
+		{
 			return this->m_vehiclePool;
 		}
 
 	private:
 		ServerInfo m_info;
 
-		internal::event::EventPool* m_eventPool;
-		internal::player::PlayerPool* m_playerPool;
-		internal::vehicle::VehiclePool* m_vehiclePool;
+		internal::event::EventPool *m_eventPool;
+		internal::player::PlayerPool *m_playerPool;
+		internal::vehicle::VehiclePool *m_vehiclePool;
 
-		RakServerInterface* m_RakServer;
+		RakServerInterface *m_RakServer;
 
 		bool m_initialized;
 		uint16_t m_port;
-
 	};
 }
 

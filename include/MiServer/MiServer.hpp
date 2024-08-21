@@ -3,9 +3,19 @@
 #include <MiRak/RakServer.h>
 #include <MiRak/RakQuery.h>
 
+#include <MiServer/player/PlayerTypes.hpp>
+#include <MiServer/vehicle/VehicleTypes.hpp>
+
 #define MISERVER_VERSION "0.0.1"
 
 #define NETCODE_CONNCOOKIELULZ 0x6969
 #define NETGAME_VERSION 4057
+
+namespace mimp
+{
+    class Server;
+    class Player;
+    class Vehicle;
+}
 
 #endif

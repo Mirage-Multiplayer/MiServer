@@ -63,8 +63,8 @@
       "name": "linux-base",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "gcc",
-        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
         "MiServer_PLATFORM_WIN32": "OFF",
         "MiServer_PLATFORM_UNIX": "ON",
         "MiRak_PLATFORM_WIN32": "OFF",

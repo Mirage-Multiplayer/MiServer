@@ -1,12 +1,15 @@
 #ifndef __MISERVER_SYNCDATA_HPP
 #define __MISERVER_SYNCDATA_HPP
-#include "../types.h"
-#include "../vehicle/VehicleTypes.hpp"
+#include <MiServer/types.h>
+#include <MiServer/vehicle/VehicleTypes.hpp>
 #define WINDOWS_IGNORE_PACKING_MISMATCH
 
-namespace mimp {
-	namespace internal {
-		namespace packet {
+namespace mimp
+{
+	namespace internal
+	{
+		namespace packet
+		{
 #pragma pack(push, 1)
 			typedef struct _ONFOOT_SYNC_DATA
 			{
@@ -22,7 +25,7 @@ namespace mimp {
 				float vecMoveSpeed[3];
 				float vecSurfOffsets[3];
 				WORD wSurfInfo;
-				int	iCurrentAnimationID;
+				int iCurrentAnimationID;
 			} ONFOOT_SYNC_DATA;
 			typedef struct _INCAR_SYNC_DATA
 			{
@@ -69,8 +72,8 @@ namespace mimp {
 				float vecAimf1[3];
 				float vecAimPos[3];
 				float fAimZ;
-				BYTE byteCamExtZoom : 6;	// 0-63 normalized
-				BYTE byteWeaponState : 2;	// see eWeaponState
+				BYTE byteCamExtZoom : 6;  // 0-63 normalized
+				BYTE byteWeaponState : 2; // see eWeaponState
 				BYTE bUnk;
 			} AIM_SYNC_DATA;
 			typedef struct _UNOCCUPIED_SYNC_DATA // 67
@@ -91,7 +94,8 @@ namespace mimp {
 				WORD wKeys;
 				float vecPos[3];
 			} SPECTATOR_SYNC_DATA;
-			typedef struct _BULLET_SYNC_DATA {
+			typedef struct _BULLET_SYNC_DATA
+			{
 				BYTE bHitType;
 				unsigned short iHitID;
 				float fHitOrigin[3];
@@ -154,25 +158,25 @@ namespace mimp {
 				WORD wColor2;
 			} TEXT_DRAW_TRANSMIT;
 
-			typedef struct _NEW_VEHICLE {
+			typedef struct _NEW_VEHICLE
+			{
 				VEHICLEID VehicleId;
-				int		  iVehicleType;
-				float	  vecPos[3];
-				float	  fRotation;
-				BYTE	  aColor1;
-				BYTE	  aColor2;
-				float	  fHealth;
-				BYTE	  byteInterior;
-				DWORD	  dwDoorDamageStatus;
-				DWORD	  dwPanelDamageStatus;
-				BYTE	  byteLightDamageStatus;
-				BYTE	  byteTireDamageStatus;
-				BYTE	  byteAddSiren;
-				BYTE      byteModSlots[14];
-				BYTE	  bytePaintjob;
-				DWORD	  cColor1;
-				DWORD	  cColor2;
-				BYTE	  byteUnk;
+				int iVehicleType;
+				float vecPos[3];
+				float fRotation;
+				BYTE aColor1;
+				BYTE aColor2;
+				float fHealth;
+				BYTE byteInterior;
+				DWORD dwDoorDamageStatus;
+				DWORD dwPanelDamageStatus;
+				BYTE byteLightDamageStatus;
+				BYTE byteTireDamageStatus;
+				BYTE byteAddSiren;
+				BYTE byteModSlots[14];
+				BYTE bytePaintjob;
+				DWORD cColor1;
+				DWORD cColor2;
 			} NEW_VEHICLE;
 
 			struct stPlayerInfo
