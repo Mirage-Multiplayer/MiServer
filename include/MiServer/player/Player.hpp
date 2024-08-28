@@ -119,6 +119,13 @@ namespace mimp
 			z = this->m_spawn[2];
 		}
 
+		inline void getPos(float &x, float &y, float &z) const
+		{
+			x = this->m_OnFootSyncData->vecPos[0];
+			y = this->m_OnFootSyncData->vecPos[1];
+			z = this->m_OnFootSyncData->vecPos[2];
+		}
+
 		/**
 		 * Get the player's rotation.
 		 * @return The player's rotation in degrees.
@@ -193,12 +200,13 @@ namespace mimp
 		void setPos(const float x, const float y, const float z);
 		void setRotation(const float r);
 		void setColor(const int color);
+		void clientMessage(const int color, const char *message);
 
 		/**
 		 * Get the player's on-foot synchronization data.
 		 * @return A pointer to the player's ONFOOT_SYNC_DATA structure.
 		 */
-		inline internal::packet::ONFOOT_SYNC_DATA *getOnFootSyncData() const
+		inline internal::packet::ONFOOT_SYNC_DATA *getOnFootSyncData()
 		{
 			return this->m_OnFootSyncData;
 		}
@@ -207,7 +215,7 @@ namespace mimp
 		 * Get the player's in-car synchronization data.
 		 * @return A pointer to the player's INCAR_SYNC_DATA structure.
 		 */
-		inline internal::packet::INCAR_SYNC_DATA *getInCarSyncData() const
+		inline internal::packet::INCAR_SYNC_DATA *getInCarSyncData()
 		{
 			return this->m_InCarSyncData;
 		}

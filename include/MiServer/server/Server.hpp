@@ -6,6 +6,7 @@
 #include <MiServer/event/EventPool.hpp>
 #include <MiServer/vehicle/VehiclePool.hpp>
 #include <MiServer/player/PlayerPool.hpp>
+#include <MiServer/server/ServerConfig.hpp>
 
 namespace mimp
 {
@@ -41,6 +42,7 @@ namespace mimp
 	{
 	public:
 		Server(const ServerInfo &info);
+		Server(const ServerInfo &info, const ServerConfig &config);
 		~Server();
 
 		/**
@@ -64,6 +66,11 @@ namespace mimp
 		inline const ServerInfo getInfo(void) const
 		{
 			return this->m_info;
+		}
+
+		inline const ServerConfig getConfig(void) const
+		{
+			return this->m_cfg;
 		}
 
 		/**
@@ -100,7 +107,7 @@ namespace mimp
 
 	private:
 		ServerInfo m_info;
-
+		ServerConfig m_cfg;
 		internal::event::EventPool *m_eventPool;
 		internal::player::PlayerPool *m_playerPool;
 		internal::vehicle::VehiclePool *m_vehiclePool;

@@ -117,11 +117,9 @@ namespace mimp
 					{
 						continue;
 					}
-					std::cout << "Sending vehicle ID: " << v << "\n";
 					mimp::Vehicle *veh = pVehiclePool->Get(v);
 					float x, y, z;
 					veh->getPosition(x, y, z);
-					std::cout << "create Pos SEND: " << x << ", " << y << ", " << z << "\n";
 
 					internal::RPC::outgoing::Handler::WorldVehicleAdd(veh, playerID);
 

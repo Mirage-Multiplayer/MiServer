@@ -24,31 +24,31 @@ namespace mimp
 
                     // TODO: Modify server config
                     RakNet::BitStream bsInitGame;
-                    bsInitGame.WriteCompressed(zoneNames);                   // m_bZoneNames
-                    bsInitGame.WriteCompressed(useCJWalk);                   // m_bUseCJWalk
-                    bsInitGame.WriteCompressed(allowedWeapons);              // m_bAllowWeapons
-                    bsInitGame.WriteCompressed(limitGlobalChatRadius);       // m_bLimitGlobalChatRadius
-                    bsInitGame.Write(globalChatRadius);                      // m_fGlobalChatRadius
-                    bsInitGame.WriteCompressed(stuntBonus);                  // bStuntBonus
-                    bsInitGame.Write(nameTagDrawDistance);                   // m_fNameTagDrawDistance
-                    bsInitGame.WriteCompressed(disableEnterExits);           // m_bDisableEnterExits
-                    bsInitGame.WriteCompressed(nameTagLOS);                  // m_bNameTagLOS
-                    bsInitGame.WriteCompressed(manualVehicleEngineAndLight); // m_bManualVehicleEngineAndLight
-                    bsInitGame.Write(spawnsAvailable);                       // m_iSpawnsAvailable
-                    bsInitGame.Write(playerID);                              // MyPlayerID
-                    bsInitGame.WriteCompressed(showPlayerTags);              // m_bShowPlayerTags
-                    bsInitGame.Write(showPlayerMarkers);                     // m_iShowPlayerMarkers
-                    bsInitGame.Write(worldTime);                             // m_byteWorldTime
-                    bsInitGame.Write(weather);                               // m_byteWeather
-                    bsInitGame.Write(gravity);                               // m_fGravity
-                    bsInitGame.WriteCompressed(lanMode);                     // bLanMode
-                    bsInitGame.Write(deathDropMoney);                        // m_iDeathDropMoney
-                    bsInitGame.WriteCompressed(instagib);                    // m_bInstagib
+                    bsInitGame.WriteCompressed(zoneNames);                      // m_bZoneNames
+                    bsInitGame.WriteCompressed(useCJWalk);                      // m_bUseCJWalk
+                    bsInitGame.WriteCompressed(allowedWeapons);                 // m_bAllowWeapons
+                    bsInitGame.WriteCompressed(limitGlobalChatRadius);          // m_bLimitGlobalChatRadius
+                    bsInitGame.Write(globalChatRadius);                         // m_fGlobalChatRadius
+                    bsInitGame.WriteCompressed(stuntBonus);                     // bStuntBonus
+                    bsInitGame.Write(nameTagDrawDistance);                      // m_fNameTagDrawDistance
+                    bsInitGame.WriteCompressed(disableEnterExits);              // m_bDisableEnterExits
+                    bsInitGame.WriteCompressed(nameTagLOS);                     // m_bNameTagLOS
+                    bsInitGame.WriteCompressed(manualVehicleEngineAndLight);    // m_bManualVehicleEngineAndLight
+                    bsInitGame.Write(static_cast<uint32_t>(spawnsAvailable));   // m_iSpawnsAvailable
+                    bsInitGame.Write(static_cast<PLAYERID>(playerID));          // MyPlayerID
+                    bsInitGame.WriteCompressed(showPlayerTags);                 // m_bShowPlayerTags
+                    bsInitGame.Write(static_cast<uint32_t>(showPlayerMarkers)); // m_iShowPlayerMarkers
+                    bsInitGame.Write(worldTime);                                // m_byteWorldTime
+                    bsInitGame.Write(weather);                                  // m_byteWeather
+                    bsInitGame.Write(gravity);                                  // m_fGravity
+                    bsInitGame.WriteCompressed(lanMode);                        // bLanMode
+                    bsInitGame.Write(static_cast<uint32_t>(deathDropMoney));    // m_iDeathDropMoney
+                    bsInitGame.WriteCompressed(instagib);                       // m_bInstagib
 
-                    bsInitGame.Write(netModeNormalOnfootSendRate); // iNetModeNormalOnfootSendRate
-                    bsInitGame.Write(netModeNormalIncarSendRate);  // iNetModeNormalIncarSendRate
-                    bsInitGame.Write(netModeFiringSendRate);       // iNetModeFiringSendRate
-                    bsInitGame.Write(netModeSendMultiplier);       // iNetModeSendMultiplier
+                    bsInitGame.Write(static_cast<uint32_t>(netModeNormalOnfootSendRate)); // iNetModeNormalOnfootSendRate
+                    bsInitGame.Write(static_cast<uint32_t>(netModeNormalIncarSendRate));  // iNetModeNormalIncarSendRate
+                    bsInitGame.Write(static_cast<uint32_t>(netModeFiringSendRate));       // iNetModeFiringSendRate
+                    bsInitGame.Write(static_cast<uint32_t>(netModeSendMultiplier));       // iNetModeSendMultiplier
 
                     bsInitGame.Write(lagCompensation); // m_bLagCompensation
 

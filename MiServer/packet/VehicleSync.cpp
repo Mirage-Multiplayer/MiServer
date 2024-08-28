@@ -36,6 +36,8 @@ void mimp::internal::packet::VehicleSync(Packet *p)
 	// This guy have bits enough?
 	if (bsVehicleSync.GetNumberOfUnreadBits() < sizeof(PASSENGER_SYNC_DATA) * 8)
 	{
+		// REMOVE HERE
+		std::cout << "Invalid vehicle packet.\n";
 		return;
 	}
 	bsVehicleSync.Read((char *)pPlayer->m_InCarSyncData, sizeof(INCAR_SYNC_DATA));

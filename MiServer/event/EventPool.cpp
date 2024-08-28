@@ -45,6 +45,11 @@ void mimp::internal::event::EventPool::OnPlayerSpawn(OnPlayerSpawn_t cb)
 	ADD_EVENT(PlayerSpawn)
 }
 
+void mimp::internal::event::EventPool::OnPlayerText(OnPlayerText_t cb)
+{
+	ADD_EVENT(PlayerText)
+}
+
 int mimp::internal::event::EventPool::Emit(uint16_t id, void *ctx)
 {
 	switch (id)
@@ -71,6 +76,11 @@ int mimp::internal::event::EventPool::Emit(uint16_t id, void *ctx)
 	{
 		OnPlayerSpawn_params *p = static_cast<OnPlayerSpawn_params *>(ctx);
 		CALL_EVENT(PlayerSpawn, p->player)
+	}
+	case SERVER_EVENT_PLAYERTEXT:
+	{
+		OnPlayerText_params *p = static_cast<OnPlayerText_params *>(ctx);
+		CALL_EVENT(PlayerText, p->player, p->text);
 	}
 	default:
 	{

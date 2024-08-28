@@ -21,6 +21,8 @@ namespace mimp
 				SERVER_EVENT_PLAYERDISCONNECT,
 				SERVER_EVENT_PLAYERSPAWN,
 				SERVER_EVENT_PLAYERDEATH,
+				SERVER_EVENT_PLAYERTEXT,
+				SERVER_EVENT_COMMANDTEXT
 			};
 
 			// Disclaimer: I wanted to make this as dynamic as possible, and this was the way I found

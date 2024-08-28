@@ -31,6 +31,17 @@ mimp::Server::Server(const ServerInfo &info) : m_info(info),
 	this->m_RakServer = RakNetworkFactory::GetRakServerInterface();
 }
 
+mimp::Server::Server(const ServerInfo &info, const ServerConfig &config) : m_info(info),
+																		   m_port(0),
+																		   m_initialized(false),
+																		   m_cfg(config)
+{
+	this->m_playerPool = new internal::player::PlayerPool(this->m_info.max_players);
+	this->m_vehiclePool = new internal::vehicle::VehiclePool(MAX_VEHICLES);
+	this->m_eventPool = new internal::event::EventPool();
+	this->m_RakServer = RakNetworkFactory::GetRakServerInterface();
+}
+
 mimp::Server::~Server()
 {
 	delete this->m_RakServer;
@@ -144,6 +155,7 @@ int mimp::Server::ServerTick(void)
 		}
 		case ID_VEHICLE_SYNC:
 		{
+			std::cout << "Vehicle Sync\n";
 			mimp::internal::packet::VehicleSync(pkt);
 			break;
 		}

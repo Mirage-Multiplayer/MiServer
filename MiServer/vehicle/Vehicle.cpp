@@ -34,14 +34,14 @@ void mimp::Vehicle::respawn(void)
 }
 
 int mimp::Vehicle::Create(const uint16_t model, const float x, const float y, const float z, const float rotation,
-						  const int color1, const int color2, const int respawndelay, const bool respawn, const bool siren, const bool isStatic, const int interior)
+						  const int color1, const int color2, const int respawndelay, const bool respawn, const bool siren, const int interior)
 {
 	Vehicle *veh = new Vehicle();
+	veh->m_health = 1000.0f;
 	veh->m_modelId = model;
 	veh->m_pos[0] = x;
 	veh->m_pos[1] = y;
 	veh->m_pos[2] = z;
-	std::cout << "create Pos: " << veh->m_pos[0] << ", " << veh->m_pos[1] << ", " << veh->m_pos[2] << "\n";
 
 	veh->m_rotation = rotation;
 
@@ -51,7 +51,7 @@ int mimp::Vehicle::Create(const uint16_t model, const float x, const float y, co
 	veh->m_timeUntilRespawn = respawndelay;
 	veh->m_respawn = respawn;
 
-	veh->m_static = isStatic;
+	veh->m_static = false;
 
 	veh->m_interiorId = interior;
 

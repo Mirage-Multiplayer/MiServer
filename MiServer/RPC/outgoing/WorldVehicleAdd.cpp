@@ -20,9 +20,10 @@ namespace mimp
                 void Handler::WorldVehicleAdd(Vehicle *veh, const int playerid)
                 {
                     RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
+
                     internal::packet::NEW_VEHICLE newVeh;
                     memset(&newVeh, 0, sizeof(internal::packet::NEW_VEHICLE));
-                    newVeh.VehicleId = veh->getId();
+                    newVeh.VehicleId = static_cast<VEHICLEID>(veh->getId());
                     newVeh.iVehicleType = veh->getModelId();
                     float x, y, z;
                     veh->getPosition(x, y, z);

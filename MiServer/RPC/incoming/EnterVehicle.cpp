@@ -35,16 +35,12 @@ namespace mimp
 
 					VEHICLEID VehicleID = 0;
 					bsData.Read(VehicleID);
-
 					BYTE bytePassenger = 0;
-					bsData.Read(bytePassenger);
-
-					bsData.Read(VehicleID);
 					bsData.Read(bytePassenger);
 
 					if (VehicleID == (VEHICLEID)-1)
 					{
-						// SendClientMessage(playerID, -1, "You are sending an invalid vehicle ID. Unlike kye, we wont kick you :)");
+						std::cout << "Fodase debug monstro\n";
 						return;
 					}
 

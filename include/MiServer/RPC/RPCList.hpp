@@ -180,7 +180,7 @@ namespace mimp
 					// static void CreateExplosion(void);
 					// static void SendDeathMessage(void);
 					// static void SendGameTimeUpdate(void);
-					// static void SendClientMessage(void);
+					static void SendClientMessage(const int playerid, const int color, const int messageLength, const char *message);
 					// static void SetShopName(void);
 					// static void SetPlayerDrunkLevel(void);
 					// static void SetPlayerFightingStyle(const int playerid, const int style);

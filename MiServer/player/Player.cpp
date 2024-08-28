@@ -61,3 +61,8 @@ void mimp::Player::setColor(const int color)
 {
     mimp::internal::RPC::outgoing::Handler::SetPlayerColor(this->m_playerId, color);
 }
+
+void mimp::Player::clientMessage(const int color, const char *message)
+{
+    mimp::internal::RPC::outgoing::Handler::SendClientMessage(this->m_playerId, color, strlen(message), message);
+}

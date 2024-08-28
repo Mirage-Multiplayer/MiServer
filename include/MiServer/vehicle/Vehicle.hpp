@@ -51,7 +51,7 @@ namespace mimp
 		void respawn(void);
 
 		static int Create(const uint16_t model, const float x, const float y, const float z, const float rotation,
-						  const int color1, const int color2, const int respawndelay, const bool respawn, const bool siren, const bool isStatic, const int interior);
+						  const int color1, const int color2, const int respawndelay, const bool respawn, const bool siren, const int interior);
 
 		static int Destroy(const Vehicle &vehicle);
 

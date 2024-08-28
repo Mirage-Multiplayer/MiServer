@@ -27,15 +27,27 @@ int main(void)
 
 	server.getEventPool()->OnServerInit([](void) -> int
 										{								
-		const int idx = mimp::Vehicle::Create(411, 368.3278f,2538.5803f,16.6275f,20.5909f, -1, -1, 10000, true, false, false, 0);
+		const int idx = mimp::Vehicle::Create(411, 368.3278f,2538.5803f,16.6275f,20.5909f, -1, -1, 10000, true, false, 0);
 		std::cout << "Vehicle id: " << idx << " created.\n";
 		std::cout << "ServerInit\n";
 		return 1; });
-
 	server.getEventPool()->OnPlayerSpawn([](mimp::Player *p) -> int
 										 {
 		std::cout << "Player ID " << p->getPlayerId() << " Spawned\n";
+		p->clientMessage(0xCD5C5CFF, "Welcome");
 		return 1; });
+
+	server.getEventPool()->OnPlayerText([](mimp::Player *p, const char *text) -> int
+										{
+		p->clientMessage(0xCD5C5CFF, text);
+		if (std::string(text).find("infernus") != -1)
+		{
+			float x, y, z;
+			p->getPos(x, y, z);
+			float r = p->getRotation();
+			mimp::Vehicle::Create(411, x,y,z,20.5909f, -1, -1, 10000, true, false, 0);
+
+		}; return 1; });
 
 	// Initialize server
 	server.Init(7777);

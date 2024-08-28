@@ -27,6 +27,8 @@ namespace mimp
 
 				void OnPlayerSpawn(OnPlayerSpawn_t cb);
 
+				void OnPlayerText(OnPlayerText_t cb);
+
 				/*
 				 * Receives a event ID and the context, e.g, a fucking struct with arguments.
 				 */
@@ -38,6 +40,7 @@ namespace mimp
 				EventQueue<OnPlayerConnect_t> *m_PlayerConnect;
 				EventQueue<OnPlayerDisconnect_t> *m_PlayerDisconnect;
 				EventQueue<OnPlayerSpawn_t> *m_PlayerSpawn;
+				EventQueue<OnPlayerText_t> *m_PlayerText;
 			};
 		}
 

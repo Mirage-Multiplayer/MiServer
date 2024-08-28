@@ -17,6 +17,7 @@ namespace mimp
 			{
 				void Handler::ClientJoin(RPCParameters *rpcParams)
 				{
+					mimp::ServerConfig cfg = internal::server::GetServerInstance()->getConfig();
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
 					internal::player::PlayerPool *pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();
 
@@ -76,14 +77,42 @@ namespace mimp
 
 					pPlayerPool->Add(new mimp::Player(rpcParams->sender, playerID, szNickName));
 
-					outgoing::Handler::InitGame(playerID, 1, 1, 1, 0, 200.00f, 0, 70.0f, 0, 1, 0, 1, 1, 1, 12, 10, 0.008f, 0, 0, 0, 40, 40, 40, 10, 1);
+					outgoing::Handler::InitGame(playerID,
+												cfg.zoneNames,
+												cfg.useCJWalk,
+												cfg.allowedWeapons,
+												cfg.limitGlobalChatRadius,
+												cfg.globalChatRadius,
+												cfg.stuntBonus,
+												cfg.nameTagDrawDistance,
+												cfg.disableEnterExits,
+												cfg.nameTagLOS,
+												cfg.manualVehicleEngineAndLight,
+												cfg.spawnsAvailable,
+												cfg.showPlayerTags,
+												cfg.showPlayerMarkers,
+												cfg.worldTime,
+												cfg.weather,
+												cfg.gravity,
+												cfg.lanMode,
+												cfg.deathDropMoney,
+												cfg.instagib,
+												cfg.netModeNormalOnfootSendRate,
+												cfg.netModeNormalIncarSendRate,
+												cfg.netModeFiringSendRate,
+												cfg.netModeSendMultiplier,
+												cfg.lagCompensation);
+
+					// InitGameForPlayer(playerID);
 					SendPlayerPoolToPlayer(playerID);
 					SpawnAllVehiclesForPlayer(playerID);
 
 					// OnPlayerConnect
 					internal::event::OnPlayerConnect_params params;
 					params.player = pPlayerPool->Get(playerID);
-					internal::server::GetServerInstance()->getEventPool()->Emit(internal::event::SERVER_EVENT_PLAYERCONNECT, (void *)&params);
+					internal::server::GetServerInstance()
+						->getEventPool()
+						->Emit(internal::event::SERVER_EVENT_PLAYERCONNECT, static_cast<void *>(&params));
 				}
 			}
 		}

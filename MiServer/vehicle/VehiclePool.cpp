@@ -9,7 +9,7 @@ mimp::internal::vehicle::VehiclePool::VehiclePool(unsigned short max_vehicles) :
 
 int mimp::internal::vehicle::VehiclePool::Add(Vehicle *p)
 {
-	auto it = std::find(this->m_Pool.begin(), this->m_Pool.end(), nullptr);
+	auto it = std::find(this->m_Pool.begin() + 1, this->m_Pool.end(), nullptr);
 	if (it == this->m_Pool.end())
 	{
 		return -1;

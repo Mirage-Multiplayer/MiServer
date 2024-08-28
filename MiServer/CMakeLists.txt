@@ -54,6 +54,7 @@ add_library(miserver STATIC
 	"RPC/outgoing/SetPlayerPos.cpp"
 	"RPC/outgoing/SetPlayerFacingAngle.cpp"
 	"RPC/outgoing/SetPlayerColor.cpp"
+	"RPC/outgoing/SendClientMessage.cpp"
 	"event/EventPool.cpp" 
 	"vehicle/Vehicle.cpp")
 
