@@ -41,7 +41,7 @@ namespace mimp
 
 					event::OnPlayerSpawn_params params;
 					params.player = pPlayer;
-					internal::server::GetServerInstance()->getEventPool()->Emit(event::SERVER_EVENT_PLAYERSPAWN, (void *)&params);
+					internal::server::GetServerInstance()->getEventPool()->Emit(event::SERVER_EVENT_PLAYERSPAWN, static_cast<void *>(&params));
 
 					RakNet::BitStream bsData;
 					bsData.Write(playerId);

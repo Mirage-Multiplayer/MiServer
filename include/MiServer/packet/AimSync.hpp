@@ -2,10 +2,13 @@
 #define __MISERVER_AIMSYNC_HPP
 #include <MiRak/NetworkTypes.h>
 
-namespace mimp {
-	namespace internal {
-		namespace packet {
-			void AimSync(Packet* pkt);
+namespace mimp
+{
+	namespace internal
+	{
+		namespace packet
+		{
+			void AimSync(Packet *pkt);
 		}
 	}
 }

@@ -2,10 +2,13 @@
 #define __MISERVER_BULLETSYNC_HPP
 #include <MiRak/NetworkTypes.h>
 
-namespace mimp {
-	namespace internal {
-		namespace packet {
-			void BulletSync(Packet* pkt);
+namespace mimp
+{
+	namespace internal
+	{
+		namespace packet
+		{
+			void BulletSync(Packet *pkt);
 		}
 	}
 }

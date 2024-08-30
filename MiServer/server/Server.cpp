@@ -155,7 +155,6 @@ int mimp::Server::ServerTick(void)
 		}
 		case ID_VEHICLE_SYNC:
 		{
-			std::cout << "Vehicle Sync\n";
 			mimp::internal::packet::VehicleSync(pkt);
 			break;
 		}

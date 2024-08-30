@@ -49,6 +49,10 @@ int main(void)
 
 		}; return 1; });
 
+	server.getEventPool()->OnPlayerUpdate([](mimp::Player *p) -> int
+										  { 
+			std::cout << "Player Update\n";
+											return 1; });
 	// Initialize server
 	server.Init(7777);
 

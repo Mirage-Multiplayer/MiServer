@@ -22,7 +22,8 @@ namespace mimp
 				SERVER_EVENT_PLAYERSPAWN,
 				SERVER_EVENT_PLAYERDEATH,
 				SERVER_EVENT_PLAYERTEXT,
-				SERVER_EVENT_COMMANDTEXT
+				SERVER_EVENT_COMMANDTEXT,
+				SERVER_EVENT_PLAYERUPDATE
 			};
 
 			// Disclaimer: I wanted to make this as dynamic as possible, and this was the way I found
@@ -49,6 +50,11 @@ namespace mimp
 				Player *player;
 			};
 
+			using OnPlayerUpdate_t = std::function<int(Player *)>;
+			using OnPlayerUpdate_params = struct
+			{
+				Player *player;
+			};
 			using OnPlayerDeath_t = std::function<int(Player *, Player *, const int)>;
 			using OnPlayerDeath_params = struct
 			{
