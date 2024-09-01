@@ -1,8 +1,6 @@
 #include <MiServer/packet/PositionSync.hpp>
 #include <MiServer/packet/PassengerSync.hpp>
-#include <MiServer/player/PlayerTypes.hpp>
-#include <MiServer/player/PlayerPool.hpp>
-#include <MiServer/player/Player.hpp>
+#include <MiServer/netgame/NetGame.hpp>
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/server/Server.hpp>
 
@@ -12,9 +10,9 @@
 void mimp::internal::packet::UpdatePosition(int iPlayerID, float fX, float fY, float fZ)
 {
 	RakServerInterface *pRakServer = mimp::internal::server::GetServerInstance()->getRakServer();
-	mimp::internal::player::PlayerPool *pPlayerPool = mimp::internal::server::GetServerInstance()->getPlayerPool();
+	CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
-	mimp::Player *pPlayer = pPlayerPool->Get(iPlayerID);
+	mimp::Player *pPlayer = pPlayerPool->GetAt(iPlayerID);
 
 	if (pPlayer->m_checkpointActive)
 	{

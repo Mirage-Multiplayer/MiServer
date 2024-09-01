@@ -5,9 +5,7 @@
 #include <MiServer/server/Server.hpp>
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/MiServer.hpp>
-#include <MiServer/player/defines.hpp>
-#include <MiServer/vehicle/VehiclePool.hpp>
-#include <MiServer/vehicle/Vehicle.hpp>
+#include <MiServer/netgame/NetGame.hpp>
 
 namespace mimp
 {
@@ -20,19 +18,21 @@ namespace mimp
 				void Handler::VehicleDamaged(RPCParameters *rpcParams)
 				{
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					internal::player::PlayerPool *pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();
+					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;
 					PlayerID sender = rpcParams->sender;
 
 					RakNet::BitStream bsData((unsigned char *)Data, (iBitLength / 8) + 1, false);
-					PLAYERID playerID = pRakServer->GetIndexFromPlayerID(sender);
+					WORD playerID = pRakServer->GetIndexFromPlayerID(sender);
 
-					if (!pPlayerPool->IsPlayerConnected(playerID))
+					if (pPlayerPool->GetAt(playerID) == nullptr)
+					{
 						return;
+					}
 
-					VEHICLEID vehID;
+					WORD vehID;
 					uint32_t vehPanels;
 					uint32_t vehDoors;
 					uint8_t vehLights;
@@ -44,7 +44,7 @@ namespace mimp
 					bsData.Read(vehLights);
 					bsData.Read(vehTires);
 
-					if (vehID == (VEHICLEID)-1)
+					if (vehID == (WORD)-1)
 					{
 						// SendClientMessage(playerID, -1, "You are sending an invalid vehicle ID. Unlike kye, we wont kick you :)");
 						return;

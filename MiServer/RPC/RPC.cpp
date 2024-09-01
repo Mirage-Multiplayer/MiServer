@@ -11,11 +11,7 @@
 
 #include <MiServer/packet/SyncData.hpp>
 #include <MiServer/packet/defines.hpp>
-#include <MiServer/player/PlayerTypes.hpp>
-#include <MiServer/player/defines.hpp>
-#include <MiServer/vehicle/Vehicle.hpp>
-#include <MiServer/vehicle/VehiclePool.hpp>
-#include <MiServer/vehicle/defines.hpp>
+#include <MiServer/netgame/NetGame.hpp>
 
 namespace mimp
 {
@@ -27,7 +23,7 @@ namespace mimp
 
 			int iLagCompensation = 1;
 
-			void InitGameForPlayer(PLAYERID playerID)
+			void InitGameForPlayer(WORD playerID)
 			{
 				mimp::Server *svr = mimp::internal::server::GetServerInstance();
 
@@ -77,28 +73,30 @@ namespace mimp
 										 0, svr->getRakServer()->GetPlayerIDFromIndex(playerID), FALSE, FALSE, UNASSIGNED_NETWORK_ID, NULL);
 			}
 
-			void SendPlayerPoolToPlayer(PLAYERID playerID)
+			void SendPlayerPoolToPlayer(WORD playerID)
 			{
-				mimp::Server *svr = mimp::internal::server::GetServerInstance();
-				mimp::internal::player::PlayerPool *pPlayerPool = svr->getPlayerPool();
-				RakServerInterface *pRakServer = svr->getRakServer();
+				CPool<Player> *pPlayerPool = server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+				RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
+
 				// let the player know about all the players in the server
-				for (PLAYERID p = 0; p < MAX_PLAYERS; p++)
+				for (Player *p : *pPlayerPool)
 				{
-					if (!pPlayerPool->IsPlayerConnected(p))
+					if (p == nullptr)
+					{
+						return;
+					}
+
+					if (p->getPlayerId() == playerID)
 						continue;
 
-					if (p == playerID)
-						continue;
-
-					BYTE byteNameLen = (BYTE)strlen(pPlayerPool->Get(p)->getNickName().c_str());
+					BYTE byteNameLen = (BYTE)strlen(p->getNickName().c_str());
 					RakNet::BitStream bs;
 					bs.Reset();
 					bs.Write(p);
 					bs.Write((int)1);
 					bs.Write((BYTE)0);
 					bs.Write(byteNameLen);
-					bs.Write(pPlayerPool->Get(p)->getNickName().c_str(), byteNameLen);
+					bs.Write(p->getNickName().c_str(), byteNameLen);
 					pRakServer->RPC(&outgoing::RPC_ServerJoin, &bs, HIGH_PRIORITY, RELIABLE,
 									0, pRakServer->GetPlayerIDFromIndex(playerID), FALSE, FALSE, UNASSIGNED_NETWORK_ID, NULL);
 
@@ -106,22 +104,21 @@ namespace mimp
 				}
 			}
 
-			void SpawnAllVehiclesForPlayer(PLAYERID playerID)
+			void SpawnAllVehiclesForPlayer(WORD playerID)
 			{
-				RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-				internal::vehicle::VehiclePool *pVehiclePool = internal::server::GetServerInstance()->getVehiclePool();
+				RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
+				CPool<Vehicle> *pVehiclePool = server::GetServerInstance()->GetNetGame()->GetVehiclePool();
 				// spawn all vehicles for this player
-				for (VEHICLEID v = 0; v < MAX_VEHICLES; v++)
+				for (Vehicle *v : *pVehiclePool)
 				{
-					if (!pVehiclePool->IsValidVehicle(v))
+					if (v == nullptr)
 					{
 						continue;
 					}
-					mimp::Vehicle *veh = pVehiclePool->Get(v);
 					float x, y, z;
-					veh->getPosition(x, y, z);
+					v->getPosition(x, y, z);
 
-					internal::RPC::outgoing::Handler::WorldVehicleAdd(veh, playerID);
+					internal::RPC::outgoing::Handler::WorldVehicleAdd(v, playerID);
 
 					std::this_thread::sleep_for(std::chrono::milliseconds(5));
 				}
@@ -139,9 +136,7 @@ namespace mimp
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_VehicleDamaged, incoming::Handler::VehicleDamaged);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_EnterVehicle, incoming::Handler::EnterVehicle);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ExitVehicle, incoming::Handler::ExitVehicle);
-				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_SendCommand, incoming::Handler::SendCommand);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_DeathNotification, incoming::Handler::DeathNotification);
-				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_MapMarker, incoming::Handler::MapMarker);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_DialogResponse, incoming::Handler::DialogResponse);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_InteriorChangeNotification, incoming::Handler::InteriorChangeNotification);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ScmEvent, incoming::Handler::ScmEvent);
@@ -174,7 +169,6 @@ namespace mimp
 				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_ExitVehicle);
 				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_SendCommand);
 				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_DeathNotification);
-				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_MapMarker);
 				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_DialogResponse);
 				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_InteriorChangeNotification);
 				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_ScmEvent);

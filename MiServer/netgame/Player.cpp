@@ -1,8 +1,8 @@
-#include <MiServer/player/Player.hpp>
+#include <MiServer/netgame/Player.hpp>
 #include <MiServer/RPC/RPCList.hpp>
 #include <cstring>
 
-mimp::Player::Player(PlayerID rakPlayerID, PLAYERID playerID, const char *nickname)
+mimp::Player::Player(PlayerID rakPlayerID, WORD playerID, const char *nickname)
     : m_rakPlayerId(rakPlayerID), m_playerId(playerID), m_nickName(nickname),
       m_OnFootSyncData(new internal::packet::ONFOOT_SYNC_DATA{}),
       m_InCarSyncData(new internal::packet::INCAR_SYNC_DATA{}),

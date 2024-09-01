@@ -5,9 +5,7 @@
 #include <MiServer/server/Server.hpp>
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/MiServer.hpp>
-#include <MiServer/player/defines.hpp>
-#include <MiServer/vehicle/VehiclePool.hpp>
-#include <MiServer/vehicle/Vehicle.hpp>
+#include <MiServer/netgame/NetGame.hpp>
 
 namespace mimp
 {
@@ -21,16 +19,16 @@ namespace mimp
 				{
 					RakNet::BitStream bsUpdate;
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					internal::player::PlayerPool *pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();
-					for (PLAYERID i = 0; i < MAX_PLAYERS; i++)
+					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					for (Player *i : *pPlayerPool)
 					{
-						if (pPlayerPool->IsPlayerConnected(i))
+						if (i != nullptr)
 						{
-							pPlayerPool->Get(i)->_setPing(pRakServer->GetLastPing(pPlayerPool->Get(i)->getRakPlayerId()));
+							i->_setPing(pRakServer->GetLastPing(i->getRakPlayerId()));
 
 							bsUpdate.Write(i);
-							bsUpdate.Write(pPlayerPool->Get(i)->getScore());
-							bsUpdate.Write(pPlayerPool->Get(i)->getPing());
+							bsUpdate.Write(i->getScore());
+							bsUpdate.Write(i->getPing());
 						}
 					}
 

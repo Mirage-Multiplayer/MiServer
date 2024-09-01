@@ -6,14 +6,13 @@
 #include <MiServer/server/Server.hpp>
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/event/EventPool.hpp>
-#include <MiServer/player/PlayerTypes.hpp>
 #include <MiServer/packet/PlayerSync.hpp>
 #include <MiServer/packet/AimSync.hpp>
 #include <MiServer/packet/BulletSync.hpp>
 #include <MiServer/packet/PassengerSync.hpp>
 #include <MiServer/packet/UnoccupiedSync.hpp>
 #include <MiServer/packet/VehicleSync.hpp>
-#include <MiServer/vehicle/VehiclePool.hpp>
+#include <MiServer/netgame/NetGame.hpp>
 #include <MiServer/RPC/RPC.hpp>
 #include <MiServer/config.h>
 
@@ -25,10 +24,9 @@ mimp::Server::Server(const ServerInfo &info) : m_info(info),
 											   m_port(0),
 											   m_initialized(false)
 {
-	this->m_playerPool = new internal::player::PlayerPool(this->m_info.max_players);
-	this->m_vehiclePool = new internal::vehicle::VehiclePool(MAX_VEHICLES);
-	this->m_eventPool = new internal::event::EventPool();
-	this->m_RakServer = RakNetworkFactory::GetRakServerInterface();
+	this->m_pNetGame = new mimp::CNetGame(info.max_players, 6000);
+	this->m_pEventPool = new internal::event::EventPool();
+	this->m_pRakServer = RakNetworkFactory::GetRakServerInterface();
 }
 
 mimp::Server::Server(const ServerInfo &info, const ServerConfig &config) : m_info(info),
@@ -36,18 +34,16 @@ mimp::Server::Server(const ServerInfo &info, const ServerConfig &config) : m_inf
 																		   m_initialized(false),
 																		   m_cfg(config)
 {
-	this->m_playerPool = new internal::player::PlayerPool(this->m_info.max_players);
-	this->m_vehiclePool = new internal::vehicle::VehiclePool(MAX_VEHICLES);
-	this->m_eventPool = new internal::event::EventPool();
-	this->m_RakServer = RakNetworkFactory::GetRakServerInterface();
+	this->m_pNetGame = new mimp::CNetGame(info.max_players, 6000);
+	this->m_pEventPool = new internal::event::EventPool();
+	this->m_pRakServer = RakNetworkFactory::GetRakServerInterface();
 }
 
 mimp::Server::~Server()
 {
-	delete this->m_RakServer;
-	delete this->m_playerPool;
-	delete this->m_vehiclePool;
-	delete this->m_eventPool;
+	delete this->m_pNetGame;
+	delete this->m_pRakServer;
+	delete this->m_pEventPool;
 }
 
 int mimp::Server::Init(uint16_t port)
@@ -66,30 +62,29 @@ int mimp::Server::Init(uint16_t port)
 	RakNet::RakEncr::m_srvChallenge = (unsigned int)rand();
 	RakNet::RakEncr::setPort(port);
 
-	this->m_RakServer->Start(this->m_info.max_players, 0, 5, port);
-	this->m_RakServer->StartOccasionalPing();
+	this->m_pRakServer->Start(this->m_info.max_players, 0, 5, port);
+	this->m_pRakServer->StartOccasionalPing();
 
 	internal::server::SetServerInstance(this);
-	internal::RPC::RegisterServerRPCs(this->m_RakServer);
+	internal::RPC::RegisterServerRPCs(this->m_pRakServer);
 
 	this->m_initialized = true;
 	std::cout << "[Mi:MP] Successfully initialized Mi:MP ' Mi-Server " << MISERVER_VERSION << " ' \n";
-	this->m_eventPool->Emit(internal::event::SERVER_EVENT_SERVERINIT, nullptr);
+	this->m_pEventPool->Emit(internal::event::SERVER_EVENT_SERVERINIT, nullptr);
 	return 1;
 }
 
 int mimp::Server::Shutdown(void)
 {
-	this->m_RakServer->Disconnect(300);
-	RakNetworkFactory::DestroyRakServerInterface(this->m_RakServer);
+	this->m_pRakServer->Disconnect(300);
+	RakNetworkFactory::DestroyRakServerInterface(this->m_pRakServer);
 
-	delete this->m_playerPool;
-	delete this->m_vehiclePool;
-	delete this->m_eventPool;
+	delete this->m_pNetGame;
+	delete this->m_pRakServer;
+	delete this->m_pEventPool;
 
-	this->m_playerPool = new internal::player::PlayerPool(this->m_info.max_players);
-	this->m_vehiclePool = new internal::vehicle::VehiclePool(MAX_VEHICLES);
-	this->m_eventPool = new internal::event::EventPool();
+	this->m_pNetGame = new mimp::CNetGame(this->m_info.max_players, 6000);
+	this->m_pEventPool = new internal::event::EventPool();
 
 	this->m_port = 0;
 
@@ -104,7 +99,7 @@ int mimp::Server::ServerTick(void)
 {
 	unsigned char packetIdentifier;
 	Packet *pkt = nullptr;
-	while ((pkt = this->m_RakServer->Receive()))
+	while ((pkt = this->m_pRakServer->Receive()))
 	{
 		if ((unsigned char)pkt->data[0] == ID_TIMESTAMP)
 		{
@@ -121,12 +116,12 @@ int mimp::Server::ServerTick(void)
 		else
 			packetIdentifier = (unsigned char)pkt->data[0];
 
-		PLAYERID playerID = pkt->playerIndex;
+		WORD playerID = pkt->playerIndex;
 		switch (packetIdentifier)
 		{
 		case ID_DISCONNECTION_NOTIFICATION:
 		{
-			this->m_playerPool->Remove(playerID);
+			this->m_pNetGame->GetPlayerPool()->DeleteAt(playerID);
 			break;
 		}
 		case ID_NEW_INCOMING_CONNECTION:
@@ -135,7 +130,7 @@ int mimp::Server::ServerTick(void)
 		}
 		case ID_CONNECTION_LOST:
 		{
-			this->m_playerPool->Remove(playerID);
+			this->m_pNetGame->GetPlayerPool()->DeleteAt(playerID);
 			break;
 		}
 		case ID_PLAYER_SYNC:
@@ -164,7 +159,7 @@ int mimp::Server::ServerTick(void)
 			break;
 		}
 		}
-		this->m_RakServer->DeallocatePacket(pkt);
+		this->m_pRakServer->DeallocatePacket(pkt);
 	}
 	return 1;
 }

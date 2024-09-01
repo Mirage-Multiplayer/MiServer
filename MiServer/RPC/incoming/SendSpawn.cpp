@@ -5,9 +5,7 @@
 #include <MiServer/server/Server.hpp>
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/MiServer.hpp>
-#include <MiServer/player/defines.hpp>
-#include <MiServer/vehicle/VehiclePool.hpp>
-#include <MiServer/vehicle/Vehicle.hpp>
+#include <MiServer/netgame/NetGame.hpp>
 
 namespace mimp
 {
@@ -20,8 +18,8 @@ namespace mimp
 				void Handler::SendSpawn(RPCParameters *rpcParams)
 				{
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					internal::player::PlayerPool *pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();
-					PLAYERID playerId = (PLAYERID)pRakServer->GetIndexFromPlayerID(rpcParams->sender);
+					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					WORD playerId = (WORD)pRakServer->GetIndexFromPlayerID(rpcParams->sender);
 					BYTE byteFightingStyle = 4;
 					BYTE byteTeam = -1;
 					int iSkin = 0;
@@ -29,10 +27,12 @@ namespace mimp
 					float fRotation = 90.0f;
 					DWORD dwColor = -1;
 
-					if (!pPlayerPool->IsPlayerConnected(playerId))
+					if (pPlayerPool->GetAt(playerId) == nullptr)
+					{
 						return;
+					}
 
-					mimp::Player *pPlayer = pPlayerPool->Get(playerId);
+					mimp::Player *pPlayer = pPlayerPool->GetAt(playerId);
 					if (pPlayer == nullptr)
 					{
 						// Invalid player, usually not connected.

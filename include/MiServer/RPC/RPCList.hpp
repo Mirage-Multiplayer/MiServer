@@ -203,8 +203,8 @@ namespace mimp
 					// static void HideTextDraw(void);
 
 					// Vehicle
-					static void PlayerEnterVehicle(const PLAYERID playerid, const VEHICLEID vehicleid, const BYTE passenger);
-					static void PlayerExitVehicle(const PLAYERID playerid, const VEHICLEID vehicleid);
+					static void PlayerEnterVehicle(const WORD playerid, const WORD vehicleid, const BYTE passenger);
+					static void PlayerExitVehicle(const WORD playerid, const WORD vehicleid);
 					// static void RemoveVehicleComponent(void);
 					// static void AttachTrailerToVehicle(void);
 					// static void DetachTrailerFromVehicle(void);
@@ -222,7 +222,7 @@ namespace mimp
 					// static void SetVehicleParams(void);
 					// static void SetVehicleParamsEx(void);
 					static void WorldVehicleAdd(Vehicle *veh, const int playerid);
-					static void WorldVehicleRemove(const VEHICLEID idx, const int playerid);
+					static void WorldVehicleRemove(const WORD idx, const int playerid);
 					static void ConnectionRejected(void);
 				};
 

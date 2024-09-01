@@ -5,10 +5,7 @@
 #include <MiServer/server/Server.hpp>
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/MiServer.hpp>
-#include <MiServer/player/defines.hpp>
-#include <MiServer/vehicle/VehiclePool.hpp>
-#include <MiServer/vehicle/Vehicle.hpp>
-
+#include <MiServer/netgame/NetGame.hpp>
 namespace mimp
 {
 	namespace internal
@@ -21,24 +18,26 @@ namespace mimp
 				{
 					std::cout << "Enter vehicle\n";
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					mimp::internal::player::PlayerPool *pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();
+					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;
 					PlayerID sender = rpcParams->sender;
 
 					RakNet::BitStream bsData((unsigned char *)Data, (iBitLength / 8) + 1, false);
-					PLAYERID playerID = pRakServer->GetIndexFromPlayerID(sender);
+					WORD playerID = pRakServer->GetIndexFromPlayerID(sender);
 
-					if (!pPlayerPool->IsPlayerConnected(playerID))
+					if (pPlayerPool->GetAt(playerID) == nullptr)
+					{
 						return;
+					}
 
-					VEHICLEID VehicleID = 0;
+					WORD VehicleID = 0;
 					bsData.Read(VehicleID);
 					BYTE bytePassenger = 0;
 					bsData.Read(bytePassenger);
 
-					if (VehicleID == (VEHICLEID)-1)
+					if (VehicleID == (WORD)-1)
 					{
 						std::cout << "Fodase debug monstro\n";
 						return;
@@ -46,7 +45,7 @@ namespace mimp
 
 					// OnPlayerEnterVehicle
 
-					mimp::Player *pPlayer = pPlayerPool->Get(playerID);
+					mimp::Player *pPlayer = pPlayerPool->GetAt(playerID);
 					pPlayer->getInCarSyncData()->VehicleID = VehicleID;
 
 					outgoing::Handler::PlayerEnterVehicle(playerID, VehicleID, bytePassenger);

@@ -5,7 +5,7 @@
 #include <MiServer/server/Server.hpp>
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/MiServer.hpp>
-#include <MiServer/player/defines.hpp>
+#include <MiServer/netgame/NetGame.hpp>
 
 namespace mimp
 {
@@ -18,17 +18,19 @@ namespace mimp
 				void Handler::DeathNotification(RPCParameters *rpcParams)
 				{
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					mimp::internal::player::PlayerPool *pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();
+					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;
 					PlayerID sender = rpcParams->sender;
 
 					RakNet::BitStream bsData((unsigned char *)Data, (iBitLength / 8) + 1, false);
-					PLAYERID playerID = pRakServer->GetIndexFromPlayerID(sender);
+					WORD playerID = pRakServer->GetIndexFromPlayerID(sender);
 
-					if (!pPlayerPool->IsPlayerConnected(playerID))
+					if (pPlayerPool->GetAt(playerID) == nullptr)
+					{
 						return;
+					}
 
 					unsigned char ReasonID;
 					unsigned short KillerID;
@@ -38,11 +40,13 @@ namespace mimp
 
 					if (KillerID != 0xFFFF)
 					{
-						if (KillerID < 0 || KillerID >= MAX_PLAYERS)
+						if (KillerID < 0 || KillerID >= pPlayerPool->GetMax())
 							return;
 
-						if (!pPlayerPool->IsPlayerConnected(KillerID))
+						if (pPlayerPool->GetAt(KillerID) == nullptr)
+						{
 							return;
+						}
 
 						if (ReasonID == 46 || ReasonID == 48 || ReasonID == 49)
 							return;

@@ -12,7 +12,6 @@
 #include <MiServer/packet/SyncData.hpp>
 #include <MiServer/packet/PassengerSync.hpp>
 #include <MiServer/packet/PositionSync.hpp>
-#include <MiServer/player/PlayerTypes.hpp>
 #include <iostream>
 
 namespace mimp
@@ -23,13 +22,13 @@ namespace mimp
 	class Player
 	{
 	public:
-		Player(PlayerID rakPlayerID, PLAYERID playerID, const char *nickname);
+		Player(PlayerID rakPlayerID, WORD playerID, const char *nickname);
 
 		/**
 		 * Get the player's ID.
 		 * @return The player's index in PlayerPool.
 		 */
-		inline const PLAYERID getPlayerId(void) const
+		inline const WORD getPlayerId(void) const
 		{
 			return this->m_playerId;
 		}
@@ -317,7 +316,7 @@ namespace mimp
 		internal::packet::PASSENGER_SYNC_DATA *m_PassengerData;
 		internal::packet::UNOCCUPIED_SYNC_DATA *m_UnoccupiedData;
 
-		PLAYERID m_playerId;
+		WORD m_playerId;
 		PlayerID m_rakPlayerId;
 		std::string m_nickName;
 

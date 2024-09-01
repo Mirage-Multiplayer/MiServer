@@ -5,9 +5,7 @@
 #include <MiServer/server/Server.hpp>
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/MiServer.hpp>
-#include <MiServer/player/defines.hpp>
-#include <MiServer/vehicle/VehiclePool.hpp>
-#include <MiServer/vehicle/Vehicle.hpp>
+
 namespace mimp
 {
     namespace internal
@@ -16,7 +14,7 @@ namespace mimp
         {
             namespace outgoing
             {
-                void Handler::PlayerEnterVehicle(const PLAYERID playerid, const VEHICLEID vehicleid, const BYTE passenger)
+                void Handler::PlayerEnterVehicle(const WORD playerid, const WORD vehicleid, const BYTE passenger)
                 {
                     RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
                     RakNet::BitStream bs;

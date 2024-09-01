@@ -35,7 +35,7 @@ namespace mimp
                     bsInitGame.WriteCompressed(nameTagLOS);                     // m_bNameTagLOS
                     bsInitGame.WriteCompressed(manualVehicleEngineAndLight);    // m_bManualVehicleEngineAndLight
                     bsInitGame.Write(static_cast<uint32_t>(spawnsAvailable));   // m_iSpawnsAvailable
-                    bsInitGame.Write(static_cast<PLAYERID>(playerID));          // MyPlayerID
+                    bsInitGame.Write(static_cast<WORD>(playerID));              // MyPlayerID
                     bsInitGame.WriteCompressed(showPlayerTags);                 // m_bShowPlayerTags
                     bsInitGame.Write(static_cast<uint32_t>(showPlayerMarkers)); // m_iShowPlayerMarkers
                     bsInitGame.Write(worldTime);                                // m_byteWorldTime

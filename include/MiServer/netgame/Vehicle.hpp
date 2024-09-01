@@ -57,7 +57,7 @@ namespace mimp
 
 	private:
 		friend internal::RPC::incoming::Handler;
-		friend void internal::RPC::SpawnAllVehiclesForPlayer(PLAYERID playerID);
+		friend void internal::RPC::SpawnAllVehiclesForPlayer(WORD playerID);
 
 		int m_vehId;
 		int m_modelId;

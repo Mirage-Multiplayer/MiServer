@@ -5,8 +5,7 @@
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/event/EventTypes.hpp>
 #include <MiServer/event/EventPool.hpp>
-#include <MiServer/player/PlayerPool.hpp>
-#include <MiServer/player/Player.hpp>
+#include <MiServer/netgame/NetGame.hpp>
 
 namespace mimp
 {
@@ -19,14 +18,14 @@ namespace mimp
 				void Handler::ChatMessage(RPCParameters *rpcParams)
 				{
 					RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
-					player::PlayerPool *pPlayerPool = server::GetServerInstance()->getPlayerPool();
+					CPool<Player> *pPlayerPool = server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 					event::EventPool *pEventPool = server::GetServerInstance()->getEventPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;
 					RakNet::BitStream bsData((unsigned char *)Data, (iBitLength / 8) + 1, false);
 
-					PLAYERID playerId = (PLAYERID)pRakServer->GetIndexFromPlayerID(rpcParams->sender);
+					WORD playerId = (WORD)pRakServer->GetIndexFromPlayerID(rpcParams->sender);
 					char szText[256];
 					BYTE byteTextLen;
 
@@ -38,7 +37,7 @@ namespace mimp
 
 					// OnPlayerMessage
 					event::OnPlayerText_params params;
-					params.player = pPlayerPool->Get(playerId);
+					params.player = pPlayerPool->GetAt(playerId);
 					params.text = szText;
 					pEventPool->Emit(event::SERVER_EVENT_PLAYERTEXT, static_cast<void *>(&params));
 				}

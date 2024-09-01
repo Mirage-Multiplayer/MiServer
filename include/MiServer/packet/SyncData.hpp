@@ -1,7 +1,7 @@
 #ifndef __MISERVER_SYNCDATA_HPP
 #define __MISERVER_SYNCDATA_HPP
 #include <MiServer/types.h>
-#include <MiServer/vehicle/VehicleTypes.hpp>
+
 #define WINDOWS_IGNORE_PACKING_MISMATCH
 
 namespace mimp
@@ -31,7 +31,7 @@ namespace mimp
 #pragma pack(push, 1)
 			typedef struct _INCAR_SYNC_DATA
 			{
-				VEHICLEID VehicleID;
+				WORD VehicleID;
 				WORD lrAnalog;
 				WORD udAnalog;
 				WORD wKeys;
@@ -51,7 +51,7 @@ namespace mimp
 #pragma pack(push, 1)
 			typedef struct _PASSENGER_SYNC_DATA
 			{
-				VEHICLEID VehicleID;
+				WORD VehicleID;
 				BYTE byteSeatFlags : 7;
 				BYTE byteDriveBy : 1;
 				BYTE byteCurrentWeapon;
@@ -89,7 +89,7 @@ namespace mimp
 #pragma pack(push, 1)
 			typedef struct _UNOCCUPIED_SYNC_DATA // 67
 			{
-				VEHICLEID VehicleID;
+				WORD VehicleID;
 				short cvecRoll[3];
 				short cvecDirection[3];
 				BYTE unk[13];
@@ -182,7 +182,7 @@ namespace mimp
 #pragma pack(push, 1)
 			typedef struct _NEW_VEHICLE
 			{
-				VEHICLEID VehicleId;
+				WORD VehicleId;
 				int iVehicleType;
 				float vecPos[3];
 				float fRotation;

@@ -1,8 +1,6 @@
 #include <MiServer/packet/PositionSync.hpp>
 #include <MiServer/packet/UnoccupiedSync.hpp>
-#include <MiServer/player/PlayerTypes.hpp>
-#include <MiServer/player/PlayerPool.hpp>
-#include <MiServer/player/Player.hpp>
+#include <MiServer/netgame/NetGame.hpp>
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/server/Server.hpp>
 #include <MiRak/PacketEnumerations.h>
@@ -12,7 +10,7 @@
 void mimp::internal::packet::UnoccupiedSync(Packet *p)
 {
 	RakServerInterface *pRakServer = mimp::internal::server::GetServerInstance()->getRakServer();
-	mimp::internal::player::PlayerPool *pPlayerPool = mimp::internal::server::GetServerInstance()->getPlayerPool();
+	CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 	if (p->length < sizeof(UNOCCUPIED_SYNC_DATA) + 1)
 	{
@@ -20,10 +18,10 @@ void mimp::internal::packet::UnoccupiedSync(Packet *p)
 	}
 
 	RakNet::BitStream bsUnocSync((unsigned char *)p->data, p->length, false);
-	PLAYERID playerId = pRakServer->GetIndexFromPlayerID(p->playerId);
+	WORD playerId = pRakServer->GetIndexFromPlayerID(p->playerId);
 
 	// clear last data
-	mimp::Player *pPlayer = pPlayerPool->Get(playerId);
+	mimp::Player *pPlayer = pPlayerPool->GetAt(playerId);
 	if (pPlayer == nullptr)
 	{
 		// Invalid player, usually not connected.

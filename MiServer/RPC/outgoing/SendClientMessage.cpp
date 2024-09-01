@@ -5,8 +5,7 @@
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/event/EventTypes.hpp>
 #include <MiServer/event/EventPool.hpp>
-#include <MiServer/player/PlayerPool.hpp>
-#include <MiServer/player/Player.hpp>
+
 #include <MiRak/BitStream.h>
 #include <cstdint>
 

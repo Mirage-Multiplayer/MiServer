@@ -1,4 +1,0 @@
-#ifndef __MISERVER_OBJECTPOOL_HPP
-#define __MISERVER_OBJECTPOOL_HPP
-
-#endif

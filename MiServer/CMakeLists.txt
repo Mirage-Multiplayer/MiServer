@@ -1,48 +1,39 @@
 add_library(miserver STATIC
 	"server/Server.cpp"
-	"player/Player.cpp"
-	"player/PlayerPool.cpp"
+	"server/ServerInstance.cpp" 
+
+	"netgame/NetGame.cpp"
+	"netgame/Player.cpp"
+	"netgame/Vehicle.cpp"
+
 	"packet/AimSync.cpp" 
 	"packet/BulletSync.cpp" 
 	"packet/PassangerSync.cpp" 
 	"packet/PlayerSync.cpp" 
 	"packet/UnoccupiedSync.cpp" 
 	"packet/VehicleSync.cpp" 
+	"packet/PositionSync.cpp" 
+
 	"RPC/RPCList.cpp" 
 	"RPC/RPC.cpp" 
-	"server/ServerInstance.cpp" 
-	"vehicle/VehiclePool.cpp" 
-	"packet/PositionSync.cpp" 
+	
+	"event/EventPool.cpp"
+	
 	"RPC/incoming/EnterVehicle.cpp"
 	"RPC/incoming/ExitVehicle.cpp"
 	"RPC/incoming/VehicleDamaged.cpp"
 	"RPC/incoming/ScmEvent.cpp"
-	"RPC/incoming/VehicleDestroyed.cpp"
 	"RPC/incoming/SendSpawn.cpp"
 	"RPC/incoming/ChatMessage.cpp"
 	"RPC/incoming/InteriorChangeNotification.cpp"
 	"RPC/incoming/DeathNotification.cpp"
-	"RPC/incoming/SendCommand.cpp"
-	"RPC/incoming/ClickPlayer.cpp"
 	"RPC/incoming/DialogResponse.cpp"
-	"RPC/incoming/ClientCheckResponse.cpp"
-	"RPC/incoming/GiveTakeDamage.cpp"
-	"RPC/incoming/GiveActorDamage.cpp"
-	"RPC/incoming/MapMarker.cpp"
 	"RPC/incoming/RequestClass.cpp"
 	"RPC/incoming/RequestSpawn.cpp"
-	"RPC/incoming/MenuSelect.cpp"
-	"RPC/incoming/MenuQuit.cpp"
-	"RPC/incoming/SelectTextDraw.cpp"
-	"RPC/incoming/PickedUpPickup.cpp"
-	"RPC/incoming/SelectObject.cpp"
-	"RPC/incoming/EditAttachedObject.cpp"
-	"RPC/incoming/EditObject.cpp"
 	"RPC/incoming/UpdateScoresAndPings.cpp"
 	"RPC/incoming/ClientJoin.cpp"
-	"RPC/incoming/NPCJoin.cpp"
-	"RPC/incoming/CameraTarget.cpp" 
 	"RPC/incoming/HandleUnsupported.cpp"
+
 	"RPC/outgoing/InitGame.cpp"
 	"RPC/outgoing/WorldVehicleAdd.cpp"
 	"RPC/outgoing/WorldVehicleRemove.cpp"
@@ -54,9 +45,7 @@ add_library(miserver STATIC
 	"RPC/outgoing/SetPlayerPos.cpp"
 	"RPC/outgoing/SetPlayerFacingAngle.cpp"
 	"RPC/outgoing/SetPlayerColor.cpp"
-	"RPC/outgoing/SendClientMessage.cpp"
-	"event/EventPool.cpp" 
-	"vehicle/Vehicle.cpp")
+	"RPC/outgoing/SendClientMessage.cpp" )
 
 target_link_directories(miserver PUBLIC ${CMAKE_INSTALL_PREFIX})
 target_link_libraries(miserver PRIVATE mirak)

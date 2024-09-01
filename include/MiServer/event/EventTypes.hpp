@@ -1,8 +1,8 @@
 #ifndef __MISERVER_EVENTTYPES_HPP
 #define __MISERVER_EVENTTYPES_HPP
 #include <functional>
-#include <MiServer/player/Player.hpp>
-#include <MiServer/vehicle/Vehicle.hpp>
+#include <MiServer/netgame/Player.hpp>
+#include <MiServer/netgame/Vehicle.hpp>
 
 /* EventType
 	Store information about events, their callbacks and their params

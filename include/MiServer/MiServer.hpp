@@ -2,9 +2,7 @@
 #define __MISERVER_HPP
 #include <MiRak/RakServer.h>
 #include <MiRak/RakQuery.h>
-
-#include <MiServer/player/PlayerTypes.hpp>
-#include <MiServer/vehicle/VehicleTypes.hpp>
+#include <MiServer/types.h>
 
 #define MISERVER_VERSION "0.0.1"
 

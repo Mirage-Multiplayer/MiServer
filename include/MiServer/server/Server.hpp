@@ -4,10 +4,8 @@
 #include <MiRak/RakQuery.h>
 #include <string>
 #include <MiServer/event/EventPool.hpp>
-#include <MiServer/vehicle/VehiclePool.hpp>
-#include <MiServer/player/PlayerPool.hpp>
 #include <MiServer/server/ServerConfig.hpp>
-
+#include <MiServer/netgame/NetGame.hpp>
 namespace mimp
 {
 	/** Struct that holds the server information
@@ -73,46 +71,30 @@ namespace mimp
 			return this->m_cfg;
 		}
 
-		/**
-		 * Get server EventPool instance.
-		 */
-		inline internal::event::EventPool *getEventPool(void) const
+		inline mimp::CNetGame *GetNetGame()
 		{
-			return this->m_eventPool;
+			return this->m_pNetGame;
 		}
-
-		/**
-		 * Get server PlayerPool instance.
-		 */
-		inline internal::player::PlayerPool *getPlayerPool(void) const
-		{
-			return this->m_playerPool;
-		}
-
 		/**
 		 * Get server RakServerInterface instance.
 		 */
 		inline RakServerInterface *getRakServer(void) const
 		{
-			return this->m_RakServer;
+			return this->m_pRakServer;
 		}
 
-		/**
-		 * Get server VehiclePool instance.
-		 */
-		inline internal::vehicle::VehiclePool *getVehiclePool(void) const
+		inline mimp::internal::event::EventPool *getEventPool(void) const
 		{
-			return this->m_vehiclePool;
+			return this->m_pEventPool;
 		}
 
 	private:
 		ServerInfo m_info;
 		ServerConfig m_cfg;
-		internal::event::EventPool *m_eventPool;
-		internal::player::PlayerPool *m_playerPool;
-		internal::vehicle::VehiclePool *m_vehiclePool;
+		mimp::CNetGame *m_pNetGame;
+		mimp::internal::event::EventPool *m_pEventPool;
 
-		RakServerInterface *m_RakServer;
+		RakServerInterface *m_pRakServer;
 
 		bool m_initialized;
 		uint16_t m_port;

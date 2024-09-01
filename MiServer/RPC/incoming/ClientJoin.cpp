@@ -5,7 +5,7 @@
 #include <MiServer/server/Server.hpp>
 #include <MiServer/server/ServerInstance.hpp>
 #include <MiServer/MiServer.hpp>
-#include <MiServer/player/defines.hpp>
+#include <MiServer/netgame/NetGame.hpp>
 
 namespace mimp
 {
@@ -19,7 +19,7 @@ namespace mimp
 				{
 					mimp::ServerConfig cfg = internal::server::GetServerInstance()->getConfig();
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					internal::player::PlayerPool *pPlayerPool = internal::server::GetServerInstance()->getPlayerPool();
+					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;
@@ -32,7 +32,7 @@ namespace mimp
 					int iVersion;
 					unsigned int uiChallengeResponse;
 					BYTE byteMod, byteNameLen, byteAuthBSLen;
-					PLAYERID playerID = pRakServer->GetIndexFromPlayerID(sender);
+					WORD playerID = pRakServer->GetIndexFromPlayerID(sender);
 					BYTE byteRejectReason;
 
 					bsData.Read(iVersion);
@@ -55,7 +55,7 @@ namespace mimp
 						return;
 					}
 
-					if (!pRakServer->IsActivePlayerID(sender) || playerID > MAX_PLAYERS)
+					if (!pRakServer->IsActivePlayerID(sender) || playerID > pPlayerPool->GetMax())
 					{
 						byteRejectReason = REJECT_REASON_BAD_PLAYERID;
 						bsReject.Write(byteRejectReason);
@@ -75,7 +75,7 @@ namespace mimp
 						return;
 					}
 
-					pPlayerPool->Add(new mimp::Player(rpcParams->sender, playerID, szNickName));
+					pPlayerPool->InsertAt(playerID, new mimp::Player(rpcParams->sender, playerID, szNickName));
 
 					outgoing::Handler::InitGame(playerID,
 												cfg.zoneNames,
@@ -109,7 +109,7 @@ namespace mimp
 
 					// OnPlayerConnect
 					internal::event::OnPlayerConnect_params params;
-					params.player = pPlayerPool->Get(playerID);
+					params.player = pPlayerPool->GetAt(playerID);
 					internal::server::GetServerInstance()
 						->getEventPool()
 						->Emit(internal::event::SERVER_EVENT_PLAYERCONNECT, static_cast<void *>(&params));
