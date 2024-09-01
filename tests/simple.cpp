@@ -24,7 +24,7 @@ int main(void)
 	cfg.gravity = 0.008f;
 	cfg.disableEnterExits = true;
 	// Create Server instance
-	mimp::Server server(info);
+	mimp::Server server(info, cfg);
 
 	// Define callbacks & handlers
 	RakNet::RakQuery::setHandler(hnd);
