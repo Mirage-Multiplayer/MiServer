@@ -18,7 +18,11 @@ int main(void)
 {
 	// Config server info
 	mimp::ServerInfo info("Hostname", "gamemode", "PT/BR", 200);
+	mimp::ServerConfig cfg;
 
+	cfg.zoneNames = true;
+	cfg.gravity = 0.008f;
+	cfg.disableEnterExits = true;
 	// Create Server instance
 	mimp::Server server(info);
 

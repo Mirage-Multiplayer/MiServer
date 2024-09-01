@@ -36,6 +36,7 @@ void mimp::internal::packet::PlayerSync(Packet *p)
 	// This guy have bits enough?
 	if (bsPlayerSync.GetNumberOfUnreadBits() < sizeof(ONFOOT_SYNC_DATA) * 8)
 	{
+		std::cout << "PlayerSync\n";
 		return;
 	}
 

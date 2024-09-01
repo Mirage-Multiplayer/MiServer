@@ -20,7 +20,7 @@ void mimp::internal::packet::BulletSync(Packet *p)
 		return;
 	}
 
-	RakNet::BitStream bsBulletSync((unsigned char *)p->data, p->length, true);
+	RakNet::BitStream bsBulletSync((unsigned char *)p->data, p->length, false);
 	PLAYERID playerId = pRakServer->GetIndexFromPlayerID(p->playerId);
 
 	mimp::Player *pPlayer = pPlayerPool->Get(playerId);
