@@ -18,7 +18,7 @@ namespace mimp
 				void Handler::SendSpawn(RPCParameters *rpcParams)
 				{
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 					WORD playerId = (WORD)pRakServer->GetIndexFromPlayerID(rpcParams->sender);
 					BYTE byteFightingStyle = 4;
 					BYTE byteTeam = -1;
@@ -32,7 +32,7 @@ namespace mimp
 						return;
 					}
 
-					mimp::Player *pPlayer = pPlayerPool->GetAt(playerId);
+					mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerId);
 					if (pPlayer == nullptr)
 					{
 						// Invalid player, usually not connected.

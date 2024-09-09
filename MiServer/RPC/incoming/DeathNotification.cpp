@@ -18,7 +18,7 @@ namespace mimp
 				void Handler::DeathNotification(RPCParameters *rpcParams)
 				{
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;

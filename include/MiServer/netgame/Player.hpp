@@ -19,10 +19,10 @@ namespace mimp
 	/**
 	 * Player object.
 	 */
-	class Player
+	class CPlayer
 	{
 	public:
-		Player(PlayerID rakPlayerID, WORD playerID, const char *nickname);
+		CPlayer(PlayerID rakPlayerID, WORD playerID, const char *nickname);
 
 		/**
 		 * Get the player's ID.

@@ -45,6 +45,11 @@ int mimp::internal::event::EventPool::Emit(uint16_t id, void *ctx)
 		OnPlayerText_params *p = static_cast<OnPlayerText_params *>(ctx);
 		CALL_EVENT(PlayerText, p->player, p->text);
 	}
+	case SERVER_EVENT_COMMANDTEXT:
+	{
+		OnPlayerCommandText_params *p = static_cast<OnPlayerCommandText_params *>(ctx);
+		CALL_EVENT(PlayerCMDText, p->player, p->cmd);
+	}
 	case SERVER_EVENT_PLAYERUPDATE:
 	{
 		OnPlayerUpdate_params *p = static_cast<OnPlayerUpdate_params *>(ctx);

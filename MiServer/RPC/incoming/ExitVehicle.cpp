@@ -18,7 +18,7 @@ namespace mimp
 				void Handler::ExitVehicle(RPCParameters *rpcParams)
 				{
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;
@@ -43,7 +43,7 @@ namespace mimp
 
 					// OnPlayerExitVehicle
 
-					mimp::Player *pPlayer = pPlayerPool->GetAt(playerID);
+					mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerID);
 					pPlayer->getInCarSyncData()->VehicleID = -1;
 
 					outgoing::Handler::PlayerExitVehicle(playerID, VehicleID);

@@ -11,7 +11,7 @@
 void mimp::internal::packet::BulletSync(Packet *p)
 {
 	RakServerInterface *pRakServer = mimp::internal::server::GetServerInstance()->getRakServer();
-	CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+	CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 	if (p->length < sizeof(BULLET_SYNC_DATA) + 1)
 	{
@@ -21,7 +21,7 @@ void mimp::internal::packet::BulletSync(Packet *p)
 	RakNet::BitStream bsBulletSync((unsigned char *)p->data, p->length, false);
 	WORD playerId = pRakServer->GetIndexFromPlayerID(p->playerId);
 
-	mimp::Player *pPlayer = pPlayerPool->GetAt(playerId);
+	mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerId);
 	if (pPlayer == nullptr)
 	{
 		// Invalid player, usually not connected.

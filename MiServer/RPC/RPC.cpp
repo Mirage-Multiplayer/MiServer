@@ -75,11 +75,11 @@ namespace mimp
 
 			void SendPlayerPoolToPlayer(WORD playerID)
 			{
-				CPool<Player> *pPlayerPool = server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+				CPool<CPlayer> *pPlayerPool = server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 				RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
 
 				// let the player know about all the players in the server
-				for (Player *p : *pPlayerPool)
+				for (CPlayer *p : *pPlayerPool)
 				{
 					if (p == nullptr)
 					{
@@ -107,9 +107,9 @@ namespace mimp
 			void SpawnAllVehiclesForPlayer(WORD playerID)
 			{
 				RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
-				CPool<Vehicle> *pVehiclePool = server::GetServerInstance()->GetNetGame()->GetVehiclePool();
+				CPool<CVehicle> *pVehiclePool = server::GetServerInstance()->GetNetGame()->GetVehiclePool();
 				// spawn all vehicles for this player
-				for (Vehicle *v : *pVehiclePool)
+				for (CVehicle *v : *pVehiclePool)
 				{
 					if (v == nullptr)
 					{
@@ -140,6 +140,7 @@ namespace mimp
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_DialogResponse, incoming::Handler::DialogResponse);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_InteriorChangeNotification, incoming::Handler::InteriorChangeNotification);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ScmEvent, incoming::Handler::ScmEvent);
+				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_SendCommand, incoming::Handler::SendCommand);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_CameraTarget, incoming::Handler::HandleUnsupported);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ClickPlayer, incoming::Handler::HandleUnsupported);
 				pRakServer->RegisterAsRemoteProcedureCall(&incoming::RPC_ClientCheckResponse, incoming::Handler::HandleUnsupported);
@@ -186,6 +187,7 @@ namespace mimp
 				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_PickedUpPickup);
 				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_SelectObject);
 				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_SelectTextDraw);
+				pRakServer->UnregisterAsRemoteProcedureCall(&incoming::RPC_SendCommand);
 			}
 		}
 	}

@@ -12,10 +12,10 @@ namespace mimp
 	/**
 	 * Vehicle object.
 	 */
-	class Vehicle
+	class CVehicle
 	{
 	public:
-		Vehicle();
+		CVehicle();
 
 		inline const int getId(void) const
 		{
@@ -53,7 +53,7 @@ namespace mimp
 		static int Create(const uint16_t model, const float x, const float y, const float z, const float rotation,
 						  const int color1, const int color2, const int respawndelay, const bool respawn, const bool siren, const int interior);
 
-		static int Destroy(const Vehicle &vehicle);
+		static int Destroy(const CVehicle &vehicle);
 
 	private:
 		friend internal::RPC::incoming::Handler;

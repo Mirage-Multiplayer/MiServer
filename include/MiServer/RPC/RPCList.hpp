@@ -221,7 +221,7 @@ namespace mimp
 					// static void SetVehicleZAngle(void);
 					// static void SetVehicleParams(void);
 					// static void SetVehicleParamsEx(void);
-					static void WorldVehicleAdd(Vehicle *veh, const int playerid);
+					static void WorldVehicleAdd(CVehicle *veh, const int playerid);
 					static void WorldVehicleRemove(const WORD idx, const int playerid);
 					static void ConnectionRejected(void);
 				};

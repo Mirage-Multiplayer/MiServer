@@ -27,126 +27,89 @@ namespace mimp
 			};
 
 			// Disclaimer: I wanted to make this as dynamic as possible, and this was the way I found
+			// note: FUCK TEMPLATED VARIADIC ARGS I HATE U. :p
 			using OnServerInit_t = std::function<int()>;
 
 			using OnServerExit_t = std::function<int()>;
 
-			using OnPlayerConnect_t = std::function<int(Player *)>;
+			using OnPlayerConnect_t = std::function<int(CPlayer *)>;
 			using OnPlayerConnect_params = struct
 			{
-				Player *player;
+				CPlayer *player;
 			};
 
-			using OnPlayerDisconnect_t = std::function<int(Player *, const int)>;
+			using OnPlayerDisconnect_t = std::function<int(CPlayer *, const int)>;
 			using OnPlayerDisconnect_params = struct
 			{
-				Player *player;
+				CPlayer *player;
 				const int reason;
 			};
 
-			using OnPlayerSpawn_t = std::function<int(Player *)>;
+			using OnPlayerSpawn_t = std::function<int(CPlayer *)>;
 			using OnPlayerSpawn_params = struct
 			{
-				Player *player;
+				CPlayer *player;
 			};
 
-			using OnPlayerUpdate_t = std::function<int(Player *)>;
+			using OnPlayerUpdate_t = std::function<int(CPlayer *)>;
 			using OnPlayerUpdate_params = struct
 			{
-				Player *player;
+				CPlayer *player;
 			};
-			using OnPlayerDeath_t = std::function<int(Player *, Player *, const int)>;
+			using OnPlayerDeath_t = std::function<int(CPlayer *, CPlayer *, const int)>;
 			using OnPlayerDeath_params = struct
 			{
-				Player *player;
-				Player *killer;
+				CPlayer *player;
+				CPlayer *killer;
 				const int reason;
 			};
 
-			using OnVehicleSpawn_t = std::function<int(Vehicle *)>;
+			using OnVehicleSpawn_t = std::function<int(CVehicle *)>;
 			using OnVehicleSpawn_params = struct
 			{
-				Vehicle *vehicle;
+				CVehicle *vehicle;
 			};
 
-			using OnVehicleDeath_t = std::function<int(Vehicle *, Player *)>;
+			using OnVehicleDeath_t = std::function<int(CVehicle *, CPlayer *)>;
 			using OnVehicleDeath_params = struct
 			{
-				Vehicle *vehicle;
-				Player *killer;
+				CVehicle *vehicle;
+				CPlayer *killer;
 			};
 
-			using OnPlayerText_t = std::function<int(Player *, const char *)>;
+			using OnPlayerText_t = std::function<int(CPlayer *, const char *)>;
 			using OnPlayerText_params = struct
 			{
-				Player *player;
+				CPlayer *player;
 				const char *text;
 			};
 
-			using OnPlayerCommandText_t = std::function<int(Player *, const char *)>;
+			using OnPlayerCommandText_t = std::function<int(CPlayer *, const char *)>;
 			using OnPlayerCommandText_params = struct
 			{
-				Player *player;
+				CPlayer *player;
 				const char *cmd;
 			};
 
-			using OnPlayerRequestClass_t = std::function<int(Player *, const int)>;
+			using OnPlayerRequestClass_t = std::function<int(CPlayer *, const int)>;
 			using OnPlayerRequestClass_params = struct
 			{
-				Player *player;
+				CPlayer *player;
 				const int classid;
 			};
 
-			using OnPlayerEnterVehicle_t = std::function<int(Player *, Vehicle *)>;
+			using OnPlayerEnterVehicle_t = std::function<int(CPlayer *, CVehicle *)>;
 			using OnPlayerEnterVehicle_params = struct
 			{
-				Player *player;
-				Vehicle *vehicle;
+				CPlayer *player;
+				CVehicle *vehicle;
 			};
 
-			using OnPlayerExitVehicle_t = std::function<int(Player *, Vehicle *)>;
+			using OnPlayerExitVehicle_t = std::function<int(CPlayer *, CVehicle *)>;
 			using OnPlayerExitVehicle_params = struct
 			{
-				Player *player;
-				Vehicle *vehicle;
-			};
-
-			using OnPlayerStateChange_t = std::function<int(Player *, const int, const int)>;
-			using OnPlayerStateChange = struct
-			{
-				Player *player;
-				const int newstate;
-				const int oldstate;
-			};
-
-			using OnPlayerEnterCheckpoint_t = std::function<int(Player *)>;
-			using OnPlayerEnterCheckpoint_params = struct
-			{
-				Player *player;
-			};
-
-			using OnPlayerLeaveCheckpoint_t = std::function<int(Player *)>;
-			using OnPlayerLeaveCheckpoint_params = struct
-			{
-				Player *player;
-			};
-
-			using OnPlayerEnterRaceCheckpoint_t = std::function<int(Player *)>;
-			using OnPlayerEnterRaceCheckpoint_params = struct
-			{
-				Player *player;
-			};
-
-			using OnPlayerLeaveRaceCheckpoint_t = std::function<int(Player *)>;
-			using OnPlayerLeaveRaceCheckpoint_params = struct
-			{
-				Player *player;
-			};
-
-			using OnRconCommand_t = std::function<int(const char *)>;
-			using OnRconCommand_params = struct
-			{
-				const char *cmd;
+				CPlayer *player;
+				CVehicle *vehicle;
 			};
 
 		}

@@ -10,12 +10,12 @@ namespace mimp
     {
     public:
         CNetGame(uint16_t max_players, uint16_t max_vehicles);
-        internal::CPool<Player> *GetPlayerPool();
-        internal::CPool<Vehicle> *GetVehiclePool();
+        internal::CPool<CPlayer> *GetPlayerPool();
+        internal::CPool<CVehicle> *GetVehiclePool();
 
     private:
-        internal::CPool<Player> *m_pPlayerPool;
-        internal::CPool<Vehicle> *m_pVehiclePool;
+        internal::CPool<CPlayer> *m_pPlayerPool;
+        internal::CPool<CVehicle> *m_pVehiclePool;
     };
 }
 #endif

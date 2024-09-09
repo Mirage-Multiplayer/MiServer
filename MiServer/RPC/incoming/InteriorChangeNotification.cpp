@@ -18,7 +18,7 @@ namespace mimp
 				void Handler::InteriorChangeNotification(RPCParameters *rpcParams)
 				{
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;
@@ -35,7 +35,7 @@ namespace mimp
 					BYTE byteInteriorId;
 					bsData.Read(byteInteriorId);
 
-					mimp::Player *pPlayer = pPlayerPool->GetAt(playerID);
+					mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerID);
 
 					pPlayer->_setInteriorId(byteInteriorId);
 

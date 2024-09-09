@@ -19,7 +19,7 @@ namespace mimp
 				{
 					mimp::ServerConfig cfg = internal::server::GetServerInstance()->getConfig();
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;
@@ -75,7 +75,7 @@ namespace mimp
 						return;
 					}
 
-					pPlayerPool->InsertAt(playerID, new mimp::Player(rpcParams->sender, playerID, szNickName));
+					pPlayerPool->InsertAt(playerID, new mimp::CPlayer(rpcParams->sender, playerID, szNickName));
 
 					outgoing::Handler::InitGame(playerID,
 												cfg.zoneNames,

@@ -19,8 +19,8 @@ namespace mimp
 				{
 					RakNet::BitStream bsUpdate;
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
-					for (Player *i : *pPlayerPool)
+					CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					for (CPlayer *i : *pPlayerPool)
 					{
 						if (i != nullptr)
 						{

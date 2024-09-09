@@ -14,7 +14,7 @@ namespace mimp
         {
             namespace outgoing
             {
-                void Handler::WorldVehicleAdd(Vehicle *veh, const int playerid)
+                void Handler::WorldVehicleAdd(CVehicle *veh, const int playerid)
                 {
                     RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
 

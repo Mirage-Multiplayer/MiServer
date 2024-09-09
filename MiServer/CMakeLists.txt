@@ -25,6 +25,7 @@ add_library(miserver STATIC
 	"RPC/incoming/ScmEvent.cpp"
 	"RPC/incoming/SendSpawn.cpp"
 	"RPC/incoming/ChatMessage.cpp"
+	"RPC/incoming/SendCommand.cpp"
 	"RPC/incoming/InteriorChangeNotification.cpp"
 	"RPC/incoming/DeathNotification.cpp"
 	"RPC/incoming/DialogResponse.cpp"

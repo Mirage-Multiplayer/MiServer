@@ -47,6 +47,11 @@ namespace mimp
 					this->m_PlayerText = cb;
 				}
 
+				void OnPlayerCommandText(OnPlayerCommandText_t cb)
+				{
+					this->m_PlayerCMDText = cb;
+				}
+
 				void OnPlayerUpdate(OnPlayerUpdate_t cb)
 				{
 					this->m_PlayerUpdate = cb;
@@ -64,6 +69,7 @@ namespace mimp
 				OnPlayerDisconnect_t m_PlayerDisconnect;
 				OnPlayerSpawn_t m_PlayerSpawn;
 				OnPlayerText_t m_PlayerText;
+				OnPlayerCommandText_t m_PlayerCMDText;
 				OnPlayerUpdate_t m_PlayerUpdate;
 			};
 		}

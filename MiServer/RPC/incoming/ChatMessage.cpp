@@ -18,7 +18,7 @@ namespace mimp
 				void Handler::ChatMessage(RPCParameters *rpcParams)
 				{
 					RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
-					CPool<Player> *pPlayerPool = server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					CPool<CPlayer> *pPlayerPool = server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 					event::EventPool *pEventPool = server::GetServerInstance()->getEventPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);

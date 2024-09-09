@@ -3,6 +3,7 @@
 #include <MiServer/server/Server.hpp>
 #include <MiServer/event/EventTypes.hpp>
 #include <MiServer/event/EventPool.hpp>
+#include <MiServer/util/strformat.hpp>
 
 #ifdef _WIN32
 #pragma comment(lib, "ws2_32")
@@ -31,29 +32,38 @@ int main(void)
 
 	server.getEventPool()->OnServerInit([](void) -> int
 										{								
-		const int idx = mimp::Vehicle::Create(411, 368.3278f,2538.5803f,16.6275f,20.5909f, -1, -1, 10000, true, false, 0);
+		const int idx = mimp::CVehicle::Create(411, 368.3278f,2538.5803f,16.6275f,20.5909f, -1, -1, 10000, true, false, 0);
 		std::cout << "Vehicle id: " << idx << " created.\n";
 		std::cout << "ServerInit\n";
 		return 1; });
-	server.getEventPool()->OnPlayerSpawn([](mimp::Player *p) -> int
+	server.getEventPool()->OnPlayerSpawn([](mimp::CPlayer *p) -> int
 										 {
 		std::cout << "Player ID " << p->getPlayerId() << " Spawned\n";
 		p->clientMessage(0xCD5C5CFF, "Welcome");
 		return 1; });
 
-	server.getEventPool()->OnPlayerText([](mimp::Player *p, const char *text) -> int
+	server.getEventPool()->OnPlayerText([](mimp::CPlayer *p, const char *text) -> int
 										{
-		p->clientMessage(0xCD5C5CFF, text);
-		if (std::string(text).find("infernus") != -1)
-		{
+		p->clientMessage(0xFFFFFFFF, mimp::util::strnformat("%s say: %s", strlen(text) + 100, p->getNickName().c_str(), text));
+		return 1; });
+
+	server.getEventPool()->OnPlayerCommandText([](mimp::CPlayer *p, const char *cmd) -> int
+											   {
+		p->clientMessage(0xCD5C5CFF, mimp::util::strnformat("%s command:: %s", 256, p->getNickName().c_str(), cmd));
+		int model;
+		if(sscanf(cmd, "/create %d", &model)) {
 			float x, y, z;
 			p->getPos(x, y, z);
 			float r = p->getRotation();
-			mimp::Vehicle::Create(411, x,y,z,20.5909f, -1, -1, 10000, true, false, 0);
+			mimp::CVehicle::Create(model, x + 2.000f,y,z,20.5909f, -1, -1, 10000, true, false, 0);
+		}
+		char args[1024];
+		if(sscanf(cmd, "/getargs %s", args)) {
+			p->clientMessage(0xFFFFFFFF, args);
+		}
+		return 1; });
 
-		}; return 1; });
-
-	server.getEventPool()->OnPlayerUpdate([](mimp::Player *p) -> int
+	server.getEventPool()->OnPlayerUpdate([](mimp::CPlayer *p) -> int
 										  { 
 			std::cout << "Player Update\n";
 											return 1; });
@@ -63,7 +73,6 @@ int main(void)
 	while (1)
 	{
 		server.ServerTick();
-		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
 
 	return 1;

@@ -10,9 +10,9 @@
 void mimp::internal::packet::UpdatePosition(int iPlayerID, float fX, float fY, float fZ)
 {
 	RakServerInterface *pRakServer = mimp::internal::server::GetServerInstance()->getRakServer();
-	CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+	CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
-	mimp::Player *pPlayer = pPlayerPool->GetAt(iPlayerID);
+	mimp::CPlayer *pPlayer = pPlayerPool->GetAt(iPlayerID);
 
 	if (pPlayer->m_checkpointActive)
 	{

@@ -18,7 +18,7 @@ namespace mimp
 				{
 					std::cout << "Enter vehicle\n";
 					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;
@@ -45,7 +45,7 @@ namespace mimp
 
 					// OnPlayerEnterVehicle
 
-					mimp::Player *pPlayer = pPlayerPool->GetAt(playerID);
+					mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerID);
 					pPlayer->getInCarSyncData()->VehicleID = VehicleID;
 
 					outgoing::Handler::PlayerEnterVehicle(playerID, VehicleID, bytePassenger);

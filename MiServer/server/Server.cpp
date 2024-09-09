@@ -1,5 +1,6 @@
 #include <MiServer/MiServer.hpp>
 #include <iostream>
+#include <thread>
 #include <MiRak/RakNetworkFactory.h>
 #include <MiRak/PacketEnumerations.h>
 #include <MiRak/RakEncr.h>
@@ -49,7 +50,7 @@ mimp::Server::~Server()
 int mimp::Server::Init(uint16_t port)
 {
 
-	std::cout << "[Mi:MP] Initializing Mi:MP Server instance version " << MISERVER_VERSION << "\n";
+	std::cout << "[Mi:MP] Initializing Mi:MP Server instance version " << __MISERVER_VERSION << "\n";
 
 	if (internal::server::GetServerInstance() != nullptr)
 	{
@@ -69,7 +70,7 @@ int mimp::Server::Init(uint16_t port)
 	internal::RPC::RegisterServerRPCs(this->m_pRakServer);
 
 	this->m_initialized = true;
-	std::cout << "[Mi:MP] Successfully initialized Mi:MP ' Mi-Server " << MISERVER_VERSION << " ' \n";
+	std::cout << "[Mi:MP] Successfully initialized Mi:MP ' Mi-Server " << __MISERVER_VERSION << " ' \n";
 	this->m_pEventPool->Emit(internal::event::SERVER_EVENT_SERVERINIT, nullptr);
 	return 1;
 }
@@ -161,5 +162,6 @@ int mimp::Server::ServerTick(void)
 		}
 		this->m_pRakServer->DeallocatePacket(pkt);
 	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	return 1;
 }

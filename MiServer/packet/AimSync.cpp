@@ -9,7 +9,7 @@
 void mimp::internal::packet::AimSync(Packet *p)
 {
 	RakServerInterface *pRakServer = mimp::internal::server::GetServerInstance()->getRakServer();
-	CPool<Player> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+	CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
 
 	if (p->length < sizeof(ONFOOT_SYNC_DATA) + 1)
 	{
@@ -20,7 +20,7 @@ void mimp::internal::packet::AimSync(Packet *p)
 	WORD playerId = pRakServer->GetIndexFromPlayerID(p->playerId);
 
 	// clear last data
-	mimp::Player *pPlayer = pPlayerPool->GetAt(playerId);
+	mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerId);
 	if (pPlayer == nullptr)
 	{
 		// Invalid player, usually not connected.
