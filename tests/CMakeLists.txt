@@ -1,3 +1,5 @@
 include(AddMiServerTest)
-AddMiServerTest(simple "simple.cpp")
+AddMiServerxxTest(simplexx "simplexx.cpp")
+AddMiServerTest(simple "simple.c")
+install(TARGETS simplexx)
 install(TARGETS simple)

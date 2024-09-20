@@ -1,17 +1,16 @@
-#ifndef __MISERVER_TYPES_H
-#define __MISERVER_TYPES_H
-#include <stddef.h>
-
-typedef unsigned long DWORD;
-typedef int BOOL;
-typedef unsigned char BYTE;
-typedef unsigned short WORD;
-typedef float FLOAT;
-
-#ifdef _WIN32
-#define OVERRIDE override
-#else
-#define OVERRIDE
+#ifndef __MISERVER_CTYPES_H
+#define __MISERVER_CTYPES_H
+#ifdef __cplusplus
+extern "C"
+{
 #endif
-
+    typedef void *mimp_server_t;
+    typedef void *mimp_netgame_t;
+    typedef void *mimp_netgame_player_t;
+    typedef void *mimp_netgame_vehicle_t;
+    typedef void *mimp_netgame_playerpool_t;
+    typedef void *mimp_netgame_vehiclepool_t;
+#ifdef __cplusplus
+}
+#endif
 #endif

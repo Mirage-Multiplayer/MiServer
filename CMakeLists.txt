@@ -1,9 +1,9 @@
 ﻿cmake_minimum_required(VERSION 3.8)
-project(MiServer VERSION 0.0.1)
+project(MiServerxx VERSION 0.0.1)
 
 configure_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/MiServer/config.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/MiServerxx/config.h"
 )
 set(MiServer_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include/)
 set(MiServer_CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -27,9 +27,9 @@ endif()
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# MiServer Platform configuration
-option(MiServer_PLATFORM_WIN32 "MiServer platform Win32" OFF)
-option(MiServer_PLATFORM_UNIX "MiServer platform Unix" OFF)
+# MiServerxx Platform configuration
+option(MiServer_PLATFORM_WIN32 "MiServerxx platform Win32" OFF)
+option(MiServer_PLATFORM_UNIX "MiServerxx platform Unix" OFF)
 
 if(MiServer_PLATFORM_WIN32)
     message("Detected Windows platform")
@@ -50,13 +50,14 @@ option(MiServer_TESTS_OPT "Build tests" OFF)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/install)
 
-# MiServer lib
+# MiServerxx lib
+add_subdirectory(MiServerxx)
 add_subdirectory(MiServer)
 
-# MiServer deps
+# MiServerxx deps
 add_subdirectory(lib)
 
-# MiServer tests
+# MiServerxx tests
 if(MiServer_TESTS_OPT)
     add_subdirectory(tests)
     message(STATUS "Tests enabled")

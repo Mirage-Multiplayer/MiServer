@@ -15,7 +15,7 @@ Mirage Multiplayer Server Lib, used for create server executables
 - Dependencies
 - MiRak
 
-### MiServer
+### MiServerxx
 - Source Code
 - Organized by component
 
