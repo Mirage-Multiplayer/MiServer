@@ -6,6 +6,7 @@
 #include <MiServerxx/server/Server.hpp>
 #include <MiRak/PacketEnumerations.h>
 #include <MiRak/BitStream.h>
+#include <MiServerxx/util/euler.hpp>
 #include <iostream>
 
 void mimp::internal::packet::PlayerSync(Packet *p)
@@ -70,6 +71,14 @@ void mimp::internal::packet::PlayerSync(Packet *p)
 		pPlayer->m_OnFootSyncData->fQuaternion[1],
 		pPlayer->m_OnFootSyncData->fQuaternion[2],
 		pPlayer->m_OnFootSyncData->fQuaternion[3]);
+
+	const float rot = util::GTAQuatResolve(
+						  pPlayer->m_OnFootSyncData->fQuaternion[1],
+						  pPlayer->m_OnFootSyncData->fQuaternion[2],
+						  pPlayer->m_OnFootSyncData->fQuaternion[3], pPlayer->m_OnFootSyncData->fQuaternion[0])
+						  .z;
+
+	pPlayer->m_rotation = rot;
 
 	BYTE byteSyncHealthArmour = 0;
 	BYTE byteHealth = pPlayer->m_OnFootSyncData->byteHealth;

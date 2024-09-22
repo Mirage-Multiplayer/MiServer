@@ -5,6 +5,6 @@ add_library(miserver STATIC
 )
 
 target_link_directories(miserver PUBLIC ${CMAKE_INSTALL_PREFIX})
-target_link_libraries(miserver PRIVATE mirak miserverxx)
+target_link_libraries(miserver PRIVATE mirak miserverxx glm::glm)
 
 install(TARGETS miserver)

@@ -46,9 +46,11 @@ add_library(miserverxx STATIC
 	"RPC/outgoing/SetPlayerPos.cpp"
 	"RPC/outgoing/SetPlayerFacingAngle.cpp"
 	"RPC/outgoing/SetPlayerColor.cpp"
-	"RPC/outgoing/SendClientMessage.cpp" )
+	"RPC/outgoing/SendClientMessage.cpp" 
+	
+	"util/euler.cpp")
 
 target_link_directories(miserverxx PUBLIC ${CMAKE_INSTALL_PREFIX})
-target_link_libraries(miserverxx PRIVATE mirak)
+target_link_libraries(miserverxx PRIVATE mirak glm::glm)
 
 install(TARGETS miserverxx)

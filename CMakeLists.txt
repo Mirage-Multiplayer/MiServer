@@ -8,7 +8,7 @@ configure_file(
 set(MiServer_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include/)
 set(MiServer_CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-include_directories("${MiServer_INCLUDE_DIRS}" "${CMAKE_CURRENT_SOURCE_DIR}/lib/MiRak/include")
+include_directories("${MiServer_INCLUDE_DIRS}" "${CMAKE_CURRENT_SOURCE_DIR}/lib/MiRak/include" "${CMAKE_CURRENT_SOURCE_DIR}/lib/glm/glm")
 
 list(APPEND CMAKE_MODULE_PATH ${MiServer_CMAKE_MODULE_PATH})
 
@@ -51,8 +51,7 @@ option(MiServer_TESTS_OPT "Build tests" OFF)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/install)
 
 # MiServerxx lib
-add_subdirectory(MiServerxx)
-add_subdirectory(MiServer)
+add_subdirectory(source)
 
 # MiServerxx deps
 add_subdirectory(lib)

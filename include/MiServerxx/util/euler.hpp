@@ -3,12 +3,12 @@
 #include <cstring>
 #include <string>
 #include <cmath>
+#include <glm/glm.hpp>
 namespace mimp
 {
     namespace util
     {
-        float quaternionToYaw(float x, float y, float z, float w);
-
+        glm::vec3 GTAQuatResolve(float x, float y, float z, float w);
     }
 }
 #endif

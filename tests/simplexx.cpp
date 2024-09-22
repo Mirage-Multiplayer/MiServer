@@ -55,7 +55,7 @@ int main(void)
 			float x, y, z;
 			p->getPos(x, y, z);
 			float r = p->getRotation();
-			mimp::CVehicle::Create(model, x + 2.000f,y,z,20.5909f, -1, -1, 10000, true, false, 0);
+			mimp::CVehicle::Create(model, x + 2.000f,y,z,r, -1, -1, 10000, true, false, 0);
 		}
 		char args[1024];
 		if(sscanf(cmd, "/getargs %s", args)) {
