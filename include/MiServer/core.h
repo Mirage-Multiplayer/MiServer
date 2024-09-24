@@ -1,5 +1,5 @@
-#ifndef __MISERVER_SERVER_H
-#define __MISERVER_SERVER_H
+#ifndef __MISERVER_CORE_H
+#define __MISERVER_CORE_H
 #include <stdint.h>
 #include <MiServer/types.h>
 #include <stdbool.h>
@@ -46,13 +46,13 @@ extern "C"
     mimp_server_info_t mimp_server_info__new(const char *hostname, const char *gamemode, const char *language, int maxplayers);
     mimp_server_config_t mimp_server_config__new(void);
 
-    mimp_server_t mimp_server__new(mimp_server_info_t info, mimp_server_config_t config);
-    int mimp_server__init(mimp_server_t server, uint16_t port);
-    int mimp_server__serverTick(mimp_server_t server);
-    int mimp_server__shutdown(mimp_server_t server);
-    int mimp_server__destroy(mimp_server_t server);
+    mimp_core_t mimp_core__new(mimp_server_info_t info, mimp_server_config_t config);
+    int mimp_core__run(mimp_core_t core, uint16_t port);
+    int mimp_core__proccessTick(mimp_core_t core);
+    int mimp_core__shutdown(mimp_core_t core);
+    int mimp_core__destroy(mimp_core_t core);
 
-    mimp_netgame_t mimp_server__getNetGame(mimp_server_t server);
+    mimp_netgame_t mimp_core__getNetGame(mimp_core_t core);
 
 #ifdef __cplusplus
 }

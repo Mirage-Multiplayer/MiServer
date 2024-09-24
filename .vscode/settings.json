@@ -56,6 +56,7 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "sstream": "cpp",
-        "miserver.h": "c"
+        "miserver.h": "c",
+        "core.h": "c"
     }
 }

@@ -1,6 +1,6 @@
 #include <MiServerxx/RPC/RPCList.hpp>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/MiServerxx.hpp>
 
 namespace mimp
@@ -13,7 +13,7 @@ namespace mimp
             {
                 void Handler::SetPlayerSkin(const int playerid, const int skinid)
                 {
-                    RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
+                    RakServerInterface *pRakServer = server::GetCoreInstance()->getRakServer();
                     RakNet::BitStream bs;
                     bs.Write(skinid);
 

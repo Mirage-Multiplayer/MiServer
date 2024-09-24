@@ -1,15 +1,15 @@
 #include <MiServerxx/packet/AimSync.hpp>
 #include <MiServerxx/packet/PositionSync.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
-#include <MiServerxx/server/Server.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
 #include <MiRak/PacketEnumerations.h>
 #include <MiRak/BitStream.h>
 
 void mimp::internal::packet::AimSync(Packet *p)
 {
-	RakServerInterface *pRakServer = mimp::internal::server::GetServerInstance()->getRakServer();
-	CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+	RakServerInterface *pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
+	CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 
 	if (p->length < sizeof(ONFOOT_SYNC_DATA) + 1)
 	{

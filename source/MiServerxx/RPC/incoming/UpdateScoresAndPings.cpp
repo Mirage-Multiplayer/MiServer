@@ -2,8 +2,8 @@
 #include <MiServerxx/RPC/RPCList.hpp>
 #include <MiRak/RakServer.h>
 #include <MiRak/BitStream.h>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/MiServerxx.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
 
@@ -18,8 +18,8 @@ namespace mimp
 				void Handler::UpdateScoresAndPings(RPCParameters *rpcParams)
 				{
 					RakNet::BitStream bsUpdate;
-					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					RakServerInterface *pRakServer = internal::server::GetCoreInstance()->getRakServer();
+					CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 					for (CPlayer *i : *pPlayerPool)
 					{
 						if (i != nullptr)

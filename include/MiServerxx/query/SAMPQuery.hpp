@@ -1,6 +1,6 @@
 #ifndef __MISERVER_SAMPQUERY_HPP
 #define __MISERVER_SAMPQUERY_HPP
-#include <MiServerxx/server/Server.hpp>
+#include <MiServerxx/core/Core.hpp>
 namespace mimp
 {
     namespace internal

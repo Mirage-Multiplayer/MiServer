@@ -1,6 +1,6 @@
 #include <MiServerxx/RPC/RPC.hpp>
 #include <MiServerxx/RPC/RPCList.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiRak/BitStream.h>
 
 namespace mimp

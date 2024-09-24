@@ -1,6 +1,6 @@
 #include <MiServerxx/RPC/RPC.hpp>
 #include <MiServerxx/RPC/RPCList.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiRak/BitStream.h>
 
 namespace mimp
@@ -13,7 +13,7 @@ namespace mimp
             {
                 void Handler::SetPlayerFacingAngle(const int playerid, const float a)
                 {
-                    RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
+                    RakServerInterface *pRakServer = server::GetCoreInstance()->getRakServer();
                     RakNet::BitStream bs;
                     bs.Write(a);
 

@@ -2,8 +2,8 @@
 #include <MiServerxx/RPC/RPCList.hpp>
 #include <MiRak/RakServer.h>
 #include <MiRak/BitStream.h>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/MiServerxx.hpp>
 namespace mimp
 {
@@ -39,7 +39,7 @@ namespace mimp
 					RakNet::BitStream bsReply;
 					bsReply.Write((BYTE)1);
 					bsReply.Write((char *)&psInfo, sizeof(psInfo));
-					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
+					RakServerInterface *pRakServer = internal::server::GetCoreInstance()->getRakServer();
 					pRakServer->RPC(&RPC_RequestClass, &bsReply, HIGH_PRIORITY, RELIABLE,
 									0, rpcParams->sender, FALSE, FALSE, UNASSIGNED_NETWORK_ID, NULL);
 				}

@@ -1,7 +1,7 @@
-#include <MiServer/server.h>
-#include <MiServerxx/server/ServerInstance.hpp>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerConfig.hpp>
+#include <MiServer/core.h>
+#include <MiServerxx/core/CoreInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/ServerConfig.hpp>
 
 mimp_server_info_t mimp_server_info__new(const char *hostname, const char *gamemode, const char *language, int maxplayers)
 {
@@ -104,35 +104,35 @@ static mimp::ServerInfo __toServerInfo(mimp_server_info_t info)
     return inf;
 }
 
-mimp_server_t mimp_server__new(mimp_server_info_t info, mimp_server_config_t config)
+mimp_core_t mimp_core__new(mimp_server_info_t info, mimp_server_config_t config)
 {
-    void *server = new mimp::CServer(__toServerInfo(info), __toServerConfig(config));
-    return server;
+    void *core = new mimp::CCore(__toServerInfo(info), __toServerConfig(config));
+    return core;
 }
 
-int mimp_server__init(mimp_server_t server, uint16_t port)
+int mimp_core__run(mimp_core_t c, uint16_t port)
 {
-    reinterpret_cast<mimp::CServer *>(server)->Init(port);
+    reinterpret_cast<mimp::CCore *>(c)->Run(port);
     return 1;
 }
 
-int mimp_server__serverTick(mimp_server_t server)
+int mimp_core__proccessTick(mimp_core_t c)
 {
-    return reinterpret_cast<mimp::CServer *>(server)->ServerTick();
+    return reinterpret_cast<mimp::CCore *>(c)->ProccessTick();
 }
 
-int mimp_server__shutdown(mimp_server_t server)
+int mimp_core__shutdown(mimp_core_t core)
 {
-    return reinterpret_cast<mimp::CServer *>(server)->Shutdown();
+    return reinterpret_cast<mimp::CCore *>(core)->Shutdown();
 }
 
-int mimp_server__destroy(mimp_server_t server)
+int mimp_core__destroy(mimp_core_t core)
 {
-    delete (reinterpret_cast<mimp::CServer *>(server));
+    delete (reinterpret_cast<mimp::CCore *>(core));
     return 1;
 }
 
-mimp_netgame_t mimp_server__getNetGame(mimp_server_t server)
+mimp_netgame_t mimp_core__getNetGame(mimp_core_t core)
 {
-    return reinterpret_cast<mimp::CServer *>(server)->GetNetGame();
+    return reinterpret_cast<mimp::CCore *>(core)->GetNetGame();
 }

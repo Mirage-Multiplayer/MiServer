@@ -1,7 +1,7 @@
 #include <MiServerxx/RPC/RPC.hpp>
 #include <MiServerxx/RPC/RPCList.hpp>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/MiServerxx.hpp>
 namespace mimp
 {
@@ -13,7 +13,7 @@ namespace mimp
             {
                 void Handler::SetPlayerPos(const int playerid, const float x, const float y, const float z)
                 {
-                    RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
+                    RakServerInterface *pRakServer = server::GetCoreInstance()->getRakServer();
                     RakNet::BitStream bs;
                     bs.Write(x);
                     bs.Write(y);

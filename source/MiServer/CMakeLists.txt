@@ -1,5 +1,5 @@
 add_library(miserver STATIC
-	"server.cpp"
+	"core.cpp"
 	"netgame.cpp"
 	"event.cpp"
 )

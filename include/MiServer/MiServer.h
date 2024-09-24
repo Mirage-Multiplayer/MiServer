@@ -4,7 +4,7 @@
 extern "C"
 {
 #endif
-#include <MiServer/server.h>
+#include <MiServer/core.h>
 #include <MiServer/netgame.h>
 #include <MiServer/event.h>
 #ifdef __cplusplus

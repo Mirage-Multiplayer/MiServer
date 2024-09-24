@@ -1,39 +1,39 @@
 #include <MiServer/event.h>
-#include <MiServerxx/server/Server.hpp>
+#include <MiServerxx/core/Core.hpp>
 #include <MiServerxx/event/EventPool.hpp>
 #include <MiServerxx/event/EventTypes.hpp>
 
-void mimp_server_event__onServerInit(mimp_server_t server, int (*cb)(void))
+void mimp_server_event__onServerInit(mimp_core_t c, int (*cb)(void))
 {
-    reinterpret_cast<mimp::CServer *>(server)->getEventPool()->OnServerInit(cb);
+    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnServerInit(cb);
 }
 
-void mimp_server_event__onServerExit(mimp_server_t server, int (*cb)(void))
+void mimp_server_event__onServerExit(mimp_core_t c, int (*cb)(void))
 {
-    reinterpret_cast<mimp::CServer *>(server)->getEventPool()->OnServerExit(cb);
+    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnServerExit(cb);
 }
 
-void mimp_server_event__onPlayerConnect(mimp_server_t server, int (*cb)(mimp_netgame_player_t player))
+void mimp_server_event__onPlayerConnect(mimp_core_t c, int (*cb)(mimp_netgame_player_t player))
 {
-    reinterpret_cast<mimp::CServer *>(server)->getEventPool()->OnPlayerConnect(cb);
+    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnPlayerConnect(cb);
 }
 
-void mimp_server_event__onPlayerDisconnect(mimp_server_t server, int (*cb)(mimp_netgame_player_t player, int reason))
+void mimp_server_event__onPlayerDisconnect(mimp_core_t c, int (*cb)(mimp_netgame_player_t player, int reason))
 {
-    reinterpret_cast<mimp::CServer *>(server)->getEventPool()->OnPlayerDisconnect(cb);
+    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnPlayerDisconnect(cb);
 }
 
-void mimp_server_event__onPlayerSpawn(mimp_server_t server, int (*cb)(mimp_netgame_player_t player))
+void mimp_server_event__onPlayerSpawn(mimp_core_t c, int (*cb)(mimp_netgame_player_t player))
 {
-    reinterpret_cast<mimp::CServer *>(server)->getEventPool()->OnPlayerSpawn(cb);
+    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnPlayerSpawn(cb);
 }
 
-void mimp_server_event__onPlayerText(mimp_server_t server, int (*cb)(mimp_netgame_player_t player, const char *text))
+void mimp_server_event__onPlayerText(mimp_core_t c, int (*cb)(mimp_netgame_player_t player, const char *text))
 {
-    reinterpret_cast<mimp::CServer *>(server)->getEventPool()->OnPlayerText(cb);
+    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnPlayerText(cb);
 }
 
-void mimp_server_event__onPlayerCommandText(mimp_server_t server, int (*cb)(mimp_netgame_player_t player, const char *cmdtext))
+void mimp_server_event__onPlayerCommandText(mimp_core_t c, int (*cb)(mimp_netgame_player_t player, const char *cmdtext))
 {
-    reinterpret_cast<mimp::CServer *>(server)->getEventPool()->OnPlayerCommandText(cb);
+    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnPlayerCommandText(cb);
 }

@@ -1,10 +1,10 @@
-#ifndef __MISERVER_SERVER_HPP
-#define __MISERVER_SERVER_HPP
+#ifndef __MISERVER_CORE_HPP
+#define __MISERVER_CORE_HPP
 #include <MiRak/RakServer.h>
 #include <MiRak/RakQuery.h>
 #include <string>
 #include <MiServerxx/event/EventPool.hpp>
-#include <MiServerxx/server/ServerConfig.hpp>
+#include <MiServerxx/core/ServerConfig.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
 namespace mimp
 {
@@ -34,20 +34,20 @@ namespace mimp
 	};
 
 	/**
-	 * Server class
+	 * Core class
 	 */
-	class CServer
+	class CCore
 	{
 	public:
-		CServer(const ServerInfo &info);
-		CServer(const ServerInfo &info, const ServerConfig &config);
-		~CServer();
+		CCore(const ServerInfo &info);
+		CCore(const ServerInfo &info, const ServerConfig &config);
+		~CCore();
 
 		/**
 		 * Init the server at the specified port.
 		 * @param port
 		 */
-		int Init(uint16_t port);
+		int Run(uint16_t port);
 		/**
 		 * Shutdown Server and kill's the server instance.
 		 */
@@ -56,7 +56,7 @@ namespace mimp
 		 * Proccess the server Tick "Update"
 		 * Should be called inside an infinite loop
 		 */
-		int ServerTick(void);
+		int ProccessTick(void);
 
 		/**
 		 * Get server info.

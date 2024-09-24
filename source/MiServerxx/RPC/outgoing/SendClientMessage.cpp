@@ -1,8 +1,8 @@
 #include <MiServerxx/MiServerxx.hpp>
 #include <MiServerxx/RPC/RPC.hpp>
 #include <MiServerxx/RPC/RPCList.hpp>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/event/EventTypes.hpp>
 #include <MiServerxx/event/EventPool.hpp>
 
@@ -19,7 +19,7 @@ namespace mimp
             {
                 void Handler::SendClientMessage(const int playerid, const int color, const int messageLength, const char *message)
                 {
-                    RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
+                    RakServerInterface *pRakServer = server::GetCoreInstance()->getRakServer();
                     RakNet::BitStream bs;
                     bs.Write(static_cast<uint32_t>(color));
                     bs.Write(static_cast<uint32_t>(messageLength));

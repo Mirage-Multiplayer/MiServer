@@ -2,8 +2,8 @@
 #include <MiServerxx/RPC/RPCList.hpp>
 #include <MiRak/RakServer.h>
 #include <MiRak/BitStream.h>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/MiServerxx.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
 
@@ -17,8 +17,8 @@ namespace mimp
 			{
 				void Handler::SendSpawn(RPCParameters *rpcParams)
 				{
-					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					RakServerInterface *pRakServer = internal::server::GetCoreInstance()->getRakServer();
+					CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 					WORD playerId = (WORD)pRakServer->GetIndexFromPlayerID(rpcParams->sender);
 					BYTE byteFightingStyle = 4;
 					BYTE byteTeam = -1;
@@ -41,7 +41,7 @@ namespace mimp
 
 					event::OnPlayerSpawn_params params;
 					params.player = pPlayer;
-					internal::server::GetServerInstance()->getEventPool()->Emit(event::SERVER_EVENT_PLAYERSPAWN, static_cast<void *>(&params));
+					internal::server::GetCoreInstance()->getEventPool()->Emit(event::SERVER_EVENT_PLAYERSPAWN, static_cast<void *>(&params));
 
 					RakNet::BitStream bsData;
 					bsData.Write(playerId);

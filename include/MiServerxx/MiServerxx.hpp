@@ -12,7 +12,7 @@ namespace mimp
     /**
      * @brief The server class
      */
-    class CServer;
+    class CCore;
     /**
      * @brief The player class
      */

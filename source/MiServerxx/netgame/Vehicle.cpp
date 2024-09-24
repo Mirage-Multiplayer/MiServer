@@ -1,8 +1,8 @@
 #include <MiServerxx/netgame/Vehicle.hpp>
 #include <MiServerxx/packet/SyncData.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
-#include <MiServerxx/server/Server.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
 #include <iostream>
 
 mimp::CVehicle::CVehicle()
@@ -55,7 +55,7 @@ int mimp::CVehicle::Create(const uint16_t model, const float x, const float y, c
 
 	veh->m_interiorId = interior;
 
-	const int idx = mimp::internal::server::GetServerInstance()->GetNetGame()->GetVehiclePool()->Insert(veh);
+	const int idx = mimp::internal::server::GetCoreInstance()->GetNetGame()->GetVehiclePool()->Insert(veh);
 	if (idx == -1)
 	{
 		return -1;

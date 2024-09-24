@@ -1,6 +1,6 @@
 add_library(miserverxx STATIC
-	"server/Server.cpp"
-	"server/ServerInstance.cpp" 
+	"core/Core.cpp"
+	"core/CoreInstance.cpp" 
 
 	"netgame/NetGame.cpp"
 	"netgame/Player.cpp"

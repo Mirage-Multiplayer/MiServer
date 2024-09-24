@@ -2,8 +2,8 @@
 #include <MiServerxx/RPC/RPCList.hpp>
 #include <MiRak/RakServer.h>
 #include <MiRak/BitStream.h>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/MiServerxx.hpp>
 
 namespace mimp
@@ -16,7 +16,7 @@ namespace mimp
             {
                 void Handler::PlayerEnterVehicle(const WORD playerid, const WORD vehicleid, const BYTE passenger)
                 {
-                    RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
+                    RakServerInterface *pRakServer = server::GetCoreInstance()->getRakServer();
                     RakNet::BitStream bs;
                     bs.Write(playerid);
                     bs.Write(vehicleid);

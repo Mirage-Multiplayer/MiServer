@@ -1,16 +1,16 @@
 #include <MiServerxx/packet/PositionSync.hpp>
 #include <MiServerxx/packet/PassengerSync.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
-#include <MiServerxx/server/Server.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
 
 #include <MiRak/PacketEnumerations.h>
 #include <MiRak/BitStream.h>
 
 void mimp::internal::packet::UpdatePosition(int iPlayerID, float fX, float fY, float fZ)
 {
-	RakServerInterface *pRakServer = mimp::internal::server::GetServerInstance()->getRakServer();
-	CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+	RakServerInterface *pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
+	CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 
 	mimp::CPlayer *pPlayer = pPlayerPool->GetAt(iPlayerID);
 
@@ -41,5 +41,5 @@ void mimp::internal::packet::UpdatePosition(int iPlayerID, float fX, float fY, f
 	}
 	mimp::internal::event::OnPlayerUpdate_params params;
 	params.player = pPlayer;
-	mimp::internal::server::GetServerInstance()->getEventPool()->Emit(mimp::internal::event::SERVER_EVENT_PLAYERUPDATE, static_cast<void *>(&params));
+	mimp::internal::server::GetCoreInstance()->getEventPool()->Emit(mimp::internal::event::SERVER_EVENT_PLAYERUPDATE, static_cast<void *>(&params));
 }

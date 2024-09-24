@@ -1,6 +1,6 @@
 #include <iostream>
 #include <thread>
-#include <MiServerxx/server/Server.hpp>
+#include <MiServerxx/core/Core.hpp>
 #include <MiServerxx/event/EventTypes.hpp>
 #include <MiServerxx/event/EventPool.hpp>
 #include <MiServerxx/util/strformat.hpp>
@@ -25,7 +25,7 @@ int main(void)
 	cfg.gravity = 0.008f;
 	cfg.disableEnterExits = true;
 	// Create Server instance
-	mimp::CServer server(info, cfg);
+	mimp::CCore server(info, cfg);
 
 	// Define callbacks & handlers
 	RakNet::RakQuery::setHandler(hnd);
@@ -68,11 +68,11 @@ int main(void)
 			std::cout << "Player Update\n";
 											return 1; });
 	// Initialize server
-	server.Init(7777);
+	server.Run(7777);
 
 	while (1)
 	{
-		server.ServerTick();
+		server.ProccessTick();
 	}
 
 	return 1;

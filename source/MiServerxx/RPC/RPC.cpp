@@ -2,8 +2,8 @@
 #include <MiRak/RakEncr.h>
 #include <string>
 #include <thread>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/MiServerxx.hpp>
 #include <MiServerxx/types.h>
 #include <MiServerxx/RPC/RPCList.hpp>
@@ -25,7 +25,7 @@ namespace mimp
 
 			void InitGameForPlayer(WORD playerID)
 			{
-				mimp::CServer *svr = mimp::internal::server::GetServerInstance();
+				mimp::CCore *svr = mimp::internal::server::GetCoreInstance();
 
 				// TODO: Modify server config
 				RakNet::BitStream bsInitGame;
@@ -75,8 +75,8 @@ namespace mimp
 
 			void SendPlayerPoolToPlayer(WORD playerID)
 			{
-				CPool<CPlayer> *pPlayerPool = server::GetServerInstance()->GetNetGame()->GetPlayerPool();
-				RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
+				CPool<CPlayer> *pPlayerPool = server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
+				RakServerInterface *pRakServer = server::GetCoreInstance()->getRakServer();
 
 				// let the player know about all the players in the server
 				for (CPlayer *p : *pPlayerPool)
@@ -106,8 +106,8 @@ namespace mimp
 
 			void SpawnAllVehiclesForPlayer(WORD playerID)
 			{
-				RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
-				CPool<CVehicle> *pVehiclePool = server::GetServerInstance()->GetNetGame()->GetVehiclePool();
+				RakServerInterface *pRakServer = server::GetCoreInstance()->getRakServer();
+				CPool<CVehicle> *pVehiclePool = server::GetCoreInstance()->GetNetGame()->GetVehiclePool();
 				// spawn all vehicles for this player
 				for (CVehicle *v : *pVehiclePool)
 				{

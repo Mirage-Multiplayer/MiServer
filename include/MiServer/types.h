@@ -4,7 +4,7 @@
 extern "C"
 {
 #endif
-    typedef void *mimp_server_t;
+    typedef void *mimp_core_t;
     typedef void *mimp_netgame_t;
     typedef void *mimp_netgame_player_t;
     typedef void *mimp_netgame_vehicle_t;

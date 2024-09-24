@@ -1,8 +1,8 @@
 #include <MiServerxx/MiServerxx.hpp>
 #include <MiServerxx/RPC/RPC.hpp>
 #include <MiServerxx/RPC/RPCList.hpp>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/event/EventTypes.hpp>
 #include <MiServerxx/event/EventPool.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
@@ -17,9 +17,9 @@ namespace mimp
 			{
 				void Handler::ChatMessage(RPCParameters *rpcParams)
 				{
-					RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
-					CPool<CPlayer> *pPlayerPool = server::GetServerInstance()->GetNetGame()->GetPlayerPool();
-					event::CEventPool *pEventPool = server::GetServerInstance()->getEventPool();
+					RakServerInterface *pRakServer = server::GetCoreInstance()->getRakServer();
+					CPool<CPlayer> *pPlayerPool = server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
+					event::CEventPool *pEventPool = server::GetCoreInstance()->getEventPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;

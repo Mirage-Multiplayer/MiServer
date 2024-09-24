@@ -18,18 +18,18 @@ API para gerenciamento do servidor.
 #### Classes
 > Classes utilizadas no servidor.
 
-- *[ CServer ]*:
+- *[ CCore ]*:
     - Classe que representa o servidor.
     - **Construtores**:
-        - `CServer(const ServerInfo &info)`: Construtor que inicializa o servidor com as informações fornecidas.
+        - `CCore(const ServerInfo &info)`: Construtor que inicializa o servidor com as informações fornecidas.
             - `info`: As informações do servidor.
-        - `CServer(const ServerInfo &info, const ServerConfig &config)`: Construtor que inicializa o servidor com as informações e configuração fornecidas.
+        - `CCore(const ServerInfo &info, const ServerConfig &config)`: Construtor que inicializa o servidor com as informações e configuração fornecidas.
             - `info`: As informações do servidor.
             - `config`: A configuração do servidor.
     - **Destrutor**:
-        - `~CServer()`: Destrutor da classe `CServer`.
+        - `~CCore()`: Destrutor da classe `CCore`.
     - **Métodos Públicos**:
-        - *[ Init ]*:
+        - *[ Run ]*:
             - Inicializa o servidor na porta especificada.
             - `port`: A porta na qual o servidor será inicializado.
             - **Retorno**: Um inteiro indicando o sucesso ou falha da operação.
@@ -42,7 +42,7 @@ API para gerenciamento do servidor.
             ```cpp
             int Shutdown(void);
             ```
-        - *[ ServerTick ]*:
+        - *[ ProccessTick ]*:
             - Processa o Tick do servidor (atualização).
             - Deve ser chamado dentro de um loop infinito.
             - **Retorno**: Um inteiro indicando o sucesso ou falha da operação.

@@ -2,16 +2,16 @@
 #include <MiServerxx/packet/PositionSync.hpp>
 #include <MiServerxx/packet/PassengerSync.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
-#include <MiServerxx/server/Server.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
 #include <MiRak/PacketEnumerations.h>
 #include <MiRak/BitStream.h>
 #include <iostream>
 
 void mimp::internal::packet::PassengerSync(Packet *p)
 {
-	RakServerInterface *pRakServer = mimp::internal::server::GetServerInstance()->getRakServer();
-	CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+	RakServerInterface *pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
+	CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 
 	if (p->length < sizeof(PASSENGER_SYNC_DATA) + 1)
 	{

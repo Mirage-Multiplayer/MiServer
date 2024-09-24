@@ -2,8 +2,8 @@
 #include <MiServerxx/RPC/RPCList.hpp>
 #include <MiRak/RakServer.h>
 #include <MiRak/BitStream.h>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/MiServerxx.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
 
@@ -17,9 +17,9 @@ namespace mimp
 			{
 				void Handler::ClientJoin(RPCParameters *rpcParams)
 				{
-					mimp::ServerConfig cfg = internal::server::GetServerInstance()->getConfig();
-					RakServerInterface *pRakServer = internal::server::GetServerInstance()->getRakServer();
-					CPool<CPlayer> *pPlayerPool = internal::server::GetServerInstance()->GetNetGame()->GetPlayerPool();
+					mimp::ServerConfig cfg = internal::server::GetCoreInstance()->getConfig();
+					RakServerInterface *pRakServer = internal::server::GetCoreInstance()->getRakServer();
+					CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;
@@ -110,7 +110,7 @@ namespace mimp
 					// OnPlayerConnect
 					internal::event::OnPlayerConnect_params params;
 					params.player = pPlayerPool->GetAt(playerID);
-					internal::server::GetServerInstance()
+					internal::server::GetCoreInstance()
 						->getEventPool()
 						->Emit(internal::event::SERVER_EVENT_PLAYERCONNECT, static_cast<void *>(&params));
 				}

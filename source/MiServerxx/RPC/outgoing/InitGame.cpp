@@ -1,6 +1,6 @@
 #include <MiServerxx/RPC/RPC.hpp>
 #include <MiServerxx/RPC/RPCList.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiRak/RakServer.h>
 #include <MiRak/BitStream.h>
 
@@ -20,7 +20,7 @@ namespace mimp
                                        const int netModeNormalIncarSendRate, const int netModeFiringSendRate, const int netModeSendMultiplier,
                                        const BYTE lagCompensation)
                 {
-                    CServer *svr = server::GetServerInstance();
+                    CCore *svr = server::GetCoreInstance();
 
                     // TODO: Modify server config
                     RakNet::BitStream bsInitGame;

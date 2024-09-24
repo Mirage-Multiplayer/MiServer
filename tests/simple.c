@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <MiServer/MiServer.h>
 
-mimp_server_t server = NULL;
+mimp_core_t server = NULL;
 
 int onServerInit(void)
 {
@@ -33,7 +33,7 @@ int onPlayerText(mimp_netgame_player_t player, const char *text)
 int onPlayerCommandText(mimp_netgame_player_t player, const char *cmdtext)
 {
     const int id = mimp_netgame_player__getId(player);
-    mimp_netgame_t netgame = mimp_server__getNetGame(server);
+    mimp_netgame_t netgame = mimp_core__getNetGame(server);
     float x, y, z, f;
     mimp_netgame_player__getPos(player, &x, &y, &z);
     mimp_netgame_player__getRotation(player, &f);
@@ -50,17 +50,17 @@ int main(void)
 {
     mimp_server_info_t info = mimp_server_info__new("hostname", "gamemode", "language", 32);
     mimp_server_config_t config = mimp_server_config__new();
-    server = mimp_server__new(info, config);
+    server = mimp_core__new(info, config);
     mimp_server_event__onServerInit(server, onServerInit);
     mimp_server_event__onServerExit(server, onServerExit);
     mimp_server_event__onPlayerConnect(server, onPlayerConnect);
     mimp_server_event__onPlayerText(server, onPlayerText);
     mimp_server_event__onPlayerCommandText(server, onPlayerCommandText);
 
-    mimp_server__init(server, 7777);
+    mimp_core__run(server, 7777);
     while (1)
     {
-        mimp_server__serverTick(server);
+        mimp_core__proccessTick(server);
     }
     return 1;
 }

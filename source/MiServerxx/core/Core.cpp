@@ -4,8 +4,8 @@
 #include <MiRak/RakNetworkFactory.h>
 #include <MiRak/PacketEnumerations.h>
 #include <MiRak/RakEncr.h>
-#include <MiServerxx/server/Server.hpp>
-#include <MiServerxx/server/ServerInstance.hpp>
+#include <MiServerxx/core/Core.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/event/EventPool.hpp>
 #include <MiServerxx/packet/PlayerSync.hpp>
 #include <MiServerxx/packet/AimSync.hpp>
@@ -21,38 +21,38 @@ mimp::ServerInfo::ServerInfo(const char *hostname, const char *gamemode, const c
 {
 }
 
-mimp::CServer::CServer(const ServerInfo &info) : m_info(info),
-												 m_port(0),
-												 m_initialized(false)
+mimp::CCore::CCore(const ServerInfo &info) : m_info(info),
+											 m_port(0),
+											 m_initialized(false)
 {
 	this->m_pNetGame = new mimp::CNetGame(info.max_players, 6000);
 	this->m_pEventPool = new internal::event::CEventPool();
 	this->m_pRakServer = RakNetworkFactory::GetRakServerInterface();
 }
 
-mimp::CServer::CServer(const ServerInfo &info, const ServerConfig &config) : m_info(info),
-																			 m_port(0),
-																			 m_initialized(false),
-																			 m_cfg(config)
+mimp::CCore::CCore(const ServerInfo &info, const ServerConfig &config) : m_info(info),
+																		 m_port(0),
+																		 m_initialized(false),
+																		 m_cfg(config)
 {
 	this->m_pNetGame = new mimp::CNetGame(info.max_players, 6000);
 	this->m_pEventPool = new internal::event::CEventPool();
 	this->m_pRakServer = RakNetworkFactory::GetRakServerInterface();
 }
 
-mimp::CServer::~CServer()
+mimp::CCore::~CCore()
 {
 	delete this->m_pNetGame;
 	delete this->m_pRakServer;
 	delete this->m_pEventPool;
 }
 
-int mimp::CServer::Init(uint16_t port)
+int mimp::CCore::Run(uint16_t port)
 {
 
 	std::cout << "[Mi:MP] Initializing Mi:MP Server instance version " << __MISERVER_VERSION << "\n";
 
-	if (internal::server::GetServerInstance() != nullptr)
+	if (internal::server::GetCoreInstance() != nullptr)
 	{
 		std::cout << "[Mi:MP] Server instance already Loaded!. Aborting...";
 		return -1;
@@ -66,7 +66,7 @@ int mimp::CServer::Init(uint16_t port)
 	this->m_pRakServer->Start(this->m_info.max_players, 0, 5, port);
 	this->m_pRakServer->StartOccasionalPing();
 
-	internal::server::SetServerInstance(this);
+	internal::server::SetCoreInstance(this);
 	internal::RPC::RegisterServerRPCs(this->m_pRakServer);
 
 	this->m_initialized = true;
@@ -75,7 +75,7 @@ int mimp::CServer::Init(uint16_t port)
 	return 1;
 }
 
-int mimp::CServer::Shutdown(void)
+int mimp::CCore::Shutdown(void)
 {
 	this->m_pRakServer->Disconnect(300);
 	RakNetworkFactory::DestroyRakServerInterface(this->m_pRakServer);
@@ -92,11 +92,11 @@ int mimp::CServer::Shutdown(void)
 	RakNet::RakEncr::m_srvChallenge = 0;
 	RakNet::RakEncr::setPort(0);
 
-	internal::server::SetServerInstance(nullptr);
+	internal::server::SetCoreInstance(nullptr);
 	return 1;
 }
 
-int mimp::CServer::ServerTick(void)
+int mimp::CCore::ProccessTick(void)
 {
 	unsigned char packetIdentifier;
 	Packet *pkt = nullptr;
