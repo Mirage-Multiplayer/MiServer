@@ -8,6 +8,9 @@ namespace mimp
 	{
 		namespace packet
 		{
+			/**
+			 * @brief Bullet Sync Packet
+			 */
 			void BulletSync(Packet *pkt);
 		}
 	}

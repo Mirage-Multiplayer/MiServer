@@ -3,6 +3,9 @@
 #include <cstdint>
 namespace mimp
 {
+	/**
+	 * Server Configuration
+	 */
 	struct ServerConfig
 	{
 		bool zoneNames;

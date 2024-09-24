@@ -9,8 +9,17 @@
 
 namespace mimp
 {
+    /**
+     * @brief The server class
+     */
     class CServer;
+    /**
+     * @brief The player class
+     */
     class CPlayer;
+    /**
+     * @brief The vehicle class
+     */
     class CVehicle;
 }
 

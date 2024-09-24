@@ -26,7 +26,7 @@ mimp::CServer::CServer(const ServerInfo &info) : m_info(info),
 												 m_initialized(false)
 {
 	this->m_pNetGame = new mimp::CNetGame(info.max_players, 6000);
-	this->m_pEventPool = new internal::event::EventPool();
+	this->m_pEventPool = new internal::event::CEventPool();
 	this->m_pRakServer = RakNetworkFactory::GetRakServerInterface();
 }
 
@@ -36,7 +36,7 @@ mimp::CServer::CServer(const ServerInfo &info, const ServerConfig &config) : m_i
 																			 m_cfg(config)
 {
 	this->m_pNetGame = new mimp::CNetGame(info.max_players, 6000);
-	this->m_pEventPool = new internal::event::EventPool();
+	this->m_pEventPool = new internal::event::CEventPool();
 	this->m_pRakServer = RakNetworkFactory::GetRakServerInterface();
 }
 
@@ -85,7 +85,7 @@ int mimp::CServer::Shutdown(void)
 	delete this->m_pEventPool;
 
 	this->m_pNetGame = new mimp::CNetGame(this->m_info.max_players, 6000);
-	this->m_pEventPool = new internal::event::EventPool();
+	this->m_pEventPool = new internal::event::CEventPool();
 
 	this->m_port = 0;
 

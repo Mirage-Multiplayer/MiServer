@@ -83,7 +83,7 @@ namespace mimp
 			return this->m_pRakServer;
 		}
 
-		inline mimp::internal::event::EventPool *getEventPool(void) const
+		inline mimp::internal::event::CEventPool *getEventPool(void) const
 		{
 			return this->m_pEventPool;
 		}
@@ -92,7 +92,7 @@ namespace mimp
 		ServerInfo m_info;
 		ServerConfig m_cfg;
 		mimp::CNetGame *m_pNetGame;
-		mimp::internal::event::EventPool *m_pEventPool;
+		mimp::internal::event::CEventPool *m_pEventPool;
 
 		RakServerInterface *m_pRakServer;
 

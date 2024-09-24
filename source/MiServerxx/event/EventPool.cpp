@@ -5,15 +5,15 @@
 		return -1;                \
 	return this->m_##evt(__VA_ARGS__);
 
-mimp::internal::event::EventPool::EventPool() : m_ServerInit(nullptr),
-												m_ServerExit(nullptr),
-												m_PlayerConnect(nullptr),
-												m_PlayerDisconnect(nullptr),
-												m_PlayerSpawn(nullptr)
+mimp::internal::event::CEventPool::CEventPool() : m_ServerInit(nullptr),
+												  m_ServerExit(nullptr),
+												  m_PlayerConnect(nullptr),
+												  m_PlayerDisconnect(nullptr),
+												  m_PlayerSpawn(nullptr)
 {
 }
 
-int mimp::internal::event::EventPool::Emit(uint16_t id, void *ctx)
+int mimp::internal::event::CEventPool::Emit(uint16_t id, void *ctx)
 {
 	switch (id)
 	{

@@ -19,7 +19,7 @@ namespace mimp
 				{
 					RakServerInterface *pRakServer = server::GetServerInstance()->getRakServer();
 					CPool<CPlayer> *pPlayerPool = server::GetServerInstance()->GetNetGame()->GetPlayerPool();
-					event::EventPool *pEventPool = server::GetServerInstance()->getEventPool();
+					event::CEventPool *pEventPool = server::GetServerInstance()->getEventPool();
 
 					char *Data = reinterpret_cast<char *>(rpcParams->input);
 					int iBitLength = rpcParams->numberOfBitsOfData;

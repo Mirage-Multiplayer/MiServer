@@ -12,6 +12,9 @@ namespace mimp
 		{
 			namespace incoming
 			{
+				/**
+				 * @brief RPC Handler
+				 */
 				class Handler
 				{
 				public:

@@ -2,7 +2,6 @@
 #define __MISERVER_EVENTPOOL_HPP
 #include <queue>
 #include <MiServerxx/event/EventTypes.hpp>
-#include <MiServerxx/event/EventQueue.hpp>
 
 /* Event Pool
 	Class who handle Event Queues and emit'em
@@ -13,10 +12,10 @@ namespace mimp
 	{
 		namespace event
 		{
-			class EventPool
+			class CEventPool
 			{
 			public:
-				EventPool();
+				CEventPool();
 				void OnServerInit(OnServerInit_t cb)
 				{
 					this->m_ServerInit = cb;
