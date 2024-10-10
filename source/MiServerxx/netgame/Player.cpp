@@ -66,3 +66,23 @@ void mimp::CPlayer::clientMessage(const int color, const char *message)
 {
     mimp::internal::RPC::outgoing::Handler::SendClientMessage(this->m_playerId, color, strlen(message), message);
 }
+
+void mimp::CPlayer::setPlayerCheckpoint(const float x, const float y, const float z, const float size)
+{
+    this->m_checkpointPos[0] = x;
+    this->m_checkpointPos[1] = y;
+    this->m_checkpointPos[2] = z;
+    this->m_checkpointSize = size;
+    this->m_checkpointActive = true;
+    mimp::internal::RPC::outgoing::Handler::SetCheckpoint(this->m_playerId, x, y, z, size);
+}
+
+void mimp::CPlayer::disableCheckpoint(void)
+{
+    this->m_checkpointActive = false;
+    this->m_checkpointPos[0] = 0.0f;
+    this->m_checkpointPos[1] = 0.0f;
+    this->m_checkpointPos[2] = 0.0f;
+    this->m_checkpointSize = 0.0f;
+    mimp::internal::RPC::outgoing::Handler::DisableCheckpoint(this->m_playerId);
+}

@@ -202,7 +202,7 @@ namespace mimp
 		 * Check if the player is in a checkpoint.
 		 * @return True if the player is in a checkpoint, false otherwise.
 		 */
-		inline const bool getPlayerInCheckpoint(void) const
+		inline const bool isPlayerInCheckpoint(void) const
 		{
 			return this->m_playerInCheckpoint;
 		}
@@ -215,6 +215,8 @@ namespace mimp
 		void setRotation(const float r);
 		void setColor(const int color);
 		void clientMessage(const int color, const char *message);
+		void setPlayerCheckpoint(const float x, const float y, const float z, const float size);
+		void disableCheckpoint(void);
 
 		/**
 		 * Get the player's on-foot synchronization data.

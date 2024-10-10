@@ -101,7 +101,7 @@ namespace mimp
 					// Player functions
 					// static void SetPlayerAttachedObject(void);
 					// static void ChatBubble(void);
-					// static void DisableCheckpoint(void);
+					static void DisableCheckpoint(const int playerid);
 					// static void SetRaceCheckpoint(void);
 					// static void DisableRaceCheckpoint(void);
 					static void SetCheckpoint(const int playerid, const float x, const float y, const float z, const float sz);

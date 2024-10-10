@@ -130,6 +130,22 @@ void mimp_netgame_player__clientMessage(mimp_netgame_player_t player, int color,
     reinterpret_cast<mimp::CPlayer *>(player)->clientMessage(color, message);
 }
 
+void mimp_netgame_player__setCheckpoint(mimp_netgame_player_t player, float x, float y, float z, float size)
+{
+    reinterpret_cast<mimp::CPlayer *>(player)->setPlayerCheckpoint(x, y, z, size);
+}
+
+void mimp_netgame_player__disableCheckpoint(mimp_netgame_player_t player)
+{
+    reinterpret_cast<mimp::CPlayer *>(player)->disableCheckpoint();
+}
+
+int mimp_netgame_player__inCheckpoint(mimp_netgame_player_t player)
+{
+    return reinterpret_cast<mimp::CPlayer *>(player)->isPlayerInCheckpoint();
+}
+
+// Vehicle section
 mimp_netgame_vehicle_t mimp_netgame__getVehicle(mimp_netgame_t game, int vehicleid)
 {
     return reinterpret_cast<mimp::CNetGame *>(game)->GetVehiclePool()->GetAt(vehicleid);

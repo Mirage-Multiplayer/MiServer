@@ -56,7 +56,23 @@ int main(void)
 			p->getPos(x, y, z);
 			float r = p->getRotation();
 			mimp::CVehicle::Create(model, x + 2.000f,y,z,r, -1, -1, 10000, true, false, 0);
+			return 1;
 		}
+		static bool active = 0;
+		if(std::string(cmd).find("/checkpoint") != std::string::npos) {
+			if(active == 1) {
+				p->disableCheckpoint();
+				active = 0;
+				return 1;
+			}
+
+			float x, y, z;
+			p->getPos(x, y, z);
+			p->setPlayerCheckpoint(x, y, z, 5.0f);
+			active = 1;
+			return 1;
+		}
+
 		char args[1024];
 		if(sscanf(cmd, "/getargs %s", args)) {
 			p->clientMessage(0xFFFFFFFF, args);
@@ -65,6 +81,9 @@ int main(void)
 
 	server.getEventPool()->OnPlayerUpdate([](mimp::CPlayer *p) -> int
 										  { 
+			if(p->isPlayerInCheckpoint()) {
+				p->clientMessage(0x00FF00FF, "In Checkpoint");
+			}
 			std::cout << "Player Update\n";
 											return 1; });
 	// Initialize server

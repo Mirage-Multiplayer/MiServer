@@ -47,6 +47,8 @@ add_library(miserverxx STATIC
 	"RPC/outgoing/SetPlayerFacingAngle.cpp"
 	"RPC/outgoing/SetPlayerColor.cpp"
 	"RPC/outgoing/SendClientMessage.cpp" 
+	"RPC/outgoing/SetCheckpoint.cpp" 
+	"RPC/outgoing/DisableCheckpoint.cpp"
 	
 	"util/euler.cpp")
 

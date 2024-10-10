@@ -32,6 +32,9 @@ extern "C"
     void mimp_netgame_player__setRotation(mimp_netgame_player_t, float r);
     void mimp_netgame_player__setColor(mimp_netgame_player_t, int color);
     void mimp_netgame_player__clientMessage(mimp_netgame_player_t, int color, const char *message);
+    void mimp_netgame_player__setCheckpoint(mimp_netgame_player_t, float x, float y, float z, float size);
+    void mimp_netgame_player__disableCheckpoint(mimp_netgame_player_t);
+    int mimp_netgame_player__inCheckpoint(mimp_netgame_player_t);
 
     mimp_netgame_vehicle_t mimp_netgame__getVehicle(mimp_netgame_t game, int vehicleid);
     int mimp_netgame_vehicle__create(mimp_netgame_t game, int modelid, float x, float y, float z, float r, int color1, int color2, int respawn_delay, bool respawn, bool siren, int interior);
