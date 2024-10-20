@@ -33,6 +33,7 @@ option(MiServer_PLATFORM_UNIX "MiServerxx platform Unix" OFF)
 
 if(MiServer_PLATFORM_WIN32)
     message("Detected Windows platform")
+    link_libraries(ws2_32)
 elseif(MiServer_PLATFORM_UNIX)
     message("Detected Unix platform")
 else()
