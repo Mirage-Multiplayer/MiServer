@@ -320,6 +320,9 @@ Classe que representa um objeto jogador.
     void clientMessage(const int color, const char *message);
     ```
 
+- *[ isPlayerInCheckpoint ]*
+    
+
 - *[ getOnFootSyncData ]*:
     - Retorna os dados de sincronização a pé do jogador.
     - **Retorno**: Um ponteiro para a estrutura `ONFOOT_SYNC_DATA` do jogador.
