@@ -252,11 +252,11 @@ Classe que representa um objeto jogador.
     inline const float getCheckpointSize(void) const;
     ```
 
-- *[ getPlayerInCheckpoint ]*:
+- *[ isPlayerInCheckpoint ]*:
     - Verifica se o jogador está em um checkpoint.
     - **Retorno**: `true` se o jogador está em um checkpoint, `false` caso contrário.
     ```cpp
-    inline const bool getPlayerInCheckpoint(void) const;
+    inline const bool isPlayerInCheckpoint(void) const;
     ```
 
 - *[ setHealth ]*:
@@ -319,9 +319,6 @@ Classe que representa um objeto jogador.
     ```cpp
     void clientMessage(const int color, const char *message);
     ```
-
-- *[ isPlayerInCheckpoint ]*
-    
 
 - *[ getOnFootSyncData ]*:
     - Retorna os dados de sincronização a pé do jogador.
