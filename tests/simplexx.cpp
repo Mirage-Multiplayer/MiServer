@@ -4,6 +4,7 @@
 #include <MiServerxx/event/EventTypes.hpp>
 #include <MiServerxx/event/EventPool.hpp>
 #include <MiServerxx/util/strformat.hpp>
+#include <MiServerxx/query/SAMPQuery.hpp>
 
 #ifdef _WIN32
 #pragma comment(lib, "ws2_32")
@@ -18,7 +19,7 @@ int hnd(SOCKET sListen, int iAddrSize, struct sockaddr_in client, char *pBuffer)
 int main(void)
 {
 	// Config server info
-	mimp::ServerInfo info("Hostname", "gamemode", "PT/BR", 200);
+	mimp::ServerInfo info("Mi:MP Test Server", "simplexx", "PT/BR", 200);
 	mimp::ServerConfig cfg;
 
 	cfg.zoneNames = true;
@@ -28,7 +29,7 @@ int main(void)
 	mimp::CCore server(info, cfg);
 
 	// Define callbacks & handlers
-	RakNet::RakQuery::setHandler(hnd);
+	RakNet::RakQuery::setHandler(mimp::internal::query::SAMPQueryHandler);
 
 	server.getEventPool()->OnServerInit([](void) -> int
 										{								
@@ -84,7 +85,6 @@ int main(void)
 			if(p->isPlayerInCheckpoint()) {
 				p->clientMessage(0x00FF00FF, "In Checkpoint");
 			}
-			std::cout << "Player Update\n";
 											return 1; });
 	// Initialize server
 	server.Run(7777);

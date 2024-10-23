@@ -42,9 +42,10 @@ void mimp::internal::packet::BulletSync(Packet *p)
 
 	bsBulletSync.Reset();
 
-	bsBulletSync.Write((BYTE)ID_BULLET_SYNC);
-	bsBulletSync.Write((unsigned short)playerId);
-	bsBulletSync.Write((char *)pPlayer->m_BulletData, sizeof(BULLET_SYNC_DATA));
+	RakNet::BitStream bsOutgoing;
+	bsOutgoing.Write((BYTE)ID_BULLET_SYNC);
+	bsOutgoing.Write((unsigned short)playerId);
+	bsOutgoing.Write((char *)pPlayer->m_BulletData, sizeof(BULLET_SYNC_DATA));
 
-	pRakServer->Send(&bsBulletSync, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, 0, p->playerId, TRUE);
+	pRakServer->Send(&bsOutgoing, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, 0, p->playerId, TRUE);
 }

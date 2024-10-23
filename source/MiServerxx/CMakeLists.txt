@@ -50,6 +50,7 @@ add_library(miserverxx STATIC
 	"RPC/outgoing/SetCheckpoint.cpp" 
 	"RPC/outgoing/DisableCheckpoint.cpp"
 	
+	"query/SAMPQuery.cpp"
 	"util/euler.cpp")
 
 target_link_directories(miserverxx PUBLIC ${CMAKE_INSTALL_PREFIX})

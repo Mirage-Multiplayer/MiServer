@@ -66,6 +66,11 @@ namespace mimp
                 }
             }
 
+            uint16_t GetCount(void)
+            {
+                return std::count_if(this->m_vecPool.begin(), this->m_vecPool.end(), [](element *elem)
+                                     { return elem != nullptr; });
+            }
             auto begin()
             {
                 return m_vecPool.begin();
