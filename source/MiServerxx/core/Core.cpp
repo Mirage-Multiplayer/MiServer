@@ -38,6 +38,7 @@ mimp::CCore::CCore(const ServerInfo &info, const ServerConfig &config) : m_info(
 	this->m_pNetGame = new mimp::CNetGame(info.max_players, 6000);
 	this->m_pEventPool = new internal::event::CEventPool();
 	this->m_pRakServer = RakNetworkFactory::GetRakServerInterface();
+	this->LoadEvents();
 }
 
 mimp::CCore::~CCore()
@@ -71,7 +72,8 @@ int mimp::CCore::Run(uint16_t port)
 
 	this->m_initialized = true;
 	std::cout << "[Mi:MP] Successfully initialized Mi:MP ' Mi-Server " << __MISERVER_VERSION << " ' \n";
-	this->m_pEventPool->Emit(internal::event::SERVER_EVENT_SERVERINIT, nullptr);
+	MIMP_GET_EVENT(SERVERINIT, this->m_pEventPool)
+		SERVERINIT->Emit();
 	return 1;
 }
 
@@ -164,4 +166,42 @@ int mimp::CCore::ProccessTick(void)
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	return 1;
+}
+
+void mimp::CCore::LoadEvents(void) {
+	/*
+	enum
+			{
+				SERVER_EVENT_SERVERINIT = 0,
+				SERVER_EVENT_SERVEREXIT = 1,
+				SERVER_EVENT_PLAYERCONNECT,
+				SERVER_EVENT_PLAYERDISCONNECT,
+				SERVER_EVENT_PLAYERSPAWN,
+				SERVER_EVENT_PLAYERDEATH,
+				SERVER_EVENT_PLAYERTEXT,
+				SERVER_EVENT_COMMANDTEXT,
+				SERVER_EVENT_PLAYERUPDATE
+			};
+	*/
+
+	auto serverinit = std::make_unique<mimp::internal::event::SERVER_EVENT_SERVERINIT_T>();
+	auto serverexit = std::make_unique<mimp::internal::event::SERVER_EVENT_SERVEREXIT_T>();
+	auto playerconnect = std::make_unique<mimp::internal::event::SERVER_EVENT_PLAYERCONNECT_T>();
+	auto playerdisconnect = std::make_unique<mimp::internal::event::SERVER_EVENT_PLAYERDISCONNECT_T>();
+	auto playerspawn = std::make_unique<mimp::internal::event::SERVER_EVENT_PLAYERSPAWN_T>();
+	auto playerdeath = std::make_unique<mimp::internal::event::SERVER_EVENT_PLAYERDEATH_T>();
+	auto playertxt = std::make_unique<mimp::internal::event::SERVER_EVENT_PLAYERTEXT_T>();
+	auto commandtxt = std::make_unique<mimp::internal::event::SERVER_EVENT_COMMANDTEXT_T>();
+	auto playerupdate = std::make_unique<mimp::internal::event::SERVER_EVENT_PLAYERUPDATE_T>();
+
+	this->m_pEventPool->RegisterEvent(mimp::internal::event::SERVER_EVENT_SERVERINIT, std::move(serverinit));
+	this->m_pEventPool->RegisterEvent(mimp::internal::event::SERVER_EVENT_SERVEREXIT, std::move(serverexit));
+	this->m_pEventPool->RegisterEvent(mimp::internal::event::SERVER_EVENT_PLAYERCONNECT, std::move(playerconnect));
+	this->m_pEventPool->RegisterEvent(mimp::internal::event::SERVER_EVENT_PLAYERDISCONNECT, std::move(playerdisconnect));
+	this->m_pEventPool->RegisterEvent(mimp::internal::event::SERVER_EVENT_PLAYERSPAWN, std::move(playerspawn));
+	this->m_pEventPool->RegisterEvent(mimp::internal::event::SERVER_EVENT_PLAYERDEATH, std::move(playerdeath));
+	this->m_pEventPool->RegisterEvent(mimp::internal::event::SERVER_EVENT_PLAYERTEXT, std::move(playertxt));
+	this->m_pEventPool->RegisterEvent(mimp::internal::event::SERVER_EVENT_COMMANDTEXT, std::move(commandtxt));
+	this->m_pEventPool->RegisterEvent(mimp::internal::event::SERVER_EVENT_PLAYERUPDATE, std::move(playerupdate));
+
 }

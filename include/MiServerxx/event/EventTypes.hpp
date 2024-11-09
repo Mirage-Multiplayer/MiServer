@@ -1,6 +1,7 @@
 #ifndef __MISERVER_EVENTTYPES_HPP
 #define __MISERVER_EVENTTYPES_HPP
 #include <functional>
+#include <MiServerxx/event/Event.hpp>
 #include <MiServerxx/netgame/Player.hpp>
 #include <MiServerxx/netgame/Vehicle.hpp>
 
@@ -26,92 +27,15 @@ namespace mimp
 				SERVER_EVENT_PLAYERUPDATE
 			};
 
-			// Disclaimer: I wanted to make this as dynamic as possible, and this was the way I found
-			// note: FUCK TEMPLATED VARIADIC ARGS I HATE U. :p
-			using OnServerInit_t = std::function<int()>;
-
-			using OnServerExit_t = std::function<int()>;
-
-			using OnPlayerConnect_t = std::function<int(CPlayer *)>;
-			using OnPlayerConnect_params = struct
-			{
-				CPlayer *player;
-			};
-
-			using OnPlayerDisconnect_t = std::function<int(CPlayer *, const int)>;
-			using OnPlayerDisconnect_params = struct
-			{
-				CPlayer *player;
-				const int reason;
-			};
-
-			using OnPlayerSpawn_t = std::function<int(CPlayer *)>;
-			using OnPlayerSpawn_params = struct
-			{
-				CPlayer *player;
-			};
-
-			using OnPlayerUpdate_t = std::function<int(CPlayer *)>;
-			using OnPlayerUpdate_params = struct
-			{
-				CPlayer *player;
-			};
-			using OnPlayerDeath_t = std::function<int(CPlayer *, CPlayer *, const int)>;
-			using OnPlayerDeath_params = struct
-			{
-				CPlayer *player;
-				CPlayer *killer;
-				const int reason;
-			};
-
-			using OnVehicleSpawn_t = std::function<int(CVehicle *)>;
-			using OnVehicleSpawn_params = struct
-			{
-				CVehicle *vehicle;
-			};
-
-			using OnVehicleDeath_t = std::function<int(CVehicle *, CPlayer *)>;
-			using OnVehicleDeath_params = struct
-			{
-				CVehicle *vehicle;
-				CPlayer *killer;
-			};
-
-			using OnPlayerText_t = std::function<int(CPlayer *, const char *)>;
-			using OnPlayerText_params = struct
-			{
-				CPlayer *player;
-				const char *text;
-			};
-
-			using OnPlayerCommandText_t = std::function<int(CPlayer *, const char *)>;
-			using OnPlayerCommandText_params = struct
-			{
-				CPlayer *player;
-				const char *cmd;
-			};
-
-			using OnPlayerRequestClass_t = std::function<int(CPlayer *, const int)>;
-			using OnPlayerRequestClass_params = struct
-			{
-				CPlayer *player;
-				const int classid;
-			};
-
-			using OnPlayerEnterVehicle_t = std::function<int(CPlayer *, CVehicle *)>;
-			using OnPlayerEnterVehicle_params = struct
-			{
-				CPlayer *player;
-				CVehicle *vehicle;
-			};
-
-			using OnPlayerExitVehicle_t = std::function<int(CPlayer *, CVehicle *)>;
-			using OnPlayerExitVehicle_params = struct
-			{
-				CPlayer *player;
-				CVehicle *vehicle;
-			};
-
+			using SERVER_EVENT_SERVERINIT_T = CEvent<>;
+			using SERVER_EVENT_SERVEREXIT_T = CEvent<>;
+			using SERVER_EVENT_PLAYERCONNECT_T = CEvent<CPlayer*>;
+			using SERVER_EVENT_PLAYERDISCONNECT_T = CEvent<CPlayer*, int>;
+			using SERVER_EVENT_PLAYERSPAWN_T = CEvent<CPlayer*>;
+			using SERVER_EVENT_PLAYERDEATH_T = CEvent<CPlayer*, CPlayer*, int>;
+			using SERVER_EVENT_PLAYERTEXT_T = CEvent<CPlayer*, const char*>;
+			using SERVER_EVENT_COMMANDTEXT_T = CEvent<CPlayer*, char*>;
+			using SERVER_EVENT_PLAYERUPDATE_T = CEvent<CPlayer*>;
 		}
 	}
 }

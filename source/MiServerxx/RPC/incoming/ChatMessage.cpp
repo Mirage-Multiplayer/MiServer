@@ -36,10 +36,9 @@ namespace mimp
 					szText[byteTextLen] = '\0';
 
 					// OnPlayerMessage
-					event::OnPlayerText_params params;
-					params.player = pPlayerPool->GetAt(playerId);
-					params.text = szText;
-					pEventPool->Emit(event::SERVER_EVENT_PLAYERTEXT, static_cast<void *>(&params));
+					MIMP_GET_EVENT(PLAYERTEXT, pEventPool)
+						PLAYERTEXT->Emit(pPlayerPool->GetAt(playerId), szText);
+					
 				}
 			}
 		}

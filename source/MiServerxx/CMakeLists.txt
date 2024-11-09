@@ -17,8 +17,6 @@ add_library(miserverxx STATIC
 	"RPC/RPCList.cpp" 
 	"RPC/RPC.cpp" 
 	
-	"event/EventPool.cpp"
-	
 	"RPC/incoming/EnterVehicle.cpp"
 	"RPC/incoming/ExitVehicle.cpp"
 	"RPC/incoming/VehicleDamaged.cpp"

@@ -98,6 +98,8 @@ namespace mimp
 
 		bool m_initialized;
 		uint16_t m_port;
+	private:
+		void LoadEvents(void);
 	};
 }
 

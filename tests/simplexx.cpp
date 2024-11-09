@@ -31,24 +31,34 @@ int main(void)
 	// Define callbacks & handlers
 	RakNet::RakQuery::setHandler(mimp::internal::query::SAMPQueryHandler);
 
-	server.getEventPool()->OnServerInit([](void) -> int
-										{								
-		const int idx = mimp::CVehicle::Create(411, 368.3278f,2538.5803f,16.6275f,20.5909f, -1, -1, 10000, true, false, 0);
-		std::cout << "Vehicle id: " << idx << " created.\n";
-		std::cout << "ServerInit\n";
-		return 1; });
-	server.getEventPool()->OnPlayerSpawn([](mimp::CPlayer *p) -> int
+
+	MIMP_GET_EVENT(SERVERINIT, server.getEventPool())
+	MIMP_GET_EVENT(PLAYERSPAWN, server.getEventPool())
+	MIMP_GET_EVENT(PLAYERTEXT, server.getEventPool())
+	MIMP_GET_EVENT(COMMANDTEXT, server.getEventPool())
+	MIMP_GET_EVENT(PLAYERUPDATE, server.getEventPool())
+
+	SERVERINIT->OnCall([](void) -> int
+			{
+				const int idx = mimp::CVehicle::Create(411, 368.3278f, 2538.5803f, 16.6275f, 20.5909f, -1, -1, 10000, true, false, 0);
+				std::cout << "Vehicle id: " << idx << " created.\n";
+				std::cout << "ServerInit\n";
+				return 1; });
+
+	
+
+	PLAYERSPAWN->OnCall([](mimp::CPlayer *p) -> int
 										 {
 		std::cout << "Player ID " << p->getPlayerId() << " Spawned\n";
 		p->clientMessage(0xCD5C5CFF, "Welcome");
 		return 1; });
 
-	server.getEventPool()->OnPlayerText([](mimp::CPlayer *p, const char *text) -> int
+	PLAYERTEXT->OnCall([](mimp::CPlayer *p, const char *text) -> int
 										{
 		p->clientMessage(0xFFFFFFFF, mimp::util::strnformat("%s say: %s", strlen(text) + 100, p->getNickName().c_str(), text));
 		return 1; });
 
-	server.getEventPool()->OnPlayerCommandText([](mimp::CPlayer *p, const char *cmd) -> int
+	COMMANDTEXT->OnCall([](mimp::CPlayer *p, const char *cmd) -> int
 											   {
 		p->clientMessage(0xCD5C5CFF, mimp::util::strnformat("%s command:: %s", 256, p->getNickName().c_str(), cmd));
 		int model;
@@ -80,7 +90,7 @@ int main(void)
 		}
 		return 1; });
 
-	server.getEventPool()->OnPlayerUpdate([](mimp::CPlayer *p) -> int
+	PLAYERUPDATE->OnCall([](mimp::CPlayer *p) -> int
 										  { 
 			if(p->isPlayerInCheckpoint()) {
 				p->clientMessage(0x00FF00FF, "In Checkpoint");

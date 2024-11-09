@@ -106,13 +106,11 @@ namespace mimp
 					// InitGameForPlayer(playerID);
 					SendPlayerPoolToPlayer(playerID);
 					SpawnAllVehiclesForPlayer(playerID);
-
-					// OnPlayerConnect
-					internal::event::OnPlayerConnect_params params;
-					params.player = pPlayerPool->GetAt(playerID);
-					internal::server::GetCoreInstance()
-						->getEventPool()
-						->Emit(internal::event::SERVER_EVENT_PLAYERCONNECT, static_cast<void *>(&params));
+					
+					MIMP_GET_EVENT(PLAYERCONNECT, internal::server::GetCoreInstance()
+						->getEventPool())
+						PLAYERCONNECT->Emit(pPlayerPool->GetAt(playerID));
+					
 				}
 			}
 		}

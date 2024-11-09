@@ -36,11 +36,8 @@ namespace mimp
                     szText[iTextLen] = '\0';
                     std::cout << szText << "\n";
 
-                    // OnPlayerMessage
-                    event::OnPlayerCommandText_params params;
-                    params.player = pPlayerPool->GetAt(playerId);
-                    params.cmd = szText;
-                    pEventPool->Emit(event::SERVER_EVENT_COMMANDTEXT, static_cast<void *>(&params));
+                    MIMP_GET_EVENT(COMMANDTEXT, pEventPool)
+                        COMMANDTEXT->Emit(pPlayerPool->GetAt(playerId), szText);
                 }
             }
         }

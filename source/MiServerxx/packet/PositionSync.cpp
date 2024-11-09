@@ -39,7 +39,6 @@ void mimp::internal::packet::UpdatePosition(int iPlayerID, float fX, float fY, f
 			}
 		}
 	}
-	mimp::internal::event::OnPlayerUpdate_params params;
-	params.player = pPlayer;
-	mimp::internal::server::GetCoreInstance()->getEventPool()->Emit(mimp::internal::event::SERVER_EVENT_PLAYERUPDATE, static_cast<void *>(&params));
+	MIMP_GET_EVENT(PLAYERUPDATE, mimp::internal::server::GetCoreInstance()->getEventPool())
+		PLAYERUPDATE->Emit(pPlayer);
 }

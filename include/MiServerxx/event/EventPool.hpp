@@ -1,7 +1,12 @@
-#ifndef __MISERVER_EVENTPOOL_HPP
-#define __MISERVER_EVENTPOOL_HPP
+#pragma once
+
 #include <queue>
+#include <vector>
+#include <map>
 #include <MiServerxx/event/EventTypes.hpp>
+
+#define MIMP_GET_EVENT(name,eventpool) \
+    mimp::internal::event::SERVER_EVENT_##name##_T* name = eventpool->GetEvent<mimp::internal::event::SERVER_EVENT_##name##_T>(mimp::internal::event::SERVER_EVENT_##name);
 
 /* Event Pool
 	Class who handle Event Queues and emit'em
@@ -12,67 +17,26 @@ namespace mimp
 	{
 		namespace event
 		{
-			class CEventPool
-			{
-			public:
-				CEventPool();
-				void OnServerInit(OnServerInit_t cb)
-				{
-					this->m_ServerInit = cb;
-				}
+            class CEventPool {
+            public:
+                template<typename... Args>
+                void RegisterEvent(uint16_t key, std::unique_ptr<CEvent<Args...>> event) {
+                    m_eventMap[key] = std::move(event);
+                }
 
-				void OnServerExit(OnServerExit_t cb)
-				{
-					this->m_ServerExit = cb;
-				}
+                template<typename EventType>
+                EventType* GetEvent(uint16_t key) {
+                    auto it = m_eventMap.find(key);
+                    if (it != m_eventMap.end()) {
+                        return dynamic_cast<EventType*>(it->second.get());
+                    }
+                    return nullptr;
+                }
 
-				void OnPlayerConnect(OnPlayerConnect_t cb)
-				{
-					this->m_PlayerConnect = cb;
-				}
-
-				void OnPlayerDisconnect(OnPlayerDisconnect_t cb)
-				{
-					this->m_PlayerDisconnect = cb;
-				}
-
-				void OnPlayerSpawn(OnPlayerSpawn_t cb)
-				{
-					this->m_PlayerSpawn = cb;
-				}
-
-				void OnPlayerText(OnPlayerText_t cb)
-				{
-					this->m_PlayerText = cb;
-				}
-
-				void OnPlayerCommandText(OnPlayerCommandText_t cb)
-				{
-					this->m_PlayerCMDText = cb;
-				}
-
-				void OnPlayerUpdate(OnPlayerUpdate_t cb)
-				{
-					this->m_PlayerUpdate = cb;
-				}
-
-				/*
-				 * Receives a event ID and the context, e.g, a fucking struct with arguments.
-				 */
-				int Emit(uint16_t id, void *ctx);
-
-			private:
-				OnServerInit_t m_ServerInit;
-				OnServerExit_t m_ServerExit;
-				OnPlayerConnect_t m_PlayerConnect;
-				OnPlayerDisconnect_t m_PlayerDisconnect;
-				OnPlayerSpawn_t m_PlayerSpawn;
-				OnPlayerText_t m_PlayerText;
-				OnPlayerCommandText_t m_PlayerCMDText;
-				OnPlayerUpdate_t m_PlayerUpdate;
-			};
+            private:
+                std::map<uint16_t, std::unique_ptr<IEventBase>> m_eventMap;
+            };
 		}
 
 	}
 }
-#endif

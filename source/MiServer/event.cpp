@@ -1,39 +1,48 @@
 #include <MiServer/event.h>
 #include <MiServerxx/core/Core.hpp>
 #include <MiServerxx/event/EventPool.hpp>
-#include <MiServerxx/event/EventTypes.hpp>
+
+using namespace mimp::internal::event;
 
 void mimp_server_event__onServerInit(mimp_core_t c, int (*cb)(void))
 {
-    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnServerInit(cb);
+    MIMP_GET_EVENT(SERVERINIT, reinterpret_cast<mimp::CCore*>(c)->getEventPool());
+    SERVERINIT->OnCall(cb);
 }
 
 void mimp_server_event__onServerExit(mimp_core_t c, int (*cb)(void))
 {
-    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnServerExit(cb);
+
+    MIMP_GET_EVENT(SERVEREXIT, reinterpret_cast<mimp::CCore*>(c)->getEventPool());
+    SERVEREXIT->OnCall(cb);
 }
 
 void mimp_server_event__onPlayerConnect(mimp_core_t c, int (*cb)(mimp_netgame_player_t player))
 {
-    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnPlayerConnect(cb);
+    MIMP_GET_EVENT(PLAYERCONNECT, reinterpret_cast<mimp::CCore*>(c)->getEventPool());
+    PLAYERCONNECT->OnCall(cb);
 }
 
 void mimp_server_event__onPlayerDisconnect(mimp_core_t c, int (*cb)(mimp_netgame_player_t player, int reason))
 {
-    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnPlayerDisconnect(cb);
+    MIMP_GET_EVENT(PLAYERDISCONNECT, reinterpret_cast<mimp::CCore*>(c)->getEventPool());
+    PLAYERDISCONNECT->OnCall(cb);
 }
 
 void mimp_server_event__onPlayerSpawn(mimp_core_t c, int (*cb)(mimp_netgame_player_t player))
 {
-    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnPlayerSpawn(cb);
+    MIMP_GET_EVENT(PLAYERSPAWN, reinterpret_cast<mimp::CCore*>(c)->getEventPool());
+    PLAYERSPAWN->OnCall(cb);
 }
 
 void mimp_server_event__onPlayerText(mimp_core_t c, int (*cb)(mimp_netgame_player_t player, const char *text))
 {
-    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnPlayerText(cb);
+    MIMP_GET_EVENT(PLAYERTEXT, reinterpret_cast<mimp::CCore*>(c)->getEventPool());
+    PLAYERTEXT->OnCall(cb);
 }
 
 void mimp_server_event__onPlayerCommandText(mimp_core_t c, int (*cb)(mimp_netgame_player_t player, const char *cmdtext))
 {
-    reinterpret_cast<mimp::CCore *>(c)->getEventPool()->OnPlayerCommandText(cb);
+    MIMP_GET_EVENT(COMMANDTEXT, reinterpret_cast<mimp::CCore*>(c)->getEventPool());
+    COMMANDTEXT->OnCall(cb);
 }
