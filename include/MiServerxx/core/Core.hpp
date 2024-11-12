@@ -6,6 +6,8 @@
 #include <MiServerxx/event/EventPool.hpp>
 #include <MiServerxx/core/ServerConfig.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
+#include <MiServerxx/RPC/RPC.hpp>
+
 namespace mimp
 {
 	/** Struct that holds the server information
@@ -36,7 +38,7 @@ namespace mimp
 	/**
 	 * Core class
 	 */
-	class CCore
+	class CCore : public internal::RPC::RPCReceiverInterface, public internal::RPC::RPCEmitterInterface
 	{
 	public:
 		CCore(const ServerInfo &info);
@@ -88,6 +90,14 @@ namespace mimp
 			return this->m_pEventPool;
 		}
 
+		bool RegisterRPC(internal::RPC::IRPC* rpc);
+		internal::RPC::IRPC* GetRPCHandler(const int rpcid);
+		void UnregisterRPC(const int rpcid);
+
+		void SendRPC(const int playerid, internal::RPC::ORPC* rpc);
+		void BroadcastRPC(internal::RPC::ORPC* rpc);
+		void BroadcastRPC(internal::RPC::ORPC* rpc, const int playerid);
+
 	private:
 		ServerInfo m_info;
 		ServerConfig m_cfg;
@@ -100,6 +110,8 @@ namespace mimp
 		uint16_t m_port;
 	private:
 		void LoadEvents(void);
+		void LoadRPCs(void);
+		void RegisterRPCs(void);
 	};
 }
 

@@ -5,6 +5,9 @@
 #include <MiServerxx/core/Core.hpp>
 #include <iostream>
 
+using namespace mimp::internal::server;
+using namespace mimp::internal::RPC;
+
 mimp::CVehicle::CVehicle()
 	: m_vehId(0), m_modelId(0), m_interiorId(0), m_health(100.0f),
 	  m_rotation(0.0f), m_color1(0), m_color2(0), m_static(false),
@@ -29,8 +32,31 @@ void mimp::CVehicle::setPosition(const float x, const float y, const float z)
 
 void mimp::CVehicle::respawn(void)
 {
-	mimp::internal::RPC::outgoing::Handler::WorldVehicleRemove(this->m_vehId, -1);
-	mimp::internal::RPC::outgoing::Handler::WorldVehicleAdd(this, -1);
+	ORPCWorldVehicleRemove worldVehicleRemove;
+	ORPCWorldVehicleAdd worldVehicleAdd;
+	worldVehicleRemove.wVehicleID = this->m_vehId;
+
+	worldVehicleAdd.addSiren = this->m_siren;
+	worldVehicleAdd.Angle = this->m_rotation;
+	worldVehicleAdd.BodyColor1 = this->m_color1;
+	worldVehicleAdd.BodyColor2 = this->m_color2;
+	worldVehicleAdd.DoorDamageStatus = 0;
+	worldVehicleAdd.Health = this->m_health;
+	worldVehicleAdd.interior = this->m_health;
+	worldVehicleAdd.InteriorColor1 = 0;
+	worldVehicleAdd.InteriorColor2 = 0;
+	worldVehicleAdd.LightDamageStatus = 0;
+	worldVehicleAdd.ModelID = this->m_modelId;
+	memset(worldVehicleAdd.modslot, 0, 14);
+	worldVehicleAdd.PaintJob = 0;
+	worldVehicleAdd.PanelDamageStatus = 0;
+	worldVehicleAdd.tireDamageStatus = 0;
+	worldVehicleAdd.wVehicleID = this->m_vehId;
+	worldVehicleAdd.X = this->m_pos[0];
+	worldVehicleAdd.Y = this->m_pos[1];
+	worldVehicleAdd.Z = this->m_pos[2];
+	GetCoreInstance()->BroadcastRPC(&worldVehicleRemove);
+	GetCoreInstance()->BroadcastRPC(&worldVehicleAdd);
 }
 
 int mimp::CVehicle::Create(const uint16_t model, const float x, const float y, const float z, const float rotation,
@@ -55,13 +81,36 @@ int mimp::CVehicle::Create(const uint16_t model, const float x, const float y, c
 
 	veh->m_interiorId = interior;
 
+	veh->m_siren = siren;
+
 	const int idx = mimp::internal::server::GetCoreInstance()->GetNetGame()->GetVehiclePool()->Insert(veh);
 	if (idx == -1)
 	{
 		return -1;
 	}
 	veh->m_vehId = idx;
-	mimp::internal::RPC::outgoing::Handler::WorldVehicleAdd(veh, -1);
 
+	ORPCWorldVehicleAdd worldVehicleAdd;
+	worldVehicleAdd.addSiren = siren;
+	worldVehicleAdd.Angle = rotation;
+	worldVehicleAdd.BodyColor1 = color1;
+	worldVehicleAdd.BodyColor2 = color2;
+	worldVehicleAdd.DoorDamageStatus = 0;
+	worldVehicleAdd.Health = 1000.0f;
+	worldVehicleAdd.interior = interior;
+	worldVehicleAdd.InteriorColor1 = 0;
+	worldVehicleAdd.InteriorColor2 = 0;
+	worldVehicleAdd.LightDamageStatus = 0;
+	worldVehicleAdd.ModelID = model;
+	memset(worldVehicleAdd.modslot, 0, 14);
+	worldVehicleAdd.PaintJob = 0;
+	worldVehicleAdd.PanelDamageStatus = 0;
+	worldVehicleAdd.tireDamageStatus = 0;
+	worldVehicleAdd.wVehicleID = idx;
+	worldVehicleAdd.X = x;
+	worldVehicleAdd.Y = y;
+	worldVehicleAdd.Z = z;
+
+	GetCoreInstance()->BroadcastRPC(&worldVehicleAdd);
 	return idx;
 }

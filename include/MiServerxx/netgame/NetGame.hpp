@@ -3,6 +3,7 @@
 #include <MiServerxx/netgame/Pool.hpp>
 #include <MiServerxx/netgame/Player.hpp>
 #include <MiServerxx/netgame/Vehicle.hpp>
+#include <MiServerxx/netgame/Dialog.hpp>
 
 namespace mimp
 {
@@ -16,6 +17,7 @@ namespace mimp
     private:
         internal::CPool<CPlayer> *m_pPlayerPool;
         internal::CPool<CVehicle> *m_pVehiclePool;
+        internal::CPool<CDialog>* m_pDialogPool;
     };
 }
 #endif

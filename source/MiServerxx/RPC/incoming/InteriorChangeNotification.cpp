@@ -7,41 +7,32 @@
 #include <MiServerxx/MiServerxx.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
 
-namespace mimp
-{
-	namespace internal
-	{
-		namespace RPC
-		{
-			namespace incoming
-			{
-				void Handler::InteriorChangeNotification(RPCParameters *rpcParams)
-				{
-					RakServerInterface *pRakServer = internal::server::GetCoreInstance()->getRakServer();
-					CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
+using namespace mimp;
+using namespace mimp::internal;
+using namespace mimp::internal::RPC;
 
-					char *Data = reinterpret_cast<char *>(rpcParams->input);
-					int iBitLength = rpcParams->numberOfBitsOfData;
-					PlayerID sender = rpcParams->sender;
+void IRPCFunc_InteriorChangeNotification(RPCParameters* rpcParams) {
+	RakServerInterface* pRakServer = internal::server::GetCoreInstance()->getRakServer();
+	CPool<CPlayer>* pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 
-					RakNet::BitStream bsData((unsigned char *)Data, (iBitLength / 8) + 1, false);
-					WORD playerID = pRakServer->GetIndexFromPlayerID(sender);
+	char* Data = reinterpret_cast<char*>(rpcParams->input);
+	int iBitLength = rpcParams->numberOfBitsOfData;
+	PlayerID sender = rpcParams->sender;
 
-					if (pPlayerPool->GetAt(playerID) == nullptr)
-					{
-						return;
-					}
+	RakNet::BitStream bsData((unsigned char*)Data, (iBitLength / 8) + 1, false);
+	WORD playerID = pRakServer->GetIndexFromPlayerID(sender);
 
-					BYTE byteInteriorId;
-					bsData.Read(byteInteriorId);
-
-					mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerID);
-
-					pPlayer->_setInteriorId(byteInteriorId);
-
-					// OnPlayerInteriorChange
-				}
-			}
-		}
+	if (pPlayerPool->GetAt(playerID) == nullptr) {
+		return;
 	}
+
+	BYTE byteInteriorId;
+	bsData.Read(byteInteriorId);
+
+	mimp::CPlayer* pPlayer = pPlayerPool->GetAt(playerID);
+
+	pPlayer->_setInteriorId(byteInteriorId);
+
+	// OnPlayerInteriorChange
+
 }

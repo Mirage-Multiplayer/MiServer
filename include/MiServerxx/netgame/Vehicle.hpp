@@ -48,6 +48,39 @@ namespace mimp
 			return this->m_rotation;
 		}
 
+		inline const int getInterior(void) const
+		{
+			return this->m_interiorId;
+		}
+
+		inline const int getColor1(void) const
+		{
+			return this->m_color1;
+		}
+
+		inline const int getColor2(void) const
+		{
+			return this->m_color2;
+		}
+
+		inline const bool isStatic(void) const
+		{
+			return this->m_static;
+		}
+
+		inline const bool canRespawn(void) const
+		{
+			return this->m_respawn;
+		}
+
+		inline const bool hasSiren(void) const
+		{
+			return this->m_siren;
+		}
+
+		
+
+
 		void respawn(void);
 
 		static int Create(const uint16_t model, const float x, const float y, const float z, const float rotation,
@@ -56,8 +89,6 @@ namespace mimp
 		static int Destroy(const CVehicle &vehicle);
 
 	private:
-		friend internal::RPC::incoming::Handler;
-		friend void internal::RPC::SpawnAllVehiclesForPlayer(WORD playerID);
 
 		int m_vehId;
 		int m_modelId;
@@ -72,6 +103,7 @@ namespace mimp
 		bool m_static;
 		int m_respawn;
 		int m_timeUntilRespawn;
+		bool m_siren;
 	};
 
 }

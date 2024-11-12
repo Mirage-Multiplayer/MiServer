@@ -1,6 +1,10 @@
 #include <MiServerxx/netgame/Player.hpp>
 #include <MiServerxx/RPC/RPCList.hpp>
+#include <MiServerxx/core/CoreInstance.hpp>
 #include <cstring>
+
+using namespace mimp::internal::server;
+using namespace mimp::internal::RPC;
 
 mimp::CPlayer::CPlayer(PlayerID rakPlayerID, WORD playerID, const char *nickname)
     : m_rakPlayerId(rakPlayerID), m_playerId(playerID), m_nickName(nickname),
@@ -31,17 +35,25 @@ void mimp::CPlayer::setSkin(const int skinid)
     }
 
     this->m_skin = skin;
-    mimp::internal::RPC::outgoing::Handler::SetPlayerSkin(this->m_playerId, skinid);
+
+    mimp::internal::RPC::ORPCSetPlayerSkin rpc;
+    rpc.wPlayerID = this->m_playerId;
+    rpc.dSkinID = skinid;
+    GetCoreInstance()->BroadcastRPC(&rpc);
 }
 
 void mimp::CPlayer::setHealth(const float value)
 {
-    mimp::internal::RPC::outgoing::Handler::SetPlayerHealth(this->m_playerId, value);
+    ORPCSetPlayerHealth rpc;
+    rpc.health = value;
+    GetCoreInstance()->SendRPC(this->m_playerId, &rpc);
 }
 
 void mimp::CPlayer::setArmour(const float value)
 {
-    mimp::internal::RPC::outgoing::Handler::SetPlayerArmour(this->m_playerId, value);
+    ORPCSetPlayerArmour rpc;
+    rpc.armour = value;
+    GetCoreInstance()->SendRPC(this->m_playerId, &rpc);
 }
 void mimp::CPlayer::setSpawn(const float x, const float y, const float z)
 {
@@ -51,20 +63,33 @@ void mimp::CPlayer::setSpawn(const float x, const float y, const float z)
 }
 void mimp::CPlayer::setPos(const float x, const float y, const float z)
 {
-    mimp::internal::RPC::outgoing::Handler::SetPlayerPos(this->m_playerId, x, y, z);
+    ORPCSetPlayerPos rpc;
+    rpc.x = x;
+    rpc.y = y;
+    rpc.z = z;
+    GetCoreInstance()->SendRPC(this->m_playerId, &rpc);
 }
 void mimp::CPlayer::setRotation(const float r)
 {
-    mimp::internal::RPC::outgoing::Handler::SetPlayerFacingAngle(this->m_playerId, r);
+    ORPCSetPlayerFacingAngle rpc;
+    rpc.angle = r;
+    GetCoreInstance()->SendRPC(this->m_playerId, &rpc);
 }
 void mimp::CPlayer::setColor(const int color)
 {
-    mimp::internal::RPC::outgoing::Handler::SetPlayerColor(this->m_playerId, color);
+    ORPCSetPlayerColor rpc;
+    rpc.wPlayerID = this->m_playerId;
+    rpc.dColor = color;
+    GetCoreInstance()->BroadcastRPC(&rpc);
 }
 
 void mimp::CPlayer::clientMessage(const int color, const char *message)
 {
-    mimp::internal::RPC::outgoing::Handler::SendClientMessage(this->m_playerId, color, strlen(message), message);
+    ORPCSendClientMessage rpc;
+    rpc.dColor = color;
+    rpc.dMessageLength = strlen(message);
+    strncpy(rpc.Message, message, rpc.dMessageLength);
+    GetCoreInstance()->SendRPC(this->m_playerId, &rpc);
 }
 
 void mimp::CPlayer::setPlayerCheckpoint(const float x, const float y, const float z, const float size)
@@ -74,7 +99,14 @@ void mimp::CPlayer::setPlayerCheckpoint(const float x, const float y, const floa
     this->m_checkpointPos[2] = z;
     this->m_checkpointSize = size;
     this->m_checkpointActive = true;
-    mimp::internal::RPC::outgoing::Handler::SetCheckpoint(this->m_playerId, x, y, z, size);
+
+    ORPCSetCheckpoint rpc;
+    rpc.x = x;
+    rpc.y = y;
+    rpc.z = z;
+    rpc.radius = size;
+
+    GetCoreInstance()->SendRPC(this->m_playerId, &rpc);
 }
 
 void mimp::CPlayer::disableCheckpoint(void)
@@ -84,5 +116,18 @@ void mimp::CPlayer::disableCheckpoint(void)
     this->m_checkpointPos[1] = 0.0f;
     this->m_checkpointPos[2] = 0.0f;
     this->m_checkpointSize = 0.0f;
-    mimp::internal::RPC::outgoing::Handler::DisableCheckpoint(this->m_playerId);
+
+    ORPCDisableCheckpoint rpc;
+    GetCoreInstance()->SendRPC(this->m_playerId, &rpc);
+}
+
+void mimp::CPlayer::chatBubble(const uint16_t playerid, const uint32_t color, const float drawDistance, const uint32_t expiretime, uint8_t textLength, char* text) {
+    ORPCChatBubble rpc;
+    rpc.playerid = playerid;
+    rpc.color = color;
+    rpc.drawDistance = drawDistance;
+    rpc.expiretime = expiretime;
+    rpc.textLength = textLength;
+    strncpy(rpc.text, text, textLength);
+    GetCoreInstance()->SendRPC(this->m_playerId, &rpc);
 }

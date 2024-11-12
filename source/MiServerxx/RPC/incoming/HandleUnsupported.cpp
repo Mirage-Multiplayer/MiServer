@@ -6,19 +6,11 @@
 #include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/MiServerxx.hpp>
 
-namespace mimp
+using namespace mimp;
+using namespace mimp::internal;
+using namespace mimp::internal::RPC;
+
+void IRPCFunc_Unsupported(RPCParameters* rpcParams)
 {
-    namespace internal
-    {
-        namespace RPC
-        {
-            namespace incoming
-            {
-                void Handler::HandleUnsupported(RPCParameters *rpcParams)
-                {
-                    return;
-                }
-            }
-        }
-    }
+	return;
 }

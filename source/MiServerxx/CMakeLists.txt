@@ -32,24 +32,9 @@ add_library(miserverxx STATIC
 	"RPC/incoming/UpdateScoresAndPings.cpp"
 	"RPC/incoming/ClientJoin.cpp"
 	"RPC/incoming/HandleUnsupported.cpp"
-
-	"RPC/outgoing/InitGame.cpp"
-	"RPC/outgoing/WorldVehicleAdd.cpp"
-	"RPC/outgoing/WorldVehicleRemove.cpp"
-	"RPC/outgoing/PlayerEnterVehicle.cpp"
-	"RPC/outgoing/PlayerExitVehicle.cpp"
-	"RPC/outgoing/SetPlayerSkin.cpp"
-	"RPC/outgoing/SetPlayerHealth.cpp"
-	"RPC/outgoing/SetPlayerArmour.cpp"
-	"RPC/outgoing/SetPlayerPos.cpp"
-	"RPC/outgoing/SetPlayerFacingAngle.cpp"
-	"RPC/outgoing/SetPlayerColor.cpp"
-	"RPC/outgoing/SendClientMessage.cpp" 
-	"RPC/outgoing/SetCheckpoint.cpp" 
-	"RPC/outgoing/DisableCheckpoint.cpp"
 	
 	"query/SAMPQuery.cpp"
-	"util/euler.cpp")
+	"util/euler.cpp" "netgame/Dialog.cpp" "RPC/RPCReceiver.cpp")
 
 target_link_directories(miserverxx PUBLIC ${CMAKE_INSTALL_PREFIX})
 target_link_libraries(miserverxx PRIVATE mirak glm::glm)

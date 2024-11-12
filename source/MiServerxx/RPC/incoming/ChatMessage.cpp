@@ -7,40 +7,28 @@
 #include <MiServerxx/event/EventPool.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
 
-namespace mimp
-{
-	namespace internal
-	{
-		namespace RPC
-		{
-			namespace incoming
-			{
-				void Handler::ChatMessage(RPCParameters *rpcParams)
-				{
-					RakServerInterface *pRakServer = server::GetCoreInstance()->getRakServer();
-					CPool<CPlayer> *pPlayerPool = server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
-					event::CEventPool *pEventPool = server::GetCoreInstance()->getEventPool();
+using namespace mimp::internal;
 
-					char *Data = reinterpret_cast<char *>(rpcParams->input);
-					int iBitLength = rpcParams->numberOfBitsOfData;
-					RakNet::BitStream bsData((unsigned char *)Data, (iBitLength / 8) + 1, false);
+void IRPCFunc_ChatMessage(RPCParameters* rpcParams) {
+	RakServerInterface* pRakServer = server::GetCoreInstance()->getRakServer();
+	CPool<mimp::CPlayer>* pPlayerPool = server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
+	event::CEventPool* pEventPool = server::GetCoreInstance()->getEventPool();
 
-					WORD playerId = (WORD)pRakServer->GetIndexFromPlayerID(rpcParams->sender);
-					char szText[256];
-					BYTE byteTextLen;
+	char* Data = reinterpret_cast<char*>(rpcParams->input);
+	int iBitLength = rpcParams->numberOfBitsOfData;
+	RakNet::BitStream bsData((unsigned char*)Data, (iBitLength / 8) + 1, false);
 
-					memset(szText, 0, 256);
+	WORD playerId = (WORD)pRakServer->GetIndexFromPlayerID(rpcParams->sender);
+	char szText[256];
+	BYTE byteTextLen;
 
-					bsData.Read(byteTextLen);
-					bsData.Read((char *)szText, byteTextLen);
-					szText[byteTextLen] = '\0';
+	memset(szText, 0, 256);
 
-					// OnPlayerMessage
-					MIMP_GET_EVENT(PLAYERTEXT, pEventPool)
-						PLAYERTEXT->Emit(pPlayerPool->GetAt(playerId), szText);
-					
-				}
-			}
-		}
-	}
+	bsData.Read(byteTextLen);
+	bsData.Read((char*)szText, byteTextLen);
+	szText[byteTextLen] = '\0';
+
+	// OnPlayerMessage
+	MIMP_GET_EVENT(PLAYERTEXT, pEventPool)
+		PLAYERTEXT->Emit(pPlayerPool->GetAt(playerId), szText);
 }

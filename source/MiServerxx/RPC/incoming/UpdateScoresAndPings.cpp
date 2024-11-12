@@ -7,35 +7,28 @@
 #include <MiServerxx/MiServerxx.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
 
-namespace mimp
+using namespace mimp;
+using namespace mimp::internal;
+using namespace mimp::internal::RPC;
+void IRPCFunc_UpdateScoresAndPings(RPCParameters* rpcParams)
 {
-	namespace internal
+	ORPCUpdateScoresAndPings rpc;
+	RakNet::BitStream bsUpdate;
+	RakServerInterface* pRakServer = internal::server::GetCoreInstance()->getRakServer();
+	CPool<CPlayer>* pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
+	for (CPlayer* i : *pPlayerPool)
 	{
-		namespace RPC
+		if (i != nullptr)
 		{
-			namespace incoming
-			{
-				void Handler::UpdateScoresAndPings(RPCParameters *rpcParams)
-				{
-					RakNet::BitStream bsUpdate;
-					RakServerInterface *pRakServer = internal::server::GetCoreInstance()->getRakServer();
-					CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
-					for (CPlayer *i : *pPlayerPool)
-					{
-						if (i != nullptr)
-						{
-							i->_setPing(pRakServer->GetLastPing(i->getRakPlayerId()));
+			i->_setPing(pRakServer->GetLastPing(i->getRakPlayerId()));
 
-							bsUpdate.Write(i);
-							bsUpdate.Write(i->getScore());
-							bsUpdate.Write(i->getPing());
-						}
-					}
-
-					pRakServer->RPC(&incoming::RPC_UpdateScoresAndPings, &bsUpdate, HIGH_PRIORITY, RELIABLE, 0,
-									rpcParams->sender, FALSE, FALSE, UNASSIGNED_NETWORK_ID, NULL);
-				}
-			}
+			bsUpdate.Write(i);
+			bsUpdate.Write(i->getScore());
+			bsUpdate.Write(i->getPing());
 		}
 	}
+
+	int uid = rpc.GetUID();
+	pRakServer->RPC(&uid, &bsUpdate, HIGH_PRIORITY, RELIABLE, 0,
+		rpcParams->sender, FALSE, FALSE, UNASSIGNED_NETWORK_ID, NULL);
 }

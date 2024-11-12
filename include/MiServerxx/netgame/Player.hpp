@@ -217,6 +217,7 @@ namespace mimp
 		void clientMessage(const int color, const char *message);
 		void setPlayerCheckpoint(const float x, const float y, const float z, const float size);
 		void disableCheckpoint(void);
+		void chatBubble(const uint16_t playerid, const uint32_t color, const float drawDistance, const uint32_t expiretime, uint8_t textLength, char* text);
 
 		/**
 		 * Get the player's on-foot synchronization data.
@@ -236,7 +237,7 @@ namespace mimp
 			return this->m_InCarSyncData;
 		}
 
-	private:
+	public:
 		inline void _setIP(const char *ip)
 		{
 			this->m_IP = ip;
@@ -324,8 +325,6 @@ namespace mimp
 		friend void internal::packet::PassengerSync(Packet *pkt);
 		friend void internal::packet::UnoccupiedSync(Packet *pkt);
 		friend void internal::packet::UpdatePosition(int iPlayerID, float fX, float fY, float fZ);
-
-		friend internal::RPC::incoming::Handler;
 
 		internal::packet::ONFOOT_SYNC_DATA *m_OnFootSyncData;
 		internal::packet::INCAR_SYNC_DATA *m_InCarSyncData;
