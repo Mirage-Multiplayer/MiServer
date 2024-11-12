@@ -4,6 +4,7 @@
 #include <MiRak/NetworkTypes.h>
 #include <MiServerxx/MiServerxx.hpp>
 #include <MiServerxx/RPC/RPC.hpp>
+#include <MiServerxx/types.h>
 
 namespace mimp
 {
@@ -247,7 +248,7 @@ namespace mimp
 				UINT32 dColor;
 				UINT8 isNPC;
 				UINT8 PlayerNameLength;
-				char PlayerName[256];  // Assumindo que o nome do jogador não ultrapasse 255 caracteres
+				char PlayerName[256];  // Assumindo que o nome do jogador nï¿½o ultrapasse 255 caracteres
 
 				explicit ORPCServerJoin() : ORPC(137) {}
 
@@ -299,7 +300,7 @@ namespace mimp
 				UINT32 dMultiplier;
 				UINT32 dLagCompMode;
 				UINT8 length;
-				char HostName[256];  // Assumindo que o nome do host não ultrapasse 255 caracteres
+				char HostName[256];  // Assumindo que o nome do host nï¿½o ultrapasse 255 caracteres
 				UINT8 bVehicleModels[212];
 				UINT32 dVehicleFriendlyFire;
 
@@ -366,16 +367,16 @@ namespace mimp
 				explicit ORPCGameModeRestart() : ORPC(40) {}
 
 				void Write(RakNet::BitStream* bs) override {
-					// Não há parâmetros, apenas envia a RPC
+					// Nï¿½o hï¿½ parï¿½metros, apenas envia a RPC
 				}
 			};
 
 			struct ORPCApplyPlayerAnimation : public ORPC {
 				UINT16 wPlayerID;
 				UINT8 AnimLibLength;
-				char AnimLib[256];  // Assumindo que a animação não ultrapasse 255 caracteres
+				char AnimLib[256];  // Assumindo que a animaï¿½ï¿½o nï¿½o ultrapasse 255 caracteres
 				UINT8 AnimNameLength;
-				char AnimName[256]; // Assumindo que o nome da animação não ultrapasse 255 caracteres
+				char AnimName[256]; // Assumindo que o nome da animaï¿½ï¿½o nï¿½o ultrapasse 255 caracteres
 				float fDelta;
 				bool loop;
 				bool lockx;
@@ -423,7 +424,7 @@ namespace mimp
 			struct ORPCSetPlayerName : public ORPC {
 				UINT16 wPlayerID;
 				UINT8 NameLength;
-				char Name[256];  // Assumindo que o nome do jogador não ultrapasse 255 caracteres
+				char Name[256];  // Assumindo que o nome do jogador nï¿½o ultrapasse 255 caracteres
 				UINT8 bSuccess;
 
 				explicit ORPCSetPlayerName() : ORPC(11) {}
@@ -857,7 +858,7 @@ namespace mimp
 			struct ORPCSendClientMessage : public ORPC {
 				UINT32 dColor;
 				UINT32 dMessageLength;
-				char Message[1024]; // Ajustar tamanho conforme necessário
+				char Message[1024]; // Ajustar tamanho conforme necessï¿½rio
 
 				explicit ORPCSendClientMessage() : ORPC(93) {}
 
@@ -870,7 +871,7 @@ namespace mimp
 
 			struct ORPCSetShopName : public ORPC {
 				UINT32 length;
-				char Name[256]; // Ajustar tamanho conforme necessário
+				char Name[256]; // Ajustar tamanho conforme necessï¿½rio
 
 				explicit ORPCSetShopName() : ORPC(33) {}
 
@@ -1096,7 +1097,7 @@ namespace mimp
 			struct ORPCTextDrawSetString : public ORPC {
 				UINT16 wTextDrawID;
 				UINT16 TextLength;
-				char Text[4096]; // Máximo de 4096 caracteres
+				char Text[4096]; // Mï¿½ximo de 4096 caracteres
 
 				explicit ORPCTextDrawSetString() : ORPC(105) {}
 
@@ -1123,7 +1124,7 @@ namespace mimp
 				float fZoom;
 				INT16 wColor1, wColor2;
 				UINT16 szTextLen;
-				char szText[4096]; // Máximo de 4096 caracteres
+				char szText[4096]; // Mï¿½ximo de 4096 caracteres
 
 				explicit ORPCShowTextDraw() : ORPC(134) {}
 
@@ -1250,11 +1251,11 @@ namespace mimp
 			};
 
 			struct ORPCRemovePlayerFromVehicle : public ORPC {
-				// Nenhum parâmetro necessário para esse RPC.
+				// Nenhum parï¿½metro necessï¿½rio para esse RPC.
 				explicit ORPCRemovePlayerFromVehicle() : ORPC(71) {}
 
 				void Write(RakNet::BitStream* bs) override {
-					// Não há dados para escrever, apenas envie o RPC.
+					// Nï¿½o hï¿½ dados para escrever, apenas envie o RPC.
 				}
 			};
 
@@ -1537,7 +1538,7 @@ namespace mimp
 				explicit ORPCDisableCheckpoint() : ORPC(37) {}
 
 				void Write(RakNet::BitStream* bs) override {
-					// Este RPC não possui parâmetros, apenas é enviado.
+					// Este RPC nï¿½o possui parï¿½metros, apenas ï¿½ enviado.
 				}
 			};
 
@@ -1565,7 +1566,7 @@ namespace mimp
 				explicit ORPCDisableRaceCheckpoint() : ORPC(39) {}
 
 				void Write(RakNet::BitStream* bs) override {
-					// Este RPC não possui parâmetros, apenas é enviado.
+					// Este RPC nï¿½o possui parï¿½metros, apenas ï¿½ enviado.
 				}
 			};
 			
@@ -1588,7 +1589,7 @@ namespace mimp
 				float drawDistance;
 				UINT32 expiretime;
 				UINT8 textLength;
-				char text[256];  // Ajuste o tamanho conforme necessário, ou use um ponteiro para gerenciar dinamicamente
+				char text[256];  // Ajuste o tamanho conforme necessï¿½rio, ou use um ponteiro para gerenciar dinamicamente
 
 				explicit ORPCChatBubble() : ORPC(59) {}
 

@@ -15,3 +15,8 @@ mimp::internal::CPool<mimp::CVehicle> *mimp::CNetGame::GetVehiclePool()
 {
     return this->m_pVehiclePool;
 }
+
+void mimp::CNetGame::Clear() {
+    this->m_pPlayerPool->Clear();
+    this->m_pVehiclePool->Clear();
+}

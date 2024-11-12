@@ -43,14 +43,15 @@ mimp::CCore::CCore(const ServerInfo &info, const ServerConfig &config) : m_info(
 
 mimp::CCore::~CCore()
 {
+	this->m_pRakServer->Disconnect(300);
+	RakNetworkFactory::DestroyRakServerInterface(this->m_pRakServer);
+
 	delete this->m_pNetGame;
-	delete this->m_pRakServer;
 	delete this->m_pEventPool;
 }
 
 int mimp::CCore::Run(uint16_t port)
 {
-
 	std::cout << "[Mi:MP] Initializing Mi:MP Server instance version " << __MISERVER_VERSION << "\n";
 
 	if (internal::server::GetCoreInstance() != nullptr)
@@ -76,20 +77,16 @@ int mimp::CCore::Run(uint16_t port)
 	std::cout << "[Mi:MP] Successfully initialized Mi:MP ' Mi-Server " << __MISERVER_VERSION << " ' \n";
 	MIMP_GET_EVENT(SERVERINIT, this->m_pEventPool)
 		SERVERINIT->Emit();
+
 	return 1;
 }
 
 int mimp::CCore::Shutdown(void)
 {
 	this->m_pRakServer->Disconnect(300);
-	RakNetworkFactory::DestroyRakServerInterface(this->m_pRakServer);
 
-	delete this->m_pNetGame;
-	delete this->m_pRakServer;
-	delete this->m_pEventPool;
-
-	this->m_pNetGame = new mimp::CNetGame(this->m_info.max_players, 6000);
-	this->m_pEventPool = new internal::event::CEventPool();
+	this->m_pNetGame->Clear();
+	this->m_pEventPool->Clear();
 
 	this->m_port = 0;
 
@@ -97,6 +94,7 @@ int mimp::CCore::Shutdown(void)
 	RakNet::RakEncr::setPort(0);
 
 	internal::server::SetCoreInstance(nullptr);
+
 	return 1;
 }
 
@@ -215,13 +213,13 @@ void IRPCFunc_Unsuported(RPCParameters* rpcParams) {
 
 #define UNSUPORTED_RPC(name,id) \
 	mimp::internal::RPC::IRPC_##name = new mimp::internal::RPC::IRPC(id); \
-	mimp::internal::RPC::IRPC_##name##->addHandler(IRPCFunc_Unsuported); \
+	mimp::internal::RPC::IRPC_##name->addHandler(IRPCFunc_Unsuported); \
 	this->RegisterRPC(mimp::internal::RPC::IRPC_##name);
 
 #define LOAD_RPC(name,id) \
-	extern void IRPCFunc_##name##(RPCParameters*); \
+	extern void IRPCFunc_##name(RPCParameters*); \
 	mimp::internal::RPC::IRPC_##name = new mimp::internal::RPC::IRPC(id); \
-	mimp::internal::RPC::IRPC_##name##->addHandler(IRPCFunc_##name##); \
+	mimp::internal::RPC::IRPC_##name->addHandler(IRPCFunc_##name); \
 	this->RegisterRPC(mimp::internal::RPC::IRPC_##name);
 
 

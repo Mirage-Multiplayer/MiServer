@@ -7,7 +7,7 @@ namespace mimp
 {
     namespace internal
     {
-        template <class element>
+        template <class T>
         class CPool
         {
         public:
@@ -29,7 +29,7 @@ namespace mimp
                 }
             }
 
-            bool InsertAt(const uint16_t idx, element *elem)
+            bool InsertAt(const uint16_t idx, T *elem)
             {
                 if (idx < this->m_wSize)
                 {
@@ -42,7 +42,7 @@ namespace mimp
                 }
             }
 
-            int Insert(element *elem)
+            int Insert(T *elem)
             {
                 auto it = std::find(this->m_vecPool.begin() + 1, this->m_vecPool.end(), nullptr);
                 if (it == this->m_vecPool.end())
@@ -54,7 +54,7 @@ namespace mimp
                 return idx;
             }
 
-            element *GetAt(uint16_t idx)
+            T *GetAt(uint16_t idx)
             {
                 if (idx < this->m_wSize)
                 {
@@ -68,7 +68,7 @@ namespace mimp
 
             uint16_t GetCount(void)
             {
-                return std::count_if(this->m_vecPool.begin(), this->m_vecPool.end(), [](element *elem)
+                return std::count_if(this->m_vecPool.begin(), this->m_vecPool.end(), [](T *elem)
                                      { return elem != nullptr; });
             }
             auto begin()
@@ -91,8 +91,15 @@ namespace mimp
                 return m_vecPool.end();
             }
 
+            void Clear() {
+                for (T*& element : m_vecPool) {
+                    delete element;
+                    element = nullptr;
+                }
+            }
+
         private:
-            std::vector<element *> m_vecPool;
+            std::vector<T *> m_vecPool;
             uint16_t m_wSize;
         };
     }

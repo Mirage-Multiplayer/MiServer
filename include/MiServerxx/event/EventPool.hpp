@@ -1,8 +1,7 @@
 #pragma once
 
-#include <queue>
-#include <vector>
 #include <map>
+#include <memory>
 #include <MiServerxx/event/EventTypes.hpp>
 
 #define MIMP_GET_EVENT(name,eventpool) \
@@ -31,6 +30,10 @@ namespace mimp
                         return dynamic_cast<EventType*>(it->second.get());
                     }
                     return nullptr;
+                }
+
+                inline void Clear() {
+                    m_eventMap.clear();
                 }
 
             private:

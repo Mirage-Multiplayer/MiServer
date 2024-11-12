@@ -1,6 +1,6 @@
 [submodule "lib/MiRak"]
 	path = lib/MiRak
-	url = git@github.com:Mirage-Multiplayer/MiRak.git
+	url = https://github.com/Mirage-Multiplayer/MiRak.git
 [submodule "lib/glm"]
 	path = lib/glm
 	url = https://github.com/g-truc/glm.git

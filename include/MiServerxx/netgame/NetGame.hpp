@@ -14,6 +14,8 @@ namespace mimp
         internal::CPool<CPlayer> *GetPlayerPool();
         internal::CPool<CVehicle> *GetVehiclePool();
 
+        void Clear();
+
     private:
         internal::CPool<CPlayer> *m_pPlayerPool;
         internal::CPool<CVehicle> *m_pVehiclePool;
