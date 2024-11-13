@@ -36,7 +36,8 @@ void SendPlayerPoolToPlayer(WORD playerID)
 
 		server::GetCoreInstance()->SendRPC(playerID, &rpc);
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(5));
+		// In Case of panic!!
+		//std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
 }
 
@@ -77,7 +78,8 @@ void SpawnAllVehiclesForPlayer(WORD playerID)
 		worldVehicleAdd.Z = z;
 		server::GetCoreInstance()->BroadcastRPC(&worldVehicleAdd);
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(5));
+		// In Case of panic!!
+		//std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
 }
 
