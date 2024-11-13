@@ -16,6 +16,7 @@
 #include <MiServerxx/netgame/NetGame.hpp>
 #include <MiServerxx/RPC/RPCList.hpp>
 #include <MiServerxx/config.h>
+#include <MiServerxx/util/timer.hpp>
 
 mimp::ServerInfo::ServerInfo(const char *hostname, const char *gamemode, const char *lang, const unsigned int max_players) : hostname(hostname), gamemode(gamemode), lang(lang), max_players(max_players)
 {
@@ -298,12 +299,14 @@ void mimp::CCore::UnregisterRPC(const int rpcid) {
 
 
 void mimp::CCore::RegisterRPCs(void) {
+	mimp::util::CSimpleTimer timer;
 	using namespace mimp::internal::RPC;
 
-	for (const auto& rpc : this->m_RPCs) {
-		int uid = rpc.first;
-		this->m_pRakServer->RegisterAsRemoteProcedureCall(&uid, [uid, this](RPCParameters* params) -> void {
-			this->GetRPCHandler(uid)->Call(params);
+	for (const auto& pair : this->m_RPCs) {
+		int uid = pair.first;
+		auto rpc = pair.second;
+		this->m_pRakServer->RegisterAsRemoteProcedureCall(&uid, [rpc](RPCParameters* params) -> void {
+			rpc->Call(params);
 		});
 	}
 

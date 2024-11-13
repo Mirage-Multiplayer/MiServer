@@ -7,6 +7,7 @@
 #include <functional>
 #include <cstdint>
 #include <vector>
+#include <map>
 #include <unordered_map>
 
 #define REJECT_REASON_BAD_VERSION 1
@@ -43,7 +44,7 @@ namespace mimp
 				virtual IRPC* GetRPCHandler(const int rpcid) = 0;
 				virtual void UnregisterRPC(const int rpcid) = 0;
 			protected:
-				std::unordered_map<int, IRPC*> m_RPCs;
+				std::map<int, IRPC*> m_RPCs;
 			};
 			
 			struct ORPC {
