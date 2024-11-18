@@ -1,5 +1,4 @@
-#ifndef __MISERVER_TYPES_H
-#define __MISERVER_TYPES_H
+#pragma once
 
 #include <cstdint>
 
@@ -23,6 +22,4 @@ typedef float FLOAT;
 #define OVERRIDE override
 #else
 #define OVERRIDE
-#endif
-
 #endif

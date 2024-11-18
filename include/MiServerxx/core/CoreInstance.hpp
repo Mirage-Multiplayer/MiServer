@@ -1,6 +1,4 @@
-#ifndef __MISERVER_COREINSTANCE_HPP
-#define __MISERVER_COREINSTANCE_HPP
-#include <MiServerxx/core/CoreInstance.hpp>
+#pragma once
 #include <MiServerxx/core/Core.hpp>
 
 namespace mimp
@@ -22,4 +20,3 @@ namespace mimp
 		}
 	}
 }
-#endif

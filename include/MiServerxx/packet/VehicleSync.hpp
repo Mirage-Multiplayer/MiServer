@@ -1,5 +1,4 @@
-#ifndef __MISERVER_VEHICLESYNC_HPP
-#define __MISERVER_VEHICLESYNC_HPP
+#pragma once
 #include <MiRak/NetworkTypes.h>
 
 namespace mimp {
@@ -9,4 +8,3 @@ namespace mimp {
 		}
 	}
 }
-#endif

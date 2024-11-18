@@ -1,5 +1,4 @@
-#ifndef __MISERVER_BULLETSYNC_HPP
-#define __MISERVER_BULLETSYNC_HPP
+#pragma once
 #include <MiRak/NetworkTypes.h>
 
 namespace mimp
@@ -15,4 +14,3 @@ namespace mimp
 		}
 	}
 }
-#endif

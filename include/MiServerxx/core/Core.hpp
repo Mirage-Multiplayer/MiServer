@@ -1,11 +1,11 @@
-#ifndef __MISERVER_CORE_HPP
-#define __MISERVER_CORE_HPP
+#pragma once
 #include <MiRak/RakServer.h>
 #include <MiRak/RakQuery.h>
 #include <string>
 #include <MiServerxx/event/EventPool.hpp>
 #include <MiServerxx/core/ServerConfig.hpp>
 #include <MiServerxx/netgame/NetGame.hpp>
+#include <MiServerxx/packet/PacketHandlerInterface.hpp>
 #include <MiServerxx/RPC/RPC.hpp>
 
 namespace mimp
@@ -38,7 +38,7 @@ namespace mimp
 	/**
 	 * Core class
 	 */
-	class CCore : public internal::RPC::RPCReceiverInterface, public internal::RPC::RPCEmitterInterface
+	class CCore : public internal::RPC::RPCHandlerInterface, public internal::packet::PacketHandlerInterface
 	{
 	public:
 		CCore(const ServerInfo &info);
@@ -90,29 +90,35 @@ namespace mimp
 			return this->m_pEventPool;
 		}
 
-		bool RegisterRPC(internal::RPC::IRPC* rpc);
-		internal::RPC::IRPC* GetRPCHandler(const int rpcid);
-		void UnregisterRPC(const int rpcid);
+		bool RegisterRPC(internal::RPC::IRPC* rpc) override;
+		internal::RPC::IRPC* GetRPCHandler(const int rpcid) override;
+		void UnregisterRPC(const int rpcid) override;
 
-		void SendRPC(const int playerid, internal::RPC::ORPC* rpc);
-		void BroadcastRPC(internal::RPC::ORPC* rpc);
-		void BroadcastRPC(internal::RPC::ORPC* rpc, const int playerid);
+		void SendRPC(const int playerid, internal::RPC::ORPC* rpc) override;
+		void BroadcastRPC(internal::RPC::ORPC* rpc) override;
+		void BroadcastRPC(internal::RPC::ORPC* rpc, const int playerid) override;
+
+		void LoadPackets(void);
+		void addPacketHandler(const int uid, std::function<void(const int, Packet*)>);
+		bool hasPacketHandler(const int uid);
+		void HandlePacket(const int uid, Packet* packet);
 
 	private:
 		ServerInfo m_info;
 		ServerConfig m_cfg;
 		mimp::CNetGame *m_pNetGame;
 		mimp::internal::event::CEventPool *m_pEventPool;
-
 		RakServerInterface *m_pRakServer;
 
 		bool m_initialized;
 		uint16_t m_port;
+
+	// Network abstraction methods...
 	private:
 		void LoadEvents(void);
 		void LoadRPCs(void);
 		void RegisterRPCs(void);
+
+		
 	};
 }
-
-#endif

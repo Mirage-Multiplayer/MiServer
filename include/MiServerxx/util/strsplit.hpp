@@ -1,5 +1,4 @@
-#ifndef __MISERVER_STRSPLIT_HPP
-#define __MISERVER_STRSPLIT_HPP
+#pragma once
 #include <vector>
 #include <string>
 #include <iostream>
@@ -21,5 +20,3 @@ namespace mimp
         }
     }
 }
-
-#endif

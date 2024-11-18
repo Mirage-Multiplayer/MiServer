@@ -34,7 +34,7 @@ add_library(miserverxx STATIC
 	"RPC/incoming/HandleUnsupported.cpp"
 	
 	"query/SAMPQuery.cpp"
-	"util/euler.cpp" "netgame/Dialog.cpp" "RPC/RPCReceiver.cpp")
+	"util/euler.cpp" "netgame/Dialog.cpp"  "core/RPCHandler.cpp" "core/PacketHandler.cpp" "packet/Connection.cpp")
 
 target_link_directories(miserverxx PUBLIC ${CMAKE_INSTALL_PREFIX})
 target_link_libraries(miserverxx PRIVATE mirak glm::glm)

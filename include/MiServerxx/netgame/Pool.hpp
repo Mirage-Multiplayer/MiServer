@@ -1,5 +1,4 @@
-#ifndef __MISERVER_POOL_HPP
-#define __MISERVER_POOL_HPP
+#pragma once
 #include <vector>
 #include <algorithm>
 #include <cstdint>
@@ -104,4 +103,3 @@ namespace mimp
         };
     }
 }
-#endif

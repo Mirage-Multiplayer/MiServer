@@ -1,5 +1,4 @@
-#ifndef __MISERVER_SERVERCONFIG_HPP
-#define __MISERVER_SERVERCONFIG_HPP
+#pragma once
 #include <cstdint>
 namespace mimp
 {
@@ -59,4 +58,3 @@ namespace mimp
 			  lagCompensation(1) {}
 	};
 }
-#endif

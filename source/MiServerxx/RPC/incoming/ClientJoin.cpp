@@ -9,7 +9,6 @@
 #include <thread>
 
 using namespace mimp::internal;
-
 void SendPlayerPoolToPlayer(WORD playerID)
 {
 	CPool<mimp::CPlayer>* pPlayerPool = server::GetCoreInstance()->GetNetGame()->GetPlayerPool();

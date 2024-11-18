@@ -7,27 +7,29 @@
 #include <MiRak/BitStream.h>
 #include <iostream>
 
-void mimp::internal::packet::UnoccupiedSync(Packet *p)
-{
-	RakServerInterface *pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
-	CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
+using namespace mimp;
+using namespace mimp::internal;
+using namespace mimp::internal::packet;
+void Packet_UnoccupiedSync(const int uid, Packet* p) {
+	RakServerInterface* pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
+	CPool<CPlayer>* pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 
 	if (p->length < sizeof(UNOCCUPIED_SYNC_DATA) + 1)
 	{
 		return;
 	}
 
-	RakNet::BitStream bsUnocSync((unsigned char *)p->data, p->length, false);
+	RakNet::BitStream bsUnocSync((unsigned char*)p->data, p->length, false);
 	WORD playerId = pRakServer->GetIndexFromPlayerID(p->playerId);
 
 	// clear last data
-	mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerId);
+	mimp::CPlayer* pPlayer = pPlayerPool->GetAt(playerId);
 	if (pPlayer == nullptr)
 	{
 		// Invalid player, usually not connected.
 		return;
 	}
-	memset(pPlayer->m_UnoccupiedData, 0, sizeof(UNOCCUPIED_SYNC_DATA));
+	memset(pPlayer->getUnoccupiedData(), 0, sizeof(UNOCCUPIED_SYNC_DATA));
 
 	bsUnocSync.IgnoreBits(8);
 	// This guy have bits enough?
@@ -35,5 +37,5 @@ void mimp::internal::packet::UnoccupiedSync(Packet *p)
 	{
 		return;
 	}
-	bsUnocSync.Read((char *)pPlayer->m_UnoccupiedData, sizeof(UNOCCUPIED_SYNC_DATA));
+	bsUnocSync.Read((char*)pPlayer->getUnoccupiedData(), sizeof(UNOCCUPIED_SYNC_DATA));
 }

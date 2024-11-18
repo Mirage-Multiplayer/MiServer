@@ -1,5 +1,4 @@
-#ifndef __MISERVER_UNOCCUPIEDSYNC_HPP
-#define __MISERVER_UNOCCUPIEDSYNC_HPP
+#pragma once
 #include <MiRak/NetworkTypes.h>
 
 namespace mimp {
@@ -9,5 +8,3 @@ namespace mimp {
 		}
 	}
 }
-
-#endif

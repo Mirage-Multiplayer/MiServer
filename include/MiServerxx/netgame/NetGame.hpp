@@ -1,5 +1,4 @@
-#ifndef __MISERVER_NETGAME_HPP
-#define __MISERVER_NETGAME_HPP
+#pragma once
 #include <MiServerxx/netgame/Pool.hpp>
 #include <MiServerxx/netgame/Player.hpp>
 #include <MiServerxx/netgame/Vehicle.hpp>
@@ -22,4 +21,3 @@ namespace mimp
         internal::CPool<CDialog>* m_pDialogPool;
     };
 }
-#endif

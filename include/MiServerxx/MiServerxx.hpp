@@ -1,5 +1,4 @@
-#ifndef __MISERVER_HPP
-#define __MISERVER_HPP
+#pragma once
 #include <MiRak/RakServer.h>
 #include <MiRak/RakQuery.h>
 #include <MiServerxx/types.h>
@@ -22,5 +21,3 @@ namespace mimp
      */
     class CVehicle;
 }
-
-#endif

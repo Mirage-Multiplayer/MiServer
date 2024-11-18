@@ -1,5 +1,4 @@
-#ifndef __MISERVER_PLAYER_HPP
-#define __MISERVER_PLAYER_HPP
+#pragma once
 #include <string>
 #include <MiServerxx/types.h>
 #include <MiRak/NetworkTypes.h>
@@ -237,6 +236,20 @@ namespace mimp
 			return this->m_InCarSyncData;
 		}
 
+		inline internal::packet::BULLET_SYNC_DATA* getBulletData()
+		{
+			return this->m_BulletData;
+		}
+
+		inline internal::packet::PASSENGER_SYNC_DATA* getPassengerData()
+		{
+			return this->m_PassengerData;
+		}
+
+		inline internal::packet::UNOCCUPIED_SYNC_DATA* getUnoccupiedData() {
+			return this->m_UnoccupiedData;
+		}
+
 	public:
 		inline void _setIP(const char *ip)
 		{
@@ -318,14 +331,6 @@ namespace mimp
 		}
 
 	private:
-		friend void internal::packet::PlayerSync(Packet *pkt);
-		friend void internal::packet::AimSync(Packet *pkt);
-		friend void internal::packet::VehicleSync(Packet *pkt);
-		friend void internal::packet::BulletSync(Packet *pkt);
-		friend void internal::packet::PassengerSync(Packet *pkt);
-		friend void internal::packet::UnoccupiedSync(Packet *pkt);
-		friend void internal::packet::UpdatePosition(int iPlayerID, float fX, float fY, float fZ);
-
 		internal::packet::ONFOOT_SYNC_DATA *m_OnFootSyncData;
 		internal::packet::INCAR_SYNC_DATA *m_InCarSyncData;
 		internal::packet::BULLET_SYNC_DATA *m_BulletData;
@@ -357,4 +362,3 @@ namespace mimp
 		int m_interiorId;
 	};
 }
-#endif

@@ -5,30 +5,35 @@
 #include <MiServerxx/core/CoreInstance.hpp>
 #include <MiServerxx/core/Core.hpp>
 #include <MiRak/PacketEnumerations.h>
+#include <MiServerxx/packet/PassengerSync.hpp>
 #include <MiRak/BitStream.h>
 #include <iostream>
 
-void mimp::internal::packet::PassengerSync(Packet *p)
-{
-	RakServerInterface *pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
-	CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
+using namespace mimp;
+using namespace mimp::internal;
+using namespace mimp::internal::packet;
+extern void UpdatePosition(WORD playerid, float x, float y, float z);
+
+void Packet_PassengerSync(const int uid, Packet* p) {
+	RakServerInterface* pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
+	CPool<CPlayer>* pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 
 	if (p->length < sizeof(PASSENGER_SYNC_DATA) + 1)
 	{
 		return;
 	}
 
-	RakNet::BitStream bsPassengerSync((unsigned char *)p->data, p->length, false);
+	RakNet::BitStream bsPassengerSync((unsigned char*)p->data, p->length, false);
 	WORD playerId = pRakServer->GetIndexFromPlayerID(p->playerId);
 
 	// clear last data
-	mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerId);
+	mimp::CPlayer* pPlayer = pPlayerPool->GetAt(playerId);
 	if (pPlayer == nullptr)
 	{
 		// Invalid player, usually not connected.
 		return;
 	}
-	memset(pPlayer->m_PassengerData, 0, sizeof(PASSENGER_SYNC_DATA));
+	memset(pPlayer->getPassengerData(), 0, sizeof(PASSENGER_SYNC_DATA));
 
 	bsPassengerSync.IgnoreBits(8);
 	// This guy have bits enough?
@@ -36,7 +41,7 @@ void mimp::internal::packet::PassengerSync(Packet *p)
 	{
 		return;
 	}
-	bsPassengerSync.Read((char *)pPlayer->m_PassengerData, sizeof(PASSENGER_SYNC_DATA));
+	bsPassengerSync.Read((char*)pPlayer->getPassengerData(), sizeof(PASSENGER_SYNC_DATA));
 
-	UpdatePosition(playerId, pPlayer->m_PassengerData->vecPos[0], pPlayer->m_PassengerData->vecPos[1], pPlayer->m_PassengerData->vecPos[2]);
+	UpdatePosition(playerId, pPlayer->getPassengerData()->vecPos[0], pPlayer->getPassengerData()->vecPos[1], pPlayer->getPassengerData()->vecPos[2]);
 }

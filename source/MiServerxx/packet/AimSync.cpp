@@ -6,27 +6,32 @@
 #include <MiRak/PacketEnumerations.h>
 #include <MiRak/BitStream.h>
 
-void mimp::internal::packet::AimSync(Packet *p)
-{
-	RakServerInterface *pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
-	CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
+using namespace mimp;
+using namespace mimp::internal;
+using namespace mimp::internal::packet;
+
+extern void UpdatePosition(WORD playerid, float x, float y, float z);
+
+void Packet_AimSync(const int, Packet* p) {
+	RakServerInterface* pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
+	CPool<CPlayer>* pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 
 	if (p->length < sizeof(ONFOOT_SYNC_DATA) + 1)
 	{
 		return;
 	}
 
-	RakNet::BitStream bsPlayerSync((unsigned char *)p->data, p->length, false);
+	RakNet::BitStream bsPlayerSync((unsigned char*)p->data, p->length, false);
 	WORD playerId = pRakServer->GetIndexFromPlayerID(p->playerId);
 
 	// clear last data
-	mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerId);
+	mimp::CPlayer* pPlayer = pPlayerPool->GetAt(playerId);
 	if (pPlayer == nullptr)
 	{
 		// Invalid player, usually not connected.
 		return;
 	}
-	memset(pPlayer->m_OnFootSyncData, 0, sizeof(ONFOOT_SYNC_DATA));
+	memset(pPlayer->getOnFootSyncData(), 0, sizeof(ONFOOT_SYNC_DATA));
 
 	bsPlayerSync.IgnoreBits(8);
 	// This guy have bits enough?
@@ -34,42 +39,42 @@ void mimp::internal::packet::AimSync(Packet *p)
 	{
 		return;
 	}
-	bsPlayerSync.Read((char *)pPlayer->m_OnFootSyncData, sizeof(ONFOOT_SYNC_DATA));
+	bsPlayerSync.Read((char*)pPlayer->getOnFootSyncData(), sizeof(ONFOOT_SYNC_DATA));
 
 	// BROADCAST DATA
 	RakNet::BitStream bsOnFootBC;
 	bsOnFootBC.Write((BYTE)ID_PLAYER_SYNC);
 	bsOnFootBC.Write((WORD)playerId);
 
-	if (pPlayer->m_OnFootSyncData->lrAnalog)
+	if (pPlayer->getOnFootSyncData()->lrAnalog)
 	{
 		bsOnFootBC.Write(true);
-		bsOnFootBC.Write(pPlayer->m_OnFootSyncData->lrAnalog);
+		bsOnFootBC.Write(pPlayer->getOnFootSyncData()->lrAnalog);
 	}
 	else
 		bsOnFootBC.Write(false);
 
-	if (pPlayer->m_OnFootSyncData->udAnalog)
+	if (pPlayer->getOnFootSyncData()->udAnalog)
 	{
 		bsOnFootBC.Write(true);
-		bsOnFootBC.Write(pPlayer->m_OnFootSyncData->udAnalog);
+		bsOnFootBC.Write(pPlayer->getOnFootSyncData()->udAnalog);
 	}
 	else
 		bsOnFootBC.Write(false);
 
-	bsOnFootBC.Write(pPlayer->m_OnFootSyncData->wKeys);
-	bsOnFootBC.Write(pPlayer->m_OnFootSyncData->vecPos[0]);
-	bsOnFootBC.Write(pPlayer->m_OnFootSyncData->vecPos[1]);
-	bsOnFootBC.Write(pPlayer->m_OnFootSyncData->vecPos[2]);
+	bsOnFootBC.Write(pPlayer->getOnFootSyncData()->wKeys);
+	bsOnFootBC.Write(pPlayer->getOnFootSyncData()->vecPos[0]);
+	bsOnFootBC.Write(pPlayer->getOnFootSyncData()->vecPos[1]);
+	bsOnFootBC.Write(pPlayer->getOnFootSyncData()->vecPos[2]);
 	bsOnFootBC.WriteNormQuat(
-		pPlayer->m_OnFootSyncData->fQuaternion[0],
-		pPlayer->m_OnFootSyncData->fQuaternion[1],
-		pPlayer->m_OnFootSyncData->fQuaternion[2],
-		pPlayer->m_OnFootSyncData->fQuaternion[3]);
+		pPlayer->getOnFootSyncData()->fQuaternion[0],
+		pPlayer->getOnFootSyncData()->fQuaternion[1],
+		pPlayer->getOnFootSyncData()->fQuaternion[2],
+		pPlayer->getOnFootSyncData()->fQuaternion[3]);
 
 	BYTE byteSyncHealthArmour = 0;
-	BYTE byteHealth = pPlayer->m_OnFootSyncData->byteHealth;
-	BYTE byteArmour = pPlayer->m_OnFootSyncData->byteArmour;
+	BYTE byteHealth = pPlayer->getOnFootSyncData()->byteHealth;
+	BYTE byteArmour = pPlayer->getOnFootSyncData()->byteArmour;
 	if (byteHealth > 0 && byteHealth < 100)
 	{
 		byteSyncHealthArmour = ((BYTE)(byteHealth / 7)) << 4;
@@ -88,33 +93,33 @@ void mimp::internal::packet::AimSync(Packet *p)
 		byteSyncHealthArmour |= 0xF;
 	}
 	bsOnFootBC.Write(byteSyncHealthArmour);
-	bsOnFootBC.Write(pPlayer->m_OnFootSyncData->byteCurrentWeapon);
-	bsOnFootBC.Write(pPlayer->m_OnFootSyncData->byteSpecialAction);
-	bsOnFootBC.WriteVector(pPlayer->m_OnFootSyncData->vecMoveSpeed[0],
-						   pPlayer->m_OnFootSyncData->vecMoveSpeed[1], pPlayer->m_OnFootSyncData->vecMoveSpeed[2]);
+	bsOnFootBC.Write(pPlayer->getOnFootSyncData()->byteCurrentWeapon);
+	bsOnFootBC.Write(pPlayer->getOnFootSyncData()->byteSpecialAction);
+	bsOnFootBC.WriteVector(pPlayer->getOnFootSyncData()->vecMoveSpeed[0],
+		pPlayer->getOnFootSyncData()->vecMoveSpeed[1], pPlayer->getOnFootSyncData()->vecMoveSpeed[2]);
 
-	if (pPlayer->m_OnFootSyncData->wSurfInfo)
+	if (pPlayer->getOnFootSyncData()->wSurfInfo)
 	{
 		bsOnFootBC.Write(true);
-		bsOnFootBC.Write(pPlayer->m_OnFootSyncData->wSurfInfo);
-		bsOnFootBC.Write(pPlayer->m_OnFootSyncData->vecSurfOffsets[0]);
-		bsOnFootBC.Write(pPlayer->m_OnFootSyncData->vecSurfOffsets[1]);
-		bsOnFootBC.Write(pPlayer->m_OnFootSyncData->vecSurfOffsets[2]);
+		bsOnFootBC.Write(pPlayer->getOnFootSyncData()->wSurfInfo);
+		bsOnFootBC.Write(pPlayer->getOnFootSyncData()->vecSurfOffsets[0]);
+		bsOnFootBC.Write(pPlayer->getOnFootSyncData()->vecSurfOffsets[1]);
+		bsOnFootBC.Write(pPlayer->getOnFootSyncData()->vecSurfOffsets[2]);
 	}
 	else
 		bsOnFootBC.Write(false);
 
-	if (pPlayer->m_OnFootSyncData->iCurrentAnimationID)
+	if (pPlayer->getOnFootSyncData()->iCurrentAnimationID)
 	{
 		bsOnFootBC.Write(true);
-		bsOnFootBC.Write(pPlayer->m_OnFootSyncData->iCurrentAnimationID);
+		bsOnFootBC.Write(pPlayer->getOnFootSyncData()->iCurrentAnimationID);
 	}
 	else
 		bsOnFootBC.Write(false);
 
 	pPlayer->_setCurrentVehicle(0);
-
-	UpdatePosition(playerId, pPlayer->m_OnFootSyncData->vecPos[0], pPlayer->m_OnFootSyncData->vecPos[1], pPlayer->m_OnFootSyncData->vecPos[2]);
+	
+	UpdatePosition(playerId, pPlayer->getOnFootSyncData()->vecPos[0], pPlayer->getOnFootSyncData()->vecPos[1], pPlayer->getOnFootSyncData()->vecPos[2]);
 
 	pRakServer->Send(&bsOnFootBC, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, 0, p->playerId, TRUE);
 }

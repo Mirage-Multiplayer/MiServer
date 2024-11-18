@@ -1,6 +1,3 @@
-#ifndef __MISERVER_CONFIG_H
-#define __MISERVER_CONFIG_H
+#pragma once
 
 #define __MISERVER_VERSION "0.0.1"
-
-#endif

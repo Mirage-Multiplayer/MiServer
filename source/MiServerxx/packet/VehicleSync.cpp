@@ -8,27 +8,30 @@
 #include <MiRak/BitStream.h>
 #include <iostream>
 
-void mimp::internal::packet::VehicleSync(Packet *p)
-{
-	RakServerInterface *pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
-	CPool<CPlayer> *pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
+using namespace mimp;
+using namespace mimp::internal;
+using namespace mimp::internal::packet;
+extern void UpdatePosition(WORD playerid, float x, float y, float z);
+void Packet_VehicleSync(const int uid, Packet* p) {
+	RakServerInterface* pRakServer = mimp::internal::server::GetCoreInstance()->getRakServer();
+	CPool<CPlayer>* pPlayerPool = internal::server::GetCoreInstance()->GetNetGame()->GetPlayerPool();
 
 	if (p->length < sizeof(INCAR_SYNC_DATA) + 1)
 	{
 		return;
 	}
 
-	RakNet::BitStream bsVehicleSync((unsigned char *)p->data, p->length, false);
+	RakNet::BitStream bsVehicleSync((unsigned char*)p->data, p->length, false);
 	WORD playerId = pRakServer->GetIndexFromPlayerID(p->playerId);
 
 	// clear last data
-	mimp::CPlayer *pPlayer = pPlayerPool->GetAt(playerId);
+	mimp::CPlayer* pPlayer = pPlayerPool->GetAt(playerId);
 	if (pPlayer == nullptr)
 	{
 		// Invalid player, usually not connected.
 		return;
 	}
-	memset(pPlayer->m_InCarSyncData, 0, sizeof(INCAR_SYNC_DATA));
+	memset(pPlayer->getInCarSyncData(), 0, sizeof(INCAR_SYNC_DATA));
 
 	bsVehicleSync.IgnoreBits(8);
 	// This guy have bits enough?
@@ -38,38 +41,38 @@ void mimp::internal::packet::VehicleSync(Packet *p)
 		std::cout << "Invalid vehicle packet.\n";
 		return;
 	}
-	bsVehicleSync.Read((char *)pPlayer->m_InCarSyncData, sizeof(INCAR_SYNC_DATA));
+	bsVehicleSync.Read((char*)pPlayer->getInCarSyncData(), sizeof(INCAR_SYNC_DATA));
 
-	pPlayer->_setCurrentVehicle(pPlayer->m_InCarSyncData->VehicleID);
+	pPlayer->_setCurrentVehicle(pPlayer->getInCarSyncData()->VehicleID);
 
 	// BROADCAST DATA
 	RakNet::BitStream bsInVehicleBC;
 	bsInVehicleBC.Write((BYTE)ID_VEHICLE_SYNC);
 	bsInVehicleBC.Write(playerId);
-	bsInVehicleBC.Write(pPlayer->m_InCarSyncData->VehicleID);
+	bsInVehicleBC.Write(pPlayer->getInCarSyncData()->VehicleID);
 
-	bsInVehicleBC.Write(pPlayer->m_InCarSyncData->lrAnalog);
-	bsInVehicleBC.Write(pPlayer->m_InCarSyncData->udAnalog);
-	bsInVehicleBC.Write(pPlayer->m_InCarSyncData->wKeys);
+	bsInVehicleBC.Write(pPlayer->getInCarSyncData()->lrAnalog);
+	bsInVehicleBC.Write(pPlayer->getInCarSyncData()->udAnalog);
+	bsInVehicleBC.Write(pPlayer->getInCarSyncData()->wKeys);
 
 	bsInVehicleBC.WriteNormQuat(
-		pPlayer->m_InCarSyncData->fQuaternion[0],
-		pPlayer->m_InCarSyncData->fQuaternion[1],
-		pPlayer->m_InCarSyncData->fQuaternion[2],
-		pPlayer->m_InCarSyncData->fQuaternion[3]);
+		pPlayer->getInCarSyncData()->fQuaternion[0],
+		pPlayer->getInCarSyncData()->fQuaternion[1],
+		pPlayer->getInCarSyncData()->fQuaternion[2],
+		pPlayer->getInCarSyncData()->fQuaternion[3]);
 
-	bsInVehicleBC.Write(pPlayer->m_InCarSyncData->vecPos[0]);
-	bsInVehicleBC.Write(pPlayer->m_InCarSyncData->vecPos[1]);
-	bsInVehicleBC.Write(pPlayer->m_InCarSyncData->vecPos[2]);
+	bsInVehicleBC.Write(pPlayer->getInCarSyncData()->vecPos[0]);
+	bsInVehicleBC.Write(pPlayer->getInCarSyncData()->vecPos[1]);
+	bsInVehicleBC.Write(pPlayer->getInCarSyncData()->vecPos[2]);
 
-	bsInVehicleBC.WriteVector(pPlayer->m_InCarSyncData->vecMoveSpeed[0],
-							  pPlayer->m_InCarSyncData->vecMoveSpeed[1], pPlayer->m_InCarSyncData->vecMoveSpeed[2]);
+	bsInVehicleBC.WriteVector(pPlayer->getInCarSyncData()->vecMoveSpeed[0],
+		pPlayer->getInCarSyncData()->vecMoveSpeed[1], pPlayer->getInCarSyncData()->vecMoveSpeed[2]);
 
-	WORD wTempVehicleHealh = (WORD)pPlayer->m_InCarSyncData->fCarHealth;
+	WORD wTempVehicleHealh = (WORD)pPlayer->getInCarSyncData()->fCarHealth;
 	bsInVehicleBC.Write(wTempVehicleHealh);
 	BYTE byteSyncHealthArmour = 0;
-	BYTE byteHealth = pPlayer->m_InCarSyncData->bytePlayerHealth;
-	BYTE byteArmour = pPlayer->m_InCarSyncData->bytePlayerArmour;
+	BYTE byteHealth = pPlayer->getInCarSyncData()->bytePlayerHealth;
+	BYTE byteArmour = pPlayer->getInCarSyncData()->bytePlayerArmour;
 	if (byteHealth > 0 && byteHealth < 100)
 	{
 		byteSyncHealthArmour = ((BYTE)(byteHealth / 7)) << 4;
@@ -89,14 +92,14 @@ void mimp::internal::packet::VehicleSync(Packet *p)
 	}
 	bsInVehicleBC.Write(byteSyncHealthArmour);
 
-	bsInVehicleBC.Write(pPlayer->m_InCarSyncData->byteCurrentWeapon);
+	bsInVehicleBC.Write(pPlayer->getInCarSyncData()->byteCurrentWeapon);
 
-	if (pPlayer->m_InCarSyncData->byteSirenOn)
+	if (pPlayer->getInCarSyncData()->byteSirenOn)
 		bsInVehicleBC.Write(true);
 	else
 		bsInVehicleBC.Write(false);
 
-	if (pPlayer->m_InCarSyncData->byteLandingGearState)
+	if (pPlayer->getInCarSyncData()->byteLandingGearState)
 		bsInVehicleBC.Write(true);
 	else
 		bsInVehicleBC.Write(false);
@@ -118,7 +121,7 @@ void mimp::internal::packet::VehicleSync(Packet *p)
 		playerInfo[playerId].incarData.fTrainSpeed = (float)wSpeed;
 	}*/
 
-	UpdatePosition(playerId, pPlayer->m_InCarSyncData->vecPos[0], pPlayer->m_InCarSyncData->vecPos[1], pPlayer->m_InCarSyncData->vecPos[2]);
+	UpdatePosition(playerId, pPlayer->getInCarSyncData()->vecPos[0], pPlayer->getInCarSyncData()->vecPos[1], pPlayer->getInCarSyncData()->vecPos[2]);
 
 	pRakServer->Send(&bsInVehicleBC, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, 0, p->playerId, TRUE);
 }

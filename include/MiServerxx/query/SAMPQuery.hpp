@@ -1,5 +1,4 @@
-#ifndef __MISERVER_SAMPQUERY_HPP
-#define __MISERVER_SAMPQUERY_HPP
+#pragma once
 #include <MiServerxx/core/Core.hpp>
 namespace mimp
 {
@@ -11,4 +10,3 @@ namespace mimp
         }
     }
 }
-#endif

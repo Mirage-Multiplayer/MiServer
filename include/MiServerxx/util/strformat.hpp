@@ -1,5 +1,4 @@
-#ifndef __MISERVER_STRFORMAT_HPP
-#define __MISERVER_STRFORMAT_HPP
+#pragma once
 #include <cstring>
 #include <string>
 namespace mimp
@@ -15,4 +14,3 @@ namespace mimp
         }
     }
 }
-#endif

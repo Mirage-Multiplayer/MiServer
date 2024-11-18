@@ -1,5 +1,4 @@
-#ifndef __MISERVER_AIMSYNC_HPP
-#define __MISERVER_AIMSYNC_HPP
+#pragma once
 #include <MiRak/NetworkTypes.h>
 
 namespace mimp
@@ -15,4 +14,3 @@ namespace mimp
 		}
 	}
 }
-#endif

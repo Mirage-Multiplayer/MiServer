@@ -1,5 +1,4 @@
-#ifndef __MISERVER_VEHICLE_HPP
-#define __MISERVER_VEHICLE_HPP
+#pragma once
 
 #include <MiServerxx/types.h>
 #include <MiServerxx/RPC/RPC.hpp>
@@ -107,5 +106,3 @@ namespace mimp
 	};
 
 }
-
-#endif

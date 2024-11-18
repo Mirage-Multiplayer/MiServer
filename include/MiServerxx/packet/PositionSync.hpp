@@ -1,5 +1,4 @@
-#ifndef __MISERVER_POSITIONSYNC_HPP
-#define __MISERVER_POSITIONSYNC_HPP
+#pragma once
 
 namespace mimp {
 	namespace internal {
@@ -8,4 +7,3 @@ namespace mimp {
 		}
 	}
 }
-#endif

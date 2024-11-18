@@ -1,5 +1,4 @@
-#ifndef __MISERVER_SYNCDATA_HPP
-#define __MISERVER_SYNCDATA_HPP
+#pragma once
 #include <MiServerxx/types.h>
 
 #define WINDOWS_IGNORE_PACKING_MISMATCH
@@ -226,4 +225,3 @@ namespace mimp
 		}
 	}
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef __MiServerxx_EULER_HPP
-#define __MiServerxx_EULER_HPP
+#pragma once
 #include <cstring>
 #include <string>
 #include <cmath>
@@ -11,4 +10,3 @@ namespace mimp
         glm::vec3 GTAQuatResolve(float x, float y, float z, float w);
     }
 }
-#endif

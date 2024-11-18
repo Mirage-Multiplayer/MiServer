@@ -1,5 +1,4 @@
-#ifndef __MISERVER_EVENTTYPES_HPP
-#define __MISERVER_EVENTTYPES_HPP
+#pragma once
 #include <functional>
 #include <MiServerxx/event/Event.hpp>
 #include <MiServerxx/netgame/Player.hpp>
@@ -39,4 +38,3 @@ namespace mimp
 		}
 	}
 }
-#endif

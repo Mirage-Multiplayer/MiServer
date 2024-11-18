@@ -1,5 +1,4 @@
-#ifndef __MISERVER_RPC_HPP
-#define __MISERVER_RPC_HPP
+#pragma once
 #include <MiRak/BitStream.h>
 #include <MiRak/RakEncr.h>
 #include <MiRak/RakServer.h>
@@ -37,16 +36,6 @@ namespace mimp
 				std::vector<fn> m_handlers;
 			};
 
-			class RPCReceiverInterface {
-			public:
-				RPCReceiverInterface() = default;
-				virtual bool RegisterRPC(IRPC* rpc) = 0;
-				virtual IRPC* GetRPCHandler(const int rpcid) = 0;
-				virtual void UnregisterRPC(const int rpcid) = 0;
-			protected:
-				std::map<int, IRPC*> m_RPCs;
-			};
-			
 			struct ORPC {
 			public:
 				ORPC(const int UID) {
@@ -60,13 +49,22 @@ namespace mimp
 				int m_UID;
 			};
 
-			class RPCEmitterInterface {
+			class RPCHandlerInterface {
 			public:
-				RPCEmitterInterface() = default;
+				RPCHandlerInterface() = default;
+				virtual bool RegisterRPC(IRPC* rpc) = 0;
+				virtual IRPC* GetRPCHandler(const int rpcid) = 0;
+				virtual void UnregisterRPC(const int rpcid) = 0;
+
 				virtual void SendRPC(const int playerid, ORPC* rpc) = 0;
 				virtual void BroadcastRPC(ORPC* rpc) = 0;
 				virtual void BroadcastRPC(ORPC* rpc, const int playerid) = 0;
+
+			protected:
+				std::map<int, IRPC*> m_RPCs;
 			};
+			
+			
 
 			/*
 			template<uint16_t rpcid>
@@ -89,5 +87,3 @@ namespace mimp
 		}
 	}
 }
-
-#endif
